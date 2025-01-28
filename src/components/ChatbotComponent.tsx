@@ -21,7 +21,7 @@ const Chatbot: React.FC = () => {
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  //const openAiApiKey = "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";
+  
   const openAiApiKey = import.meta.env.VITE_OPENAI_API_KEY
   const sendMessage = async () => {
     if (!input.trim()) return;
