@@ -80,6 +80,7 @@ export default function FloatingActionButtonSize() {
 
     try {
       // First, add the patient document to Firestore to get the patientId
+      console.log("here")
       const patientDoc = await addDoc(collection(db, "patients"), {
         name,
         age,
@@ -203,7 +204,7 @@ export default function FloatingActionButtonSize() {
           <Button onClick={handleClose} color="primary">Cancel</Button>
           <Button onClick={() => {
             handleSubmit() 
-            refreshButton()
+            // refreshButton()
           }} color="primary">Submit</Button>
         </DialogActions>
       </Dialog>
