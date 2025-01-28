@@ -5,7 +5,8 @@ import Grid from '@mui/material/Grid';
 import DrawerAppBar from '../components/DrawerAppBar';
 import RowAndColumnSpacing from '../components/RowAndColumnSpacing';
 import RecipeReviewCard from '../components/RecipeReviewCard';
-// import UnstyledTextareaIntroduction from '../components/UnstyledTextareaIntroduction';
+import ChatbotComponent from '../components/ChatbotComponent';
+
 
 function Avatar() {
     return (
@@ -16,9 +17,9 @@ function Avatar() {
                     <Grid item xs={12} md={4}>
                         <RowAndColumnSpacing />
                     </Grid>
-                    {/* <Grid item xs={12} md={4}>
-                        <UnstyledTextareaIntroduction />
-                    </Grid> */}
+                    <Grid item xs={12} md={4}>
+                        <ChatbotComponent/>
+                    </Grid>
                     <Grid item xs={12} md={4}>
                         <RecipeReviewCard />
                     </Grid>
