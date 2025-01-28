@@ -47,9 +47,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function CustomizedTables() {
 
-  const refreshButton = () => {
-    window.location.reload();
-  }
+  // const refreshButton = () => {
+  //   window.location.reload();
+  // }
 
   const [open, setOpen] = React.useState(false);
 
@@ -190,14 +190,14 @@ export default function CustomizedTables() {
         <DialogActions>
         <IconButton onClick={() =>{
           deletePatient();
-          refreshButton();
+          // refreshButton();
         }} aria-label="delete">
   <DeleteIcon />
 </IconButton>
           <Button onClick={handleClose} color="primary">Cancel</Button>
           <Button onClick={() =>{
             modifyPatient();
-            refreshButton();
+            // refreshButton();
           }} color="primary">Change</Button>
         </DialogActions>
       </Dialog>
