@@ -1,6 +1,13 @@
 import { Button, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function Landing() {
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate('/home');
+  };
+
   return (
     <Box
       sx={{
@@ -13,7 +20,7 @@ function Landing() {
       <Button 
         variant="contained" 
         size="large" 
-        onClick={() => alert('Under Construction!')}
+        onClick={handleButtonClick}
       >
         Transform your care
       </Button>
