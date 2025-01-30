@@ -20,10 +20,10 @@ const Item = styled(Paper)(({ theme }) => ({
   boxSizing: 'border-box', 
 }));
 
-export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedText: (text: string) => void }) {
+export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedText: (text: string[]) => void }) {
   const { id } = useParams();
   const [fileURLs, setFileURLs] = React.useState<string[]>([]);
-  const [docxText, setDocxText] = React.useState<string>("");
+  const [docxText, setDocxText] = React.useState<string[]>([]);
 
   const downloadAndExtractText = async () => {
     if (!id) {
@@ -36,22 +36,23 @@ export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedTe
     const allReports = await listAll(listRef);
     const concernedReports = allReports.items.filter(report => report.name.includes(id));
 
-
     const downloadURLs = await Promise.all(concernedReports.map(report => getDownloadURL(report)));
     setFileURLs(downloadURLs);
 
+    const extractedTexts: string[] = [];
 
-    // Process first DOCX file and extract text
-    if (downloadURLs.length > 0) {
-      const response = await fetch(downloadURLs[0]);
+    for (const url of downloadURLs) {
+      const response = await fetch(url);
       const blob = await response.blob();
       const reader = new FileReader();
 
       reader.onload = async (event) => {
         if (event.target?.result instanceof ArrayBuffer) {
           const extractedText = await mammoth.extractRawText({ arrayBuffer: event.target.result });
-          setDocxText(extractedText.value);
-          onExtractedText(extractedText.value);  // Pass extracted text to parent
+          extractedTexts.push(extractedText.value);
+
+          // Pass all extracted texts to the parent component
+          onExtractedText(extractedTexts);
         }
       };
 

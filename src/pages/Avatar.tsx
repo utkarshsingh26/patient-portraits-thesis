@@ -7,7 +7,7 @@ import RowAndColumnSpacing from '../components/RowAndColumnSpacing';
 import ChatbotComponent from '../components/ChatbotComponent';
 
 function Avatar() {
-    const [docxText, setDocxText] = useState<string>("");
+    const [docxTexts, setDocxTexts] = useState<string[]>([]);
 
     return (
         <Container>
@@ -15,10 +15,10 @@ function Avatar() {
             <Box my={4}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
-                        <RowAndColumnSpacing onExtractedText={setDocxText} />
+                        <RowAndColumnSpacing onExtractedText={setDocxTexts} />
                     </Grid>
                     <Grid item xs={12} md={8}>
-                        <ChatbotComponent extractedText={docxText} />
+                        <ChatbotComponent extractedText={docxTexts.join("\n\n")} />
                     </Grid>
                 </Grid>
             </Box>
