@@ -31,6 +31,28 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
     setInput("");
     setLoading(true);
 
+    // Expanded keywords for body parts
+    const bodyPartsKeywords = {
+      "chest": ["chest", "thoracic", "sternum", "lymph nodes", "lymph node"],
+      "hands": ["hand", "wrist", "carpal"],
+      "face": ["face", "facial", "jaw", "cranial"],
+      "crotch": ["crotch", "inguinal", "groin", "prostate"],
+      "butt": ["butt", "gluteal", "sacral"],
+      "leg": ["leg", "thigh", "knee", "femoral"],
+      "foot": ["foot", "ankle", "calcaneal", "plantar"]
+    };
+
+    // Function to detect body parts in the text
+    const detectBodyParts = (text: string) => {
+      const partsFound = new Set<string>();
+      for (const [part, keywords] of Object.entries(bodyPartsKeywords)) {
+        if (keywords.some((keyword) => text.toLowerCase().includes(keyword))) {
+          partsFound.add(part);
+        }
+      }
+      return partsFound;
+    };
+
     try {
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
@@ -42,15 +64,25 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
           model: "gpt-4",
           messages: [
             { role: "system", content: `Here is a document for reference:\n\n${extractedText}` },
-            { role: "user", content: input }
+            { role: "user", content: input },
           ],
         }),
       });
 
       const data = await response.json();
+      const botMessageContent = data.choices[0].message.content;
+
+      // Detect body parts in the bot's response
+      const detectedParts = detectBodyParts(botMessageContent);
+
+      // Formulate the response message
+      const bodyPartsMessage = detectedParts.size > 0
+        ? `The following body parts were detected: ${Array.from(detectedParts).join(", ")}.`
+        : "No specific body parts identified.";
+
       const botMessage: ChatMessage = {
         sender: "bot",
-        message: data.choices[0].message.content,
+        message: `${botMessageContent}\n\n${bodyPartsMessage}`,
       };
 
       setMessages((prev) => [...prev, botMessage]);
@@ -82,7 +114,13 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
         {loading && <CircularProgress size={24} />}
       </Box>
       <Box sx={{ display: "flex", gap: 1 }}>
-        <TextField fullWidth placeholder="Type your message..." variant="outlined" value={input} onChange={(e) => setInput(e.target.value)} />
+        <TextField
+          fullWidth
+          placeholder="Type your message..."
+          variant="outlined"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
         <IconButton color="primary" onClick={sendMessage} disabled={loading}>
           <SendIcon />
         </IconButton>
