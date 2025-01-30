@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
+import * as mammoth from 'mammoth';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -19,11 +20,12 @@ const Item = styled(Paper)(({ theme }) => ({
   boxSizing: 'border-box', 
 }));
 
-export default function RowAndColumnSpacing() {
+export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedText: (text: string) => void }) {
   const { id } = useParams();
   const [fileURLs, setFileURLs] = React.useState<string[]>([]);
+  const [docxText, setDocxText] = React.useState<string>("");
 
-  const download = async () => {
+  const downloadAndExtractText = async () => {
     if (!id) {
       console.error("No ID provided in the URL");
       return;
@@ -33,52 +35,54 @@ export default function RowAndColumnSpacing() {
     const listRef = ref(storage, 'reports/');
     const allReports = await listAll(listRef);
     const concernedReports = allReports.items.filter(report => report.name.includes(id));
+
+
     const downloadURLs = await Promise.all(concernedReports.map(report => getDownloadURL(report)));
     setFileURLs(downloadURLs);
+
+
+    // Process first DOCX file and extract text
+    if (downloadURLs.length > 0) {
+      const response = await fetch(downloadURLs[0]);
+      const blob = await response.blob();
+      const reader = new FileReader();
+
+      reader.onload = async (event) => {
+        if (event.target?.result instanceof ArrayBuffer) {
+          const extractedText = await mammoth.extractRawText({ arrayBuffer: event.target.result });
+          setDocxText(extractedText.value);
+          onExtractedText(extractedText.value);  // Pass extracted text to parent
+        }
+      };
+
+      reader.readAsArrayBuffer(blob);
+    }
   };
 
   React.useEffect(() => {
-    download();
+    downloadAndExtractText();
   }, [id]);
 
-  const extractName = (url: string): string => {
-    const lastIndex1 = url.lastIndexOf('_') + 1;
-    const lastIndex2 = url.lastIndexOf('.') + 1;
-    const newName = url.substring(lastIndex1, lastIndex2)
-    return newName || url;  
-  };
-  
-
   return (
-      <Box sx={{ width: '100%', padding: 2 }}>
-        <Grid container spacing={2}>
-          {fileURLs.map((url, index) => {
-            const filename = extractName(url);  // Use extractName to get a meaningful part of the URL
-            return (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Item>
-                  <iframe 
-                    src={url} 
-                    style={{ width: '100%', height: '99px', border: 'none', overflow: 'hidden' }}
-                    title={`PDF Document ${index}`}
-                    allowFullScreen>
-                  </iframe>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    href={url}
-                    download={`Document-${index}.pdf`}
-                    target="_blank"
-                    sx={{ mt: 2, width: '100%', maxWidth: 'calc(100% - 16px)' }}
-                  >
-                    Open {filename}
-                  </Button>
-                </Item>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Box>
-
+    <Box sx={{ width: '100%', padding: 2 }}>
+      <Grid container spacing={2}>
+        {fileURLs.map((url, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <Item>
+              <Button
+                variant="contained"
+                color="primary"
+                href={url}
+                download={`Document-${index}.docx`}
+                target="_blank"
+                sx={{ mt: 2, width: '100%', maxWidth: 'calc(100% - 16px)' }}
+              >
+                Open Document {index + 1}
+              </Button>
+            </Item>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 }
