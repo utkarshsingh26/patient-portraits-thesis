@@ -65,25 +65,26 @@ export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedTe
   }, [id]);
 
   return (
-    <Box sx={{ width: '100%', padding: 2 }}>
-      <Grid container spacing={2}>
-        {fileURLs.map((url, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Item>
-              <Button
-                variant="contained"
-                color="primary"
-                href={url}
-                download={`Document-${index}.docx`}
-                target="_blank"
-                sx={{ mt: 2, width: '100%', maxWidth: 'calc(100% - 16px)' }}
-              >
-                Open Document {index + 1}
-              </Button>
-            </Item>
-          </Grid>
-        ))}
+<Box sx={{ width: "100%", padding: 2 }}>
+  <Grid container spacing={2}>
+    {fileURLs.map((url, index) => (
+      <Grid item xs={12} sm={6} md={4} key={index}>
+        <Item sx={{ width: "100%" }}>  
+          <Button
+            variant="contained"
+            color="primary"
+            href={url}
+            download={`Document-${index}.docx`}
+            target="_blank"
+            sx={{ mt: 2, width: "120%", fontSize: "12px", padding: "15px" }} 
+          >
+            Document {index + 1}
+          </Button>
+        </Item>
       </Grid>
-    </Box>
+    ))}
+  </Grid>
+</Box>
+
   );
 }
