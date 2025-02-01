@@ -123,6 +123,18 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
           <SendIcon />
         </IconButton>
       </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 2, justifyContent: "center" }}>
+  {["What's wrong with the patient?", "Give me the date of the latest report.", "Tell me about the patient's liver."].map((prompt, index) => (
+    <Button 
+      key={index} 
+      variant="outlined" 
+      onClick={() => setInput(prompt)}
+      sx={{ textTransform: "none" }} // Keeps text normal case
+    >
+      {prompt}
+    </Button>
+  ))}
+</Box>
     </Box>
   );
 };
