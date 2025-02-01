@@ -51,7 +51,7 @@ export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedTe
           const extractedText = await mammoth.extractRawText({ arrayBuffer: event.target.result });
           extractedTexts.push(extractedText.value);
 
-          // Pass all extracted texts to the parent component
+
           onExtractedText(extractedTexts);
         }
       };

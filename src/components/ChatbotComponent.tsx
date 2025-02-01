@@ -31,7 +31,7 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
     setInput("");
     setLoading(true);
 
-    // Expanded keywords for body parts
+ 
     const bodyPartsKeywords = {
       "chest": ["chest", "thoracic", "sternum", "lymph nodes", "lymph node"],
       "hands": ["hand", "wrist", "carpal"],
@@ -42,7 +42,7 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
       "foot": ["foot", "ankle", "calcaneal", "plantar"]
     };
 
-    // Function to detect body parts in the text
+
     const detectBodyParts = (text: string) => {
       const partsFound = new Set<string>();
       for (const [part, keywords] of Object.entries(bodyPartsKeywords)) {
@@ -72,10 +72,8 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
       const data = await response.json();
       const botMessageContent = data.choices[0].message.content;
 
-      // Detect body parts in the bot's response
       const detectedParts = detectBodyParts(botMessageContent);
 
-      // Formulate the response message
       const bodyPartsMessage = detectedParts.size > 0
         ? `The following body parts were detected: ${Array.from(detectedParts).join(", ")}.`
         : "No specific body parts identified.";

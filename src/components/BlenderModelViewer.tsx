@@ -16,7 +16,7 @@ const Model = ({ path }: ModelProps) => {
 };
 
 const BlenderModelViewer: React.FC = () => {
-  const modelPath = "src\components\BaseHuman.obj"; // Path to your .obj file
+  const modelPath = "BaseHuman.obj"; // Path to your .obj file
 
   return (
     <Canvas>
