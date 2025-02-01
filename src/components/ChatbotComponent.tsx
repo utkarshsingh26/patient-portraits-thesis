@@ -96,22 +96,22 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
   };
 
   return (
-    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2 }}>
+    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2,  border: "1px solid gray", borderRadius: "8px" }}>
       <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
         Talk to Wellbee
       </Typography>
-      <Box sx={{ height: "400px", overflowY: "auto", mb: 2 }}>
+      <Box sx={{ height: "400px", overflowY: "auto", mb: 2}}>
         {messages.map((msg, idx) => (
-          <Card key={idx} sx={{ mb: 1 }}>
+          <Card key={idx} sx={{ mb: 1, border: "1px solid gray", borderRadius: "8px" }}>
             <CardContent>
-              <Typography variant="body1">{msg.sender === "user" ? "You" : "Wellbee"}</Typography>
+              <Typography variant="body1" sx={{ fontWeight: "bold", color: msg.sender === "user" ? "primary.main" : "orange" }}>{msg.sender === "user" ? "You" : "Wellbee"}</Typography>
               <Typography variant="body2">{msg.message}</Typography>
             </CardContent>
           </Card>
         ))}
         {loading && <CircularProgress size={24} />}
       </Box>
-      <Box sx={{ display: "flex", gap: 1 }}>
+      <Box sx={{ display: "flex", gap: 1,  }}>
         <TextField
           fullWidth
           placeholder="Type your message..."
@@ -119,7 +119,7 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <IconButton color="primary" onClick={sendMessage} disabled={loading}>
+        <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{border: "1px solid", borderColor: "primary.main", borderRadius: "8px"}}>
           <SendIcon />
         </IconButton>
       </Box>
