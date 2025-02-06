@@ -17,12 +17,17 @@ interface ChatMessage {
   message: string;
 }
 
+interface ChatItem {
+  userQuestion: string;
+  botResponse: string;
+  taggedLocations: string; // New field to store tagged locations
+}
+
 const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>("");  
   const [loading, setLoading] = useState<boolean>(false);
-  const [response, setResponse] = useState<string>("");
-  const [userQuestion, setUserQuestion] = useState<string>(""); // State to hold the user's question
+  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]); // To store chat history
 
   const openAiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
@@ -31,7 +36,6 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
 
     const newMessage: ChatMessage = { sender: "user", message: input };
     setMessages((prev) => [...prev, newMessage]);
-    setUserQuestion(input); // Store the user's question here
     setInput("");
     setLoading(true);
 
@@ -74,16 +78,23 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
       const data = await response.json();
       const botMessageContent = data.choices[0].message.content;
 
+      // Detect body parts and generate the tagged locations message
       const detectedParts = detectBodyParts(botMessageContent);
-
-      const bodyPartsMessage = detectedParts.size > 0
+      const taggedLocations = detectedParts.size > 0
         ? `The following body parts were detected: ${Array.from(detectedParts).join(", ")}.`
         : "No specific body parts identified.";
 
-      setResponse(`${botMessageContent}\n\n${bodyPartsMessage}`);
+      // Add new chat to the chat history
+      setChatHistory((prev) => [
+        ...prev,
+        { userQuestion: input, botResponse: botMessageContent, taggedLocations },
+      ]);
     } catch (error) {
       console.error("Error fetching AI response:", error);
-      setResponse("Sorry, I couldn't process that. Please try again.");
+      setChatHistory((prev) => [
+        ...prev,
+        { userQuestion: input, botResponse: "Sorry, I couldn't process that. Please try again.", taggedLocations: "" },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -95,22 +106,33 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
         Talk to Wellbee
       </Typography>
       <Box sx={{ height: "400px", overflowY: "auto", mb: 2 }}>
-        {response && (
-          <Accordion>
+        {chatHistory.map((chat, index) => (
+          <Accordion key={index}>
             <AccordionSummary>
               <Typography variant="body1" sx={{ fontWeight: "bold", color: "orange" }}>
-                Response:
+                Wellbee's Response
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography variant="body2">{response}</Typography>
-              <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2, color: "green" }}>
-                Prompt:
+              <Typography variant="body2">{chat.botResponse}</Typography>
+
+              {/* Tagged Locations */}
+              {chat.taggedLocations && (
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                    Tagged Locations:
+                  </Typography>
+                  <Typography variant="body2">{chat.taggedLocations}</Typography>
+                </Box>
+              )}
+
+              <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2 }}>
+                Question Asked:
               </Typography>
-              <Typography variant="body2">{userQuestion}</Typography> {/* Display the user's input here */}
+              <Typography variant="body2">{chat.userQuestion}</Typography>
             </AccordionDetails>
           </Accordion>
-        )}
+        ))}
         {loading && <CircularProgress size={24} />}
       </Box>
       <Box sx={{ display: "flex", gap: 1 }}>
