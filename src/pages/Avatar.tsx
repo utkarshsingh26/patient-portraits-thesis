@@ -5,7 +5,6 @@ import Grid from '@mui/material/Grid';
 import DrawerAppBar from '../components/DrawerAppBar';
 import RowAndColumnSpacing from '../components/RowAndColumnSpacing';
 import ChatbotComponent from '../components/ChatbotComponent';
-import RecipeReviewCard from '../components/RecipeReviewCard';
 import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
 import TextField from '@mui/material/TextField';
@@ -70,14 +69,13 @@ function Avatar() {
                         <Box sx={{ width: '2px', backgroundColor: 'gray', height: '100%' }} />
                     </Grid>
 
-                    {/* Right Panel (Recipe Review Card) */}
+                    {/* Right Panel (Human Body 2D) */}
                     <Grid 
                         item 
                         xs={12} 
                         md={3.5} 
                         sx={{ pl: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
                     >
-                        {/* <RecipeReviewCard /> */}
                         <HumanBody />
                     </Grid>
 

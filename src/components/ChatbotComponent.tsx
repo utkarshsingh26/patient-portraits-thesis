@@ -4,8 +4,9 @@ import {
   Typography,
   TextField,
   Button,
-  Card,
-  CardContent,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   CircularProgress,
   IconButton,
 } from "@mui/material";
@@ -18,8 +19,10 @@ interface ChatMessage {
 
 const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState<string>("");  
   const [loading, setLoading] = useState<boolean>(false);
+  const [response, setResponse] = useState<string>("");
+  const [userQuestion, setUserQuestion] = useState<string>(""); // State to hold the user's question
 
   const openAiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
@@ -28,10 +31,10 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
 
     const newMessage: ChatMessage = { sender: "user", message: input };
     setMessages((prev) => [...prev, newMessage]);
+    setUserQuestion(input); // Store the user's question here
     setInput("");
     setLoading(true);
 
- 
     const bodyPartsKeywords = {
       "chest": ["chest", "thoracic", "sternum", "lymph nodes", "lymph node"],
       "hands": ["hand", "wrist", "carpal"],
@@ -41,7 +44,6 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
       "leg": ["leg", "thigh", "knee", "femoral"],
       "foot": ["foot", "ankle", "calcaneal", "plantar"]
     };
-
 
     const detectBodyParts = (text: string) => {
       const partsFound = new Set<string>();
@@ -78,40 +80,40 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
         ? `The following body parts were detected: ${Array.from(detectedParts).join(", ")}.`
         : "No specific body parts identified.";
 
-      const botMessage: ChatMessage = {
-        sender: "bot",
-        message: `${botMessageContent}\n\n${bodyPartsMessage}`,
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
+      setResponse(`${botMessageContent}\n\n${bodyPartsMessage}`);
     } catch (error) {
       console.error("Error fetching AI response:", error);
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", message: "Sorry, I couldn't process that. Please try again." },
-      ]);
+      setResponse("Sorry, I couldn't process that. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2,  border: "1px solid gray", borderRadius: "8px" }}>
+    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, border: "1px solid gray", borderRadius: "8px" }}>
       <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
         Talk to Wellbee
       </Typography>
-      <Box sx={{ height: "400px", overflowY: "auto", mb: 2}}>
-        {messages.map((msg, idx) => (
-          <Card key={idx} sx={{ mb: 1, border: "1px solid gray", borderRadius: "8px" }}>
-            <CardContent>
-              <Typography variant="body1" sx={{ fontWeight: "bold", color: msg.sender === "user" ? "primary.main" : "orange" }}>{msg.sender === "user" ? "You" : "Wellbee"}</Typography>
-              <Typography variant="body2">{msg.message}</Typography>
-            </CardContent>
-          </Card>
-        ))}
+      <Box sx={{ height: "400px", overflowY: "auto", mb: 2 }}>
+        {response && (
+          <Accordion>
+            <AccordionSummary>
+              <Typography variant="body1" sx={{ fontWeight: "bold", color: "orange" }}>
+                Response:
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body2">{response}</Typography>
+              <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2, color: "green" }}>
+                Prompt:
+              </Typography>
+              <Typography variant="body2">{userQuestion}</Typography> {/* Display the user's input here */}
+            </AccordionDetails>
+          </Accordion>
+        )}
         {loading && <CircularProgress size={24} />}
       </Box>
-      <Box sx={{ display: "flex", gap: 1,  }}>
+      <Box sx={{ display: "flex", gap: 1 }}>
         <TextField
           fullWidth
           placeholder="Type your message..."
@@ -119,22 +121,22 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{border: "1px solid", borderColor: "primary.main", borderRadius: "8px"}}>
+        <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "primary.main", borderRadius: "8px" }}>
           <SendIcon />
         </IconButton>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 2, justifyContent: "center" }}>
-  {["What's wrong with the patient?", "Give me the date of the latest report.", "Tell me about the patient's liver."].map((prompt, index) => (
-    <Button 
-      key={index} 
-      variant="outlined" 
-      onClick={() => setInput(prompt)}
-      sx={{ textTransform: "none" }} // Keeps text normal case
-    >
-      {prompt}
-    </Button>
-  ))}
-</Box>
+        {["What's wrong with the patient?", "Give me the date of the latest report.", "Tell me about the patient's liver."].map((prompt, index) => (
+          <Button
+            key={index}
+            variant="outlined"
+            onClick={() => setInput(prompt)}
+            sx={{ textTransform: "none" }} // Keeps text normal case
+          >
+            {prompt}
+          </Button>
+        ))}
+      </Box>
     </Box>
   );
 };
