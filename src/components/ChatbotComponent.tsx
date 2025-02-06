@@ -24,7 +24,12 @@ interface ChatItem {
   reportsReferenced: string[]; // New field for report names
 }
 
-const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
+interface ChatbotProps {
+  extractedText: string;
+  onTaggedLocationsChange: (taggedLocations: string[]) => void;
+}
+
+const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChange }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>("");  
   const [loading, setLoading] = useState<boolean>(false);
@@ -34,7 +39,6 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
 
   // Function to extract report names from extractedText
   const extractReportNames = (text: string): string[] => {
-    // Regex to find text patterns that look like report titles (e.g., "Report: [name]")
     const reportRegex = /(?:Report[:\s]+)([\w\s]+(?:[A-Za-z0-9-]*))/g;
     const matches = [...text.matchAll(reportRegex)];
     return matches.map((match, index) => `Report ${index + 1}`);
@@ -45,10 +49,29 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
     const reportMatch = userInput.match(/report\s*(\d+)/i);
     if (reportMatch) {
       const reportNumber = parseInt(reportMatch[1], 10);
-      // Return the report corresponding to the query
       return allReports.slice(0, reportNumber);
     }
     return allReports;
+  };
+
+  const bodyPartsKeywords = {
+    "chest": ["chest", "thoracic", "sternum", "lymph nodes", "lymph node"],
+    "hands": ["hand", "wrist", "carpal"],
+    "face": ["face", "facial", "jaw", "cranial"],
+    "crotch": ["crotch", "inguinal", "groin", "prostate"],
+    "butt": ["butt", "gluteal", "sacral"],
+    "leg": ["leg", "thigh", "knee", "femoral"],
+    "foot": ["foot", "ankle", "calcaneal", "plantar"]
+  };
+
+  const detectBodyParts = (text: string) => {
+    const partsFound = new Set<string>();
+    for (const [part, keywords] of Object.entries(bodyPartsKeywords)) {
+      if (keywords.some((keyword) => text.toLowerCase().includes(keyword))) {
+        partsFound.add(part);
+      }
+    }
+    return partsFound;
   };
 
   const sendMessage = async () => {
@@ -58,26 +81,6 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
     setMessages((prev) => [...prev, newMessage]);
     setInput("");
     setLoading(true);
-
-    const bodyPartsKeywords = {
-      "chest": ["chest", "thoracic", "sternum", "lymph nodes", "lymph node"],
-      "hands": ["hand", "wrist", "carpal"],
-      "face": ["face", "facial", "jaw", "cranial"],
-      "crotch": ["crotch", "inguinal", "groin", "prostate"],
-      "butt": ["butt", "gluteal", "sacral"],
-      "leg": ["leg", "thigh", "knee", "femoral"],
-      "foot": ["foot", "ankle", "calcaneal", "plantar"]
-    };
-
-    const detectBodyParts = (text: string) => {
-      const partsFound = new Set<string>();
-      for (const [part, keywords] of Object.entries(bodyPartsKeywords)) {
-        if (keywords.some((keyword) => text.toLowerCase().includes(keyword))) {
-          partsFound.add(part);
-        }
-      }
-      return partsFound;
-    };
 
     try {
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -100,19 +103,19 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
 
       // Detect body parts and generate the tagged locations message
       const detectedParts = detectBodyParts(botMessageContent);
-      const taggedLocations = detectedParts.size > 0
-        ? `${Array.from(detectedParts).join(", ")}.`
-        : "none";
+      const taggedLocations = Array.from(detectedParts);
+
+      // Pass tagged locations to the parent component
+      onTaggedLocationsChange(taggedLocations);
 
       // Extract report names from the extracted text
       const reportsReferenced = extractReportNames(extractedText);
-      // Filter the reports based on the user's input
       const filteredReports = filterReports(input, reportsReferenced);
 
       // Add new chat to the chat history
       setChatHistory((prev) => [
         ...prev,
-        { userQuestion: input, botResponse: botMessageContent, taggedLocations, reportsReferenced: filteredReports },
+        { userQuestion: input, botResponse: botMessageContent, taggedLocations: taggedLocations.join(", "), reportsReferenced: filteredReports },
       ]);
     } catch (error) {
       console.error("Error fetching AI response:", error);

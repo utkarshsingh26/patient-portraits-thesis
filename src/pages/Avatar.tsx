@@ -17,6 +17,7 @@ function Avatar() {
     const [docxTexts, setDocxTexts] = useState<string[]>([]);
     const [openTextBox, setOpenTextBox] = useState(false);
     const [text, setText] = useState("Predefined text goes here...");
+    const [taggedLocations, setTaggedLocations] = useState<string[]>([]);
 
     return (
         <Container maxWidth="lg" disableGutters>
@@ -57,7 +58,10 @@ function Avatar() {
                         md={3.5} 
                         sx={{ px: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
                     >
-                        <ChatbotComponent extractedText={docxTexts.join("\n\n")} />
+                        <ChatbotComponent 
+                            extractedText={docxTexts.join("\n\n")} 
+                            onTaggedLocationsChange={setTaggedLocations} 
+                        />
                     </Grid>
 
                     {/* Second Vertical Divider */}
@@ -76,7 +80,7 @@ function Avatar() {
                         md={3.5} 
                         sx={{ pl: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
                     >
-                        <HumanBody />
+                        <HumanBody taggedLocations={taggedLocations} />
                     </Grid>
 
                 </Grid>
