@@ -20,16 +20,36 @@ interface ChatMessage {
 interface ChatItem {
   userQuestion: string;
   botResponse: string;
-  taggedLocations: string; // New field to store tagged locations
+  taggedLocations: string; // Tagged locations part
+  reportsReferenced: string[]; // New field for report names
 }
 
 const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>("");  
   const [loading, setLoading] = useState<boolean>(false);
-  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]); // To store chat history
+  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
 
   const openAiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+
+  // Function to extract report names from extractedText
+  const extractReportNames = (text: string): string[] => {
+    // Regex to find text patterns that look like report titles (e.g., "Report: [name]")
+    const reportRegex = /(?:Report[:\s]+)([\w\s]+(?:[A-Za-z0-9-]*))/g;
+    const matches = [...text.matchAll(reportRegex)];
+    return matches.map((match, index) => `Report ${index + 1}`);
+  };
+
+  // Function to filter specific reports based on the user's question
+  const filterReports = (userInput: string, allReports: string[]): string[] => {
+    const reportMatch = userInput.match(/report\s*(\d+)/i);
+    if (reportMatch) {
+      const reportNumber = parseInt(reportMatch[1], 10);
+      // Return the report corresponding to the query
+      return allReports.slice(0, reportNumber);
+    }
+    return allReports;
+  };
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -81,19 +101,24 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
       // Detect body parts and generate the tagged locations message
       const detectedParts = detectBodyParts(botMessageContent);
       const taggedLocations = detectedParts.size > 0
-        ? `The following body parts were detected: ${Array.from(detectedParts).join(", ")}.`
-        : "No specific body parts identified.";
+        ? `${Array.from(detectedParts).join(", ")}.`
+        : "none";
+
+      // Extract report names from the extracted text
+      const reportsReferenced = extractReportNames(extractedText);
+      // Filter the reports based on the user's input
+      const filteredReports = filterReports(input, reportsReferenced);
 
       // Add new chat to the chat history
       setChatHistory((prev) => [
         ...prev,
-        { userQuestion: input, botResponse: botMessageContent, taggedLocations },
+        { userQuestion: input, botResponse: botMessageContent, taggedLocations, reportsReferenced: filteredReports },
       ]);
     } catch (error) {
       console.error("Error fetching AI response:", error);
       setChatHistory((prev) => [
         ...prev,
-        { userQuestion: input, botResponse: "Sorry, I couldn't process that. Please try again.", taggedLocations: "" },
+        { userQuestion: input, botResponse: "Sorry, I couldn't process that. Please try again.", taggedLocations: "", reportsReferenced: [] },
       ]);
     } finally {
       setLoading(false);
@@ -126,6 +151,18 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
                 </Box>
               )}
 
+              {/* Reports Referenced */}
+              {chat.reportsReferenced.length > 0 && (
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                    Report(s) Referenced:
+                  </Typography>
+                  <Typography variant="body2">
+                    {chat.reportsReferenced.join(", ")}
+                  </Typography>
+                </Box>
+              )}
+
               <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2 }}>
                 Question Asked:
               </Typography>
@@ -148,7 +185,7 @@ const Chatbot: React.FC<{ extractedText: string }> = ({ extractedText }) => {
         </IconButton>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 2, justifyContent: "center" }}>
-        {["What's wrong with the patient?", "Give me the date of the latest report.", "Tell me about the patient's liver."].map((prompt, index) => (
+        {["What's wrong with the patient?", "Give me the date of the report 1.", "Tell me about the patient's liver."].map((prompt, index) => (
           <Button
             key={index}
             variant="outlined"
