@@ -6,9 +6,18 @@ import DrawerAppBar from '../components/DrawerAppBar';
 import RowAndColumnSpacing from '../components/RowAndColumnSpacing';
 import ChatbotComponent from '../components/ChatbotComponent';
 import RecipeReviewCard from '../components/RecipeReviewCard';
+import Fab from '@mui/material/Fab';
+import EditIcon from '@mui/icons-material/Edit';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import HumanBody from '../components/HumanBody2D';
 
 function Avatar() {
     const [docxTexts, setDocxTexts] = useState<string[]>([]);
+    const [openTextBox, setOpenTextBox] = useState(false);
+    const [text, setText] = useState("Predefined text goes here...");
 
     return (
         <Container maxWidth="lg" disableGutters>
@@ -68,11 +77,42 @@ function Avatar() {
                         md={3.5} 
                         sx={{ pl: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
                     >
-                        <RecipeReviewCard />
+                        {/* <RecipeReviewCard /> */}
+                        <HumanBody />
                     </Grid>
 
                 </Grid>
             </Box>
+            <Fab color="secondary" aria-label="edit" sx={{ position: 'fixed', bottom: 14, right: 14 }} onClick={() => setOpenTextBox(true)}>
+                <EditIcon />
+            </Fab>
+
+            {openTextBox && (
+                <Paper
+                    elevation={3}
+                    sx={{ 
+                        position: 'fixed', 
+                        bottom: 80, 
+                        right: 16, 
+                        p: 2, 
+                        width: 300 
+                    }}
+                >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <TextField
+                            fullWidth
+                            multiline
+                            rows={3}
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            variant="outlined"
+                        />
+                        <IconButton onClick={() => setOpenTextBox(false)}>
+                            <CloseIcon />
+                        </IconButton>
+                    </Box>
+                </Paper>
+            )}
         </Container>
     );
 }
