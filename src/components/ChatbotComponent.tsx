@@ -137,7 +137,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
           botResponse: "Sorry, I couldn't process that. Please try again.",
           taggedLocations: "",
           reportsReferenced: [],
-          botMessageContent: "", // Add this line
+          botMessageContent: "",
         },
       ]);
     } finally {
@@ -155,26 +155,25 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
           <Accordion key={index}>
             <AccordionSummary>
               <Typography variant="body1" sx={{ fontWeight: "bold", color: "orange" }}>
-                Wellbee's Response
+                Response
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography variant="body2">{chat.botResponse}</Typography>
 
-              {/* Tagged Locations */}
               {chat.taggedLocations && (
                 <Box sx={{ mt: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold", color: "purple" }}>
                     Tagged Locations:
                   </Typography>
                   <Typography variant="body2">{chat.taggedLocations}</Typography>
                 </Box>
               )}
 
-              {/* Reports Referenced */}
+
               {chat.reportsReferenced.length > 0 && (
                 <Box sx={{ mt: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold", color: "green" }}>
                     Report(s) Referenced:
                   </Typography>
                   <Typography variant="body2">
@@ -183,8 +182,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
                 </Box>
               )}
 
-              <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2 }}>
-                Question Asked:
+              <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2, color: "blue" }}>
+                Prompt:
               </Typography>
               <Typography variant="body2">{chat.userQuestion}</Typography>
             </AccordionDetails>
