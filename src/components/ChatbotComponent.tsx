@@ -20,15 +20,15 @@ interface ChatMessage {
 interface ChatItem {
   userQuestion: string;
   botResponse: string;
-  taggedLocations: string; // Tagged locations part
-  reportsReferenced: string[]; // New field for report names
-  botMessageContent: string; // Add this line
+  taggedLocations: string;
+  reportsReferenced: string[];
+  botMessageContent: string; 
 }
 
 interface ChatbotProps {
   extractedText: string;
   onTaggedLocationsChange: (taggedLocations: string[]) => void;
-  onBotMessageContentChange: (botMessageContent: string) => void; // Add this line
+  onBotMessageContentChange: (botMessageContent: string) => void; 
 }
 
 const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChange, onBotMessageContentChange }) => {
@@ -39,14 +39,14 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
 
   const openAiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
-  // Function to extract report names from extractedText
+
   const extractReportNames = (text: string): string[] => {
     const reportRegex = /(?:Report[:\s]+)([\w\s]+(?:[A-Za-z0-9-]*))/g;
     const matches = [...text.matchAll(reportRegex)];
     return matches.map((match, index) => `Report ${index + 1}`);
   };
 
-  // Function to filter specific reports based on the user's question
+
   const filterReports = (userInput: string, allReports: string[]): string[] => {
     const reportMatch = userInput.match(/report\s*(\d+)/i);
     if (reportMatch) {
@@ -103,21 +103,21 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
       const data = await response.json();
       const botMessageContent = data.choices[0].message.content;
 
-      // Pass botMessageContent to the parent component
+
       onBotMessageContentChange(botMessageContent);
 
-      // Detect body parts and generate the tagged locations message
+
       const detectedParts = detectBodyParts(botMessageContent);
       const taggedLocations = Array.from(detectedParts);
 
-      // Pass tagged locations to the parent component
+
       onTaggedLocationsChange(taggedLocations);
 
-      // Extract report names from the extracted text
+
       const reportsReferenced = extractReportNames(extractedText);
       const filteredReports = filterReports(input, reportsReferenced);
 
-      // Add new chat to the chat history
+
       setChatHistory((prev) => [
         ...prev,
         {
@@ -125,7 +125,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
           botResponse: botMessageContent,
           taggedLocations: taggedLocations.join(", "),
           reportsReferenced: filteredReports,
-          botMessageContent: botMessageContent, // Add this line
+          botMessageContent: botMessageContent,
         },
       ]);
     } catch (error) {
@@ -210,7 +210,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
             key={index}
             variant="outlined"
             onClick={() => setInput(prompt)}
-            sx={{ textTransform: "none" }} // Keeps text normal case
+            sx={{ textTransform: "none" }}
           >
             {prompt}
           </Button>

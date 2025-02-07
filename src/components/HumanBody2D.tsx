@@ -5,7 +5,7 @@ interface HumanBodyProps {
   botMessageContent: string;
 }
 
-const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations }) => {
+const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageContent }) => {
   const highlightPositions = {
     chest: { x: 250, y: 120 },
     hands: [
@@ -33,16 +33,20 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations }) => {
         viewBox="0 0 500 400"
         style={{ maxWidth: "100%", maxHeight: "100%" }}
       >
-        {/* Base silhouette */}
+
         <image
           href="/Silhouette_of_a_woman.svg"
           width="100%"
           height="100%"
         />
         
-        {/* Highlight areas */}
+
         {taggedLocations.includes('chest') && (
-          <circle cx={highlightPositions.chest.x} cy={highlightPositions.chest.y} r="30" fill="rgba(255,0,0,0.3)" />
+          <>
+          <circle cx={highlightPositions.chest.x} cy={highlightPositions.chest.y} r="30" fill="rgba(255,0,0,0.3)">
+            <title>{botMessageContent}</title>
+          </circle>
+          </>
         )}
         {taggedLocations.includes('hands') && (
           <>
@@ -54,7 +58,11 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations }) => {
           <circle cx={highlightPositions.face.x} cy={highlightPositions.face.y} r="25" fill="rgba(255,0,0,0.3)" />
         )}
         {taggedLocations.includes('crotch') && (
-          <circle cx={highlightPositions.crotch.x} cy={highlightPositions.crotch.y} r="20" fill="rgba(255,0,0,0.3)" />
+          <>
+          <circle cx={highlightPositions.crotch.x} cy={highlightPositions.crotch.y} r="20" fill="rgba(255,0,0,0.3)">
+            <title>{botMessageContent}</title>
+          </circle>
+          </>
         )}
         {taggedLocations.includes('butt') && (
           <circle cx={highlightPositions.butt.x} cy={highlightPositions.butt.y} r="25" fill="rgba(255,0,0,0.3)" />
