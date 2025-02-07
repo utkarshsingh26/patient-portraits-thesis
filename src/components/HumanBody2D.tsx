@@ -2,6 +2,7 @@ import React from "react";
 
 interface HumanBodyProps {
   taggedLocations: string[];
+  botMessageContent: string;
 }
 
 const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations }) => {

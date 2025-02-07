@@ -22,16 +22,18 @@ interface ChatItem {
   botResponse: string;
   taggedLocations: string; // Tagged locations part
   reportsReferenced: string[]; // New field for report names
+  botMessageContent: string; // Add this line
 }
 
 interface ChatbotProps {
   extractedText: string;
   onTaggedLocationsChange: (taggedLocations: string[]) => void;
+  onBotMessageContentChange: (botMessageContent: string) => void; // Add this line
 }
 
-const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChange }) => {
+const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChange, onBotMessageContentChange }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState<string>("");  
+  const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
 
@@ -55,13 +57,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
   };
 
   const bodyPartsKeywords = {
-    "chest": ["chest", "thoracic", "sternum", "lymph nodes", "lymph node"],
-    "hands": ["hand", "wrist", "carpal"],
-    "face": ["face", "facial", "jaw", "cranial"],
-    "crotch": ["crotch", "inguinal", "groin", "prostate"],
-    "butt": ["butt", "gluteal", "sacral"],
-    "leg": ["leg", "thigh", "knee", "femoral"],
-    "foot": ["foot", "ankle", "calcaneal", "plantar"]
+    chest: ["chest", "thoracic", "sternum", "lymph nodes", "lymph node"],
+    hands: ["hand", "wrist", "carpal"],
+    face: ["face", "facial", "jaw", "cranial"],
+    crotch: ["crotch", "inguinal", "groin", "prostate"],
+    butt: ["butt", "gluteal", "sacral"],
+    leg: ["leg", "thigh", "knee", "femoral"],
+    foot: ["foot", "ankle", "calcaneal", "plantar"],
   };
 
   const detectBodyParts = (text: string) => {
@@ -101,6 +103,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
       const data = await response.json();
       const botMessageContent = data.choices[0].message.content;
 
+      // Pass botMessageContent to the parent component
+      onBotMessageContentChange(botMessageContent);
+
       // Detect body parts and generate the tagged locations message
       const detectedParts = detectBodyParts(botMessageContent);
       const taggedLocations = Array.from(detectedParts);
@@ -115,13 +120,25 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
       // Add new chat to the chat history
       setChatHistory((prev) => [
         ...prev,
-        { userQuestion: input, botResponse: botMessageContent, taggedLocations: taggedLocations.join(", "), reportsReferenced: filteredReports },
+        {
+          userQuestion: input,
+          botResponse: botMessageContent,
+          taggedLocations: taggedLocations.join(", "),
+          reportsReferenced: filteredReports,
+          botMessageContent: botMessageContent, // Add this line
+        },
       ]);
     } catch (error) {
       console.error("Error fetching AI response:", error);
       setChatHistory((prev) => [
         ...prev,
-        { userQuestion: input, botResponse: "Sorry, I couldn't process that. Please try again.", taggedLocations: "", reportsReferenced: [] },
+        {
+          userQuestion: input,
+          botResponse: "Sorry, I couldn't process that. Please try again.",
+          taggedLocations: "",
+          reportsReferenced: [],
+          botMessageContent: "", // Add this line
+        },
       ]);
     } finally {
       setLoading(false);
