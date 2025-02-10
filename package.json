@@ -27,9 +27,12 @@
     "pdf-parse": "^1.1.1",
     "pdfjs-dist": "^4.10.38",
     "react": "^18.3.1",
+    "react-d3": "^0.4.0",
     "react-dom": "^18.3.1",
     "react-pdf": "^9.2.1",
+    "react-resizable-panels": "^2.1.7",
     "react-router-dom": "^7.1.1",
+    "react-split-pane": "^0.1.92",
     "three": "^0.172.0"
   },
   "devDependencies": {

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import DrawerAppBar from "../components/DrawerAppBar";
 import RowAndColumnSpacing from "../components/RowAndColumnSpacing";
 import ChatbotComponent from "../components/ChatbotComponent";
@@ -12,13 +11,17 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import HumanBody from "../components/HumanBody2D";
+import IndividualPatientInfo from "../components/IndiviualPatientInfo";
+
+// Import react-resizable-panels components
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 function Avatar() {
   const [docxTexts, setDocxTexts] = useState<string[]>([]);
   const [openTextBox, setOpenTextBox] = useState(false);
   const [text, setText] = useState("Predefined text goes here...");
   const [taggedLocations, setTaggedLocations] = useState<string[]>([]);
-  const [botMessageContent, setBotMessageContent] = useState<string>(""); // Add this line
+  const [botMessageContent, setBotMessageContent] = useState<string>("");
 
   return (
     <Container maxWidth="lg" disableGutters>
@@ -28,67 +31,108 @@ function Avatar() {
           display: "flex",
           height: "calc(100vh - 90px)", // Full height minus app bar
           mt: 2,
-          px: 3,
         }}
       >
-        <Grid container sx={{ flexGrow: 1 }}>
+        {/* Resizable Panels */}
+        <PanelGroup direction="horizontal">
           {/* Left Panel */}
-          <Grid
-            item
-            xs={12}
-            md={4}
-            sx={{ pr: 3, display: "flex", justifyContent: "center", alignItems: "center" }}
-          >
-            <RowAndColumnSpacing onExtractedText={setDocxTexts} />
-          </Grid>
+          <Panel defaultSize={30} minSize={20}>
+            <Box
+              sx={{
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                p: 2,
+              }}
+            >
+              <RowAndColumnSpacing onExtractedText={setDocxTexts} />
+            </Box>
+          </Panel>
 
-          {/* First Vertical Divider */}
-          <Grid
-            item
-            md={0.5}
-            sx={{ display: { xs: "none", md: "flex" }, justifyContent: "center" }}
-          >
-            <Box sx={{ width: "2px", backgroundColor: "gray", height: "100%" }} />
-          </Grid>
+          {/* Resize Handle */}
+          <PanelResizeHandle>
+            <Box
+              sx={{
+                width: "4px",
+                backgroundColor: "gray",
+                cursor: "col-resize",
+              }}
+            />
+          </PanelResizeHandle>
 
           {/* Middle Panel (Chatbot) */}
-          <Grid
-            item
-            xs={12}
-            md={3.5}
-            sx={{ px: 3, display: "flex", flexDirection: "column", justifyContent: "center" }}
-          >
-            <ChatbotComponent
-              extractedText={docxTexts.join("\n\n")}
-              onTaggedLocationsChange={setTaggedLocations}
-              onBotMessageContentChange={setBotMessageContent} // Add this line
+          <Panel defaultSize={40} minSize={20}>
+            <Box
+              sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                p: 2,
+              }}
+            >
+              <ChatbotComponent
+                extractedText={docxTexts.join("\n\n")}
+                onTaggedLocationsChange={setTaggedLocations}
+                onBotMessageContentChange={setBotMessageContent}
+              />
+            </Box>
+          </Panel>
+
+          {/* Resize Handle */}
+          <PanelResizeHandle>
+            <Box
+              sx={{
+                width: "4px",
+                backgroundColor: "gray",
+                cursor: "col-resize",
+              }}
             />
-          </Grid>
+          </PanelResizeHandle>
 
-          {/* Second Vertical Divider */}
-          <Grid
-            item
-            md={0.5}
-            sx={{ display: { xs: "none", md: "flex" }, justifyContent: "center" }}
-          >
-            <Box sx={{ width: "2px", backgroundColor: "gray", height: "100%" }} />
-          </Grid>
-
-          {/* Right Panel (Human Body 2D) */}
-          <Grid
-            item
-            xs={12}
-            md={3.5}
-            sx={{ pl: 3, display: "flex", flexDirection: "column", justifyContent: "center" }}
-          >
-            <HumanBody taggedLocations={taggedLocations} botMessageContent={botMessageContent} />
-          </Grid>
-        </Grid>
+          {/* Right Panel (Patient Info + Human Body) */}
+          <Panel defaultSize={30} minSize={20}>
+            <PanelGroup direction="vertical">
+              <Panel defaultSize={50} minSize={30}>
+                <Box sx={{ ml: 22, mb: 8, p: 2 }}>
+                  <IndividualPatientInfo />
+                </Box>
+              </Panel>
+              <PanelResizeHandle>
+                <Box
+                  sx={{
+                    height: "4px",
+                    backgroundColor: "gray",
+                    cursor: "row-resize",
+                    width: "12500px"
+                  }}
+                />
+              </PanelResizeHandle>
+              <Panel defaultSize={50} minSize={30}>
+                <Box sx={{ p: 2 }}>
+                  <HumanBody
+                    taggedLocations={taggedLocations}
+                    botMessageContent={botMessageContent}
+                  />
+                </Box>
+              </Panel>
+            </PanelGroup>
+          </Panel>
+        </PanelGroup>
       </Box>
-      <Fab color="secondary" aria-label="edit" sx={{ position: "fixed", bottom: 14, right: 14 }} onClick={() => setOpenTextBox(true)}>
+
+      {/* Floating Edit Button */}
+      <Fab
+        color="secondary"
+        aria-label="edit"
+        sx={{ position: "fixed", bottom: 14, right: 14 }}
+        onClick={() => setOpenTextBox(true)}
+      >
         <EditIcon />
       </Fab>
 
+      {/* Textbox Popup */}
       {openTextBox && (
         <Paper
           elevation={3}
@@ -100,7 +144,13 @@ function Avatar() {
             width: 300,
           }}
         >
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <TextField
               fullWidth
               multiline
