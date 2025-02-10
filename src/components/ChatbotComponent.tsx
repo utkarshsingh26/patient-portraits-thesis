@@ -146,15 +146,15 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
   };
 
   return (
-    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, border: "1px solid gray", borderRadius: "8px" }}>
+    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2}}>
       <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
-        Talk to Wellbee
+        {/* Talk to Wellbee */}
       </Typography>
       <Box sx={{ height: "400px", overflowY: "auto", mb: 2 }}>
         {chatHistory.map((chat, index) => (
-          <Accordion key={index}>
+          <Accordion key={index} sx = {{mb: 5, background: "#D3D3D3"}}>
             <AccordionSummary>
-              <Typography variant="body1" sx={{ fontWeight: "bold", color: "orange" }}>
+              <Typography variant="body1" sx={{ fontWeight: "bold", color: "white" }}>
                 Response
               </Typography>
             </AccordionSummary>
