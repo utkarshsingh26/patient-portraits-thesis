@@ -65,7 +65,7 @@ function Avatar() {
               </PanelResizeHandle>
               <Panel defaultSize={50} minSize={30}>
                 <Box sx={{ p: 2 }}>
-                  <ReportsReferenced reports={reportsReferenced} />
+                  <ReportsReferenced reports={reportsReferenced} botMessageContent={botMessageContent} />
                 </Box>
               </Panel>
             </PanelGroup>

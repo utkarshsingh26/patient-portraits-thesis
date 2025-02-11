@@ -6,9 +6,10 @@ import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
 
 interface ReportsReferencedProps {
   reports: string[];
+  botMessageContent: string;
 }
 
-const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports }) => {
+const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessageContent }) => {
   const { id } = useParams<{ id: string }>();
   const [extractedText, setExtractedText] = useState<string | null>(null);
 
