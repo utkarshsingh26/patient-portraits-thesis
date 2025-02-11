@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import HumanBody from "../components/HumanBody2D";
 import IndividualPatientInfo from "../components/IndiviualPatientInfo";
+import ReportsReferenced from "../components/ReferencedReports";
 
 // Import react-resizable-panels components
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -35,19 +36,37 @@ function Avatar() {
       >
         {/* Resizable Panels */}
         <PanelGroup direction="horizontal">
-          {/* Left Panel */}
+          {/* Left Panel (RowAndColumnSpacing + ReportsReferenced) */}
           <Panel defaultSize={30} minSize={20}>
-            <Box
-              sx={{
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                p: 2,
-              }}
-            >
-              <RowAndColumnSpacing onExtractedText={setDocxTexts} />
-            </Box>
+            <PanelGroup direction="vertical">
+              <Panel defaultSize={50} minSize={30}>
+                <Box
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    p: 2,
+                  }}
+                >
+                  <RowAndColumnSpacing onExtractedText={setDocxTexts} />
+                </Box>
+              </Panel>
+              <PanelResizeHandle>
+                <Box
+                  sx={{
+                    height: "4px",
+                    backgroundColor: "gray",
+                    cursor: "row-resize",
+                  }}
+                />
+              </PanelResizeHandle>
+              <Panel defaultSize={50} minSize={30}>
+                <Box sx={{ p: 2 }}>
+                  <ReportsReferenced />
+                </Box>
+              </Panel>
+            </PanelGroup>
           </Panel>
 
           {/* Resize Handle */}
