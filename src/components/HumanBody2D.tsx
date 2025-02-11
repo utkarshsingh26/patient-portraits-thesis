@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { Button, ButtonGroup, Tooltip } from "@mui/material";
 
 interface HumanBodyProps {
   taggedLocations: string[];
@@ -6,6 +7,14 @@ interface HumanBodyProps {
 }
 
 const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageContent }) => {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [transform, setTransform] = useState({ scale: 1, translateX: 0, translateY: 0 });
+  const [activeTags, setActiveTags] = useState<string[]>(taggedLocations);
+
+  useEffect(() => {
+    setActiveTags(taggedLocations);
+  }, [taggedLocations]);
+
   const highlightPositions = {
     chest: { x: 250, y: 120 },
     hands: [
@@ -25,61 +34,228 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
     ]
   };
 
+  const handleZoomIn = () => {
+    setTransform(prev => ({ ...prev, scale: prev.scale * 1.2 }));
+  };
+
+  const handleZoomOut = () => {
+    setTransform(prev => ({ ...prev, scale: prev.scale / 1.2 }));
+  };
+
+  const handlePan = (direction: "left" | "right" | "up" | "down") => {
+    const shift = 20;
+    setTransform(prev => ({
+      ...prev,
+      translateX: direction === "left" ? prev.translateX - shift : direction === "right" ? prev.translateX + shift : prev.translateX,
+      translateY: direction === "up" ? prev.translateY - shift : direction === "down" ? prev.translateY + shift : prev.translateY
+    }));
+  };
+
+  const handleReset = () => {
+    setTransform({ scale: 1, translateX: 0, translateY: 0 });
+    setActiveTags([]);
+  };
+
   return (
-    <div style={{ width: "500px", height: "400px" }}>
-      <svg
+    <div style={{ display: "flex", alignItems: "center", height: "450px" }}>
+            <svg
+        ref={svgRef}
         width="100%"
         height="100%"
         viewBox="0 0 500 400"
-        style={{ maxWidth: "100%", maxHeight: "100%" }}
+        style={{ transform: `scale(${transform.scale}) translate(${transform.translateX}px, ${transform.translateY}px)`, transition: "transform 0.3s ease" }}
       >
-
-        <image
-          href="/Silhouette_of_a_woman.svg"
-          width="100%"
-          height="100%"
-        />
-        
-
-        {taggedLocations.includes('chest') && (
+        <image href="/Silhouette_of_a_woman.svg" width="100%" height="100%" />
+        {activeTags.includes('chest') && (
+          <Tooltip
+            title={botMessageContent}
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  backgroundColor: "#2196F3", // Blue background
+                  color: "#FFFFFF", // White text
+                  fontSize: "14px",
+                  borderRadius: "4px",
+                  padding: "8px",
+                },
+              },
+            }}
+          >
+            <circle cx={highlightPositions.chest.x} cy={highlightPositions.chest.y} r="30" fill="rgba(255,0,0,0.3)" />
+          </Tooltip>
+        )}
+        {activeTags.includes('hands') && (
           <>
-          <circle cx={highlightPositions.chest.x} cy={highlightPositions.chest.y} r="30" fill="rgba(255,0,0,0.3)">
-            <title>{botMessageContent}</title>
-          </circle>
+            <Tooltip
+              title={botMessageContent}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    backgroundColor: "#2196F3",
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+                    borderRadius: "4px",
+                    padding: "8px",
+                  },
+                },
+              }}
+            >
+              <circle cx={highlightPositions.hands[0].x} cy={highlightPositions.hands[0].y} r="20" fill="rgba(255,0,0,0.3)" />
+            </Tooltip>
+            <Tooltip
+              title={botMessageContent}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    backgroundColor: "#2196F3",
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+                    borderRadius: "4px",
+                    padding: "8px",
+                  },
+                },
+              }}
+            >
+              <circle cx={highlightPositions.hands[1].x} cy={highlightPositions.hands[1].y} r="20" fill="rgba(255,0,0,0.3)" />
+            </Tooltip>
           </>
         )}
-        {taggedLocations.includes('hands') && (
+        {activeTags.includes('face') && (
+          <Tooltip
+            title={botMessageContent}
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  backgroundColor: "#2196F3",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  borderRadius: "4px",
+                  padding: "8px",
+                },
+              },
+            }}
+          >
+            <circle cx={highlightPositions.face.x} cy={highlightPositions.face.y} r="25" fill="rgba(255,0,0,0.3)" />
+          </Tooltip>
+        )}
+        {activeTags.includes('crotch') && (
+          <Tooltip
+            title={botMessageContent}
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  backgroundColor: "#2196F3",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  borderRadius: "4px",
+                  padding: "8px",
+                },
+              },
+            }}
+          >
+            <circle cx={highlightPositions.crotch.x} cy={highlightPositions.crotch.y} r="20" fill="rgba(255,0,0,0.3)" />
+          </Tooltip>
+        )}
+        {activeTags.includes('butt') && (
+          <Tooltip
+            title={botMessageContent}
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  backgroundColor: "#2196F3",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  borderRadius: "4px",
+                  padding: "8px",
+                },
+              },
+            }}
+          >
+            <circle cx={highlightPositions.butt.x} cy={highlightPositions.butt.y} r="25" fill="rgba(255,0,0,0.3)" />
+          </Tooltip>
+        )}
+        {activeTags.includes('leg') && (
           <>
-            <circle cx={highlightPositions.hands[0].x} cy={highlightPositions.hands[0].y} r="20" fill="rgba(255,0,0,0.3)" />
-            <circle cx={highlightPositions.hands[1].x} cy={highlightPositions.hands[1].y} r="20" fill="rgba(255,0,0,0.3)" />
+            <Tooltip
+              title={botMessageContent}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    backgroundColor: "#2196F3",
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+                    borderRadius: "4px",
+                    padding: "8px",
+                  },
+                },
+              }}
+            >
+              <circle cx={highlightPositions.leg[0].x} cy={highlightPositions.leg[0].y} r="25" fill="rgba(255,0,0,0.3)" />
+            </Tooltip>
+            <Tooltip
+              title={botMessageContent}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    backgroundColor: "#2196F3",
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+                    borderRadius: "4px",
+                    padding: "8px",
+                  },
+                },
+              }}
+            >
+              <circle cx={highlightPositions.leg[1].x} cy={highlightPositions.leg[1].y} r="25" fill="rgba(255,0,0,0.3)" />
+            </Tooltip>
           </>
         )}
-        {taggedLocations.includes('face') && (
-          <circle cx={highlightPositions.face.x} cy={highlightPositions.face.y} r="25" fill="rgba(255,0,0,0.3)" />
-        )}
-        {taggedLocations.includes('crotch') && (
+        {activeTags.includes('foot') && (
           <>
-          <circle cx={highlightPositions.crotch.x} cy={highlightPositions.crotch.y} r="20" fill="rgba(255,0,0,0.3)">
-            <title>{botMessageContent}</title>
-          </circle>
-          </>
-        )}
-        {taggedLocations.includes('butt') && (
-          <circle cx={highlightPositions.butt.x} cy={highlightPositions.butt.y} r="25" fill="rgba(255,0,0,0.3)" />
-        )}
-        {taggedLocations.includes('leg') && (
-          <>
-            <circle cx={highlightPositions.leg[0].x} cy={highlightPositions.leg[0].y} r="25" fill="rgba(255,0,0,0.3)" />
-            <circle cx={highlightPositions.leg[1].x} cy={highlightPositions.leg[1].y} r="25" fill="rgba(255,0,0,0.3)" />
-          </>
-        )}
-        {taggedLocations.includes('foot') && (
-          <>
-            <circle cx={highlightPositions.foot[0].x} cy={highlightPositions.foot[0].y} r="15" fill="rgba(255,0,0,0.3)" />
-            <circle cx={highlightPositions.foot[1].x} cy={highlightPositions.foot[1].y} r="15" fill="rgba(255,0,0,0.3)" />
+            <Tooltip
+              title={botMessageContent}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    backgroundColor: "#2196F3",
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+                    borderRadius: "4px",
+                    padding: "8px",
+                  },
+                },
+              }}
+            >
+              <circle cx={highlightPositions.foot[0].x} cy={highlightPositions.foot[0].y} r="15" fill="rgba(255,0,0,0.3)" />
+            </Tooltip>
+            <Tooltip
+              title={botMessageContent}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    backgroundColor: "#2196F3",
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+                    borderRadius: "4px",
+                    padding: "8px",
+                  },
+                },
+              }}
+            >
+              <circle cx={highlightPositions.foot[1].x} cy={highlightPositions.foot[1].y} r="15" fill="rgba(255,0,0,0.3)" />
+            </Tooltip>
           </>
         )}
       </svg>
+      <ButtonGroup orientation="vertical" variant="contained" color="primary" sx={{ ml: 2 }}>
+        <Button onClick={handleZoomIn}>Zoom In</Button>
+        <Button onClick={handleZoomOut}>Zoom Out</Button>
+        <Button onClick={() => handlePan("left")}>Left</Button>
+        <Button onClick={() => handlePan("right")}>Right</Button>
+        <Button onClick={() => handlePan("up")}>Up</Button>
+        <Button onClick={() => handlePan("down")}>Down</Button>
+        <Button onClick={handleReset} color="secondary">Reset</Button>
+      </ButtonGroup>
     </div>
   );
 };
