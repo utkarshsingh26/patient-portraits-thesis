@@ -29,9 +29,10 @@ interface ChatbotProps {
   extractedText: string;
   onTaggedLocationsChange: (taggedLocations: string[]) => void;
   onBotMessageContentChange: (botMessageContent: string) => void; 
+  onReportsReferencedChange: (reports: string[]) => void;
 }
 
-const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChange, onBotMessageContentChange }) => {
+const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChange, onBotMessageContentChange, onReportsReferencedChange }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -116,6 +117,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
 
       const reportsReferenced = extractReportNames(extractedText);
       const filteredReports = filterReports(input, reportsReferenced);
+      onReportsReferencedChange(filteredReports)
 
 
       setChatHistory((prev) => [

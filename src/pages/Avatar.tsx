@@ -23,6 +23,7 @@ function Avatar() {
   const [text, setText] = useState("Predefined text goes here...");
   const [taggedLocations, setTaggedLocations] = useState<string[]>([]);
   const [botMessageContent, setBotMessageContent] = useState<string>("");
+  const [reportsReferenced, setReportsReferenced] = useState<string[]>([]);  // New state to hold reports
 
   return (
     <Container maxWidth="lg" disableGutters>
@@ -63,22 +64,11 @@ function Avatar() {
               </PanelResizeHandle>
               <Panel defaultSize={50} minSize={30}>
                 <Box sx={{ p: 2 }}>
-                  <ReportsReferenced />
+                  <ReportsReferenced reports={reportsReferenced} />
                 </Box>
               </Panel>
             </PanelGroup>
           </Panel>
-
-          {/* Resize Handle */}
-          <PanelResizeHandle>
-            <Box
-              sx={{
-                width: "4px",
-                backgroundColor: "gray",
-                cursor: "col-resize",
-              }}
-            />
-          </PanelResizeHandle>
 
           {/* Middle Panel (Chatbot) */}
           <Panel defaultSize={40} minSize={20}>
@@ -91,24 +81,14 @@ function Avatar() {
                 p: 2,
               }}
             >
-              <ChatbotComponent
-                extractedText={docxTexts.join("\n\n")}
-                onTaggedLocationsChange={setTaggedLocations}
-                onBotMessageContentChange={setBotMessageContent}
-              />
+          <ChatbotComponent
+            extractedText={docxTexts.join("\n\n")}
+            onTaggedLocationsChange={setTaggedLocations}
+            onBotMessageContentChange={setBotMessageContent}
+            onReportsReferencedChange={setReportsReferenced} // Pass the function to update reports
+          />
             </Box>
           </Panel>
-
-          {/* Resize Handle */}
-          <PanelResizeHandle>
-            <Box
-              sx={{
-                width: "4px",
-                backgroundColor: "gray",
-                cursor: "col-resize",
-              }}
-            />
-          </PanelResizeHandle>
 
           {/* Right Panel (Patient Info + Human Body) */}
           <Panel defaultSize={30} minSize={20}>
@@ -124,7 +104,7 @@ function Avatar() {
                     height: "4px",
                     backgroundColor: "gray",
                     cursor: "row-resize",
-                    width: "12500px"
+                    width: "12500px",
                   }}
                 />
               </PanelResizeHandle>
