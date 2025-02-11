@@ -154,9 +154,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
       </Typography>
       <Box sx={{ height: "400px", overflowY: "auto", mb: 2 }}>
         {chatHistory.map((chat, index) => (
-          <Accordion key={index} sx = {{mb: 5, background: "#D3D3D3"}}>
+          <Accordion key={index} sx = {{mb: 5, backgroundColor: "primary.main", color: "white", borderRadius: 3}}>
             <AccordionSummary>
-              <Typography variant="body1" sx={{ fontWeight: "bold", color: "white" }}>
+              <Typography variant="body1" sx={{ fontWeight: "bold", color: "white", justifyContent: "center" }}>
                 Response
               </Typography>
             </AccordionSummary>
@@ -165,7 +165,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
 
               {chat.taggedLocations && (
                 <Box sx={{ mt: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: "bold", color: "purple" }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold", color: "white" }}>
                     Tagged Locations:
                   </Typography>
                   <Typography variant="body2">{chat.taggedLocations}</Typography>
@@ -175,7 +175,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
 
               {chat.reportsReferenced.length > 0 && (
                 <Box sx={{ mt: 2 }}>
-                  <Typography variant="body2" sx={{ fontWeight: "bold", color: "green" }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold", color: "white" }}>
                     Report(s) Referenced:
                   </Typography>
                   <Typography variant="body2">
@@ -184,7 +184,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
                 </Box>
               )}
 
-              <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2, color: "blue" }}>
+              <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2, color: "white" }}>
                 Prompt:
               </Typography>
               <Typography variant="body2">{chat.userQuestion}</Typography>
@@ -205,13 +205,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
           <SendIcon />
         </IconButton>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 2, justifyContent: "center" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "white" }}>
         {["What's wrong with the patient?", "Give me the date of the report 1.", "Tell me about the patient's liver."].map((prompt, index) => (
           <Button
             key={index}
             variant="outlined"
             onClick={() => setInput(prompt)}
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none", backgroundColor: "primary.main", color: "white", borderRadius: 3}}
           >
             {prompt}
           </Button>
