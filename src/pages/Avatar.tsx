@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import HumanBody from "../components/HumanBody2D";
 import IndividualPatientInfo from "../components/IndiviualPatientInfo";
 import ReportsReferenced from "../components/ReferencedReports";
+import Button from '@mui/material/Button';
 
 // Import react-resizable-panels components
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -121,49 +122,10 @@ function Avatar() {
         </PanelGroup>
       </Box>
 
-      {/* Floating Edit Button */}
-      <Fab
-        color="secondary"
-        aria-label="edit"
-        sx={{ position: "fixed", bottom: 14, right: 14 }}
-        onClick={() => setOpenTextBox(true)}
-      >
-        <EditIcon />
-      </Fab>
-
-      {/* Textbox Popup */}
-      {openTextBox && (
-        <Paper
-          elevation={3}
-          sx={{
-            position: "fixed",
-            bottom: 80,
-            right: 16,
-            p: 2,
-            width: 300,
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              variant="outlined"
-            />
-            <IconButton onClick={() => setOpenTextBox(false)}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </Paper>
-      )}
+      {/* Floating Save Button */}
+        <Button variant="contained" color="success" sx={{position: "fixed", bottom: 14, right: 14}}>
+        Save to Timeline
+      </Button>
     </Container>
   );
 }
