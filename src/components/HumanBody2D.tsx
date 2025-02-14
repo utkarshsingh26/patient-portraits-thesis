@@ -50,7 +50,7 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
 
   const handleReset = () => {
     setTransform({ scale: 1, translateX: 0, translateY: 0 });
-    setActiveTags(taggedLocations);
+    setActiveTags([]);
   };
 
   return (
