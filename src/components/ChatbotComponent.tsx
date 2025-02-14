@@ -197,16 +197,19 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
       <Box sx={{ display: "flex", gap: 1}}>
         <TextField
           fullWidth
-          placeholder="Type your message..."
+          placeholder="Ask away..."
           variant="outlined"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          // sx = {{color: "primary.main"}}
+          sx = {{color: "white"}}
         />
         <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "primary.main", borderRadius: "8px" }}>
           <SendIcon />
         </IconButton>
       </Box>
+      <br/>
+      <Accordion sx={{bgcolor: "white", color: "text.secondary", borderRadius: "5px", paddingBottom: "5px"}}>
+        <AccordionSummary><Typography sx={{textAlign: "center", fontWeight: "bold", justifyContent: "center", width: '100%'}}>Saved prompts</Typography></AccordionSummary>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "white" }}>
         {["What's wrong with the patient?", "Give me the date of the report 1.", "Tell me about the patient's liver."].map((prompt, index) => (
           <Button
@@ -219,6 +222,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
           </Button>
         ))}
       </Box>
+      </Accordion>
     </Box>
   );
 };

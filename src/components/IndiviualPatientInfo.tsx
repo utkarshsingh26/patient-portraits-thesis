@@ -46,22 +46,26 @@ export default function IndividualPatientInfo() {
 
   return (
     <Card sx={{ width: 250, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3  }}>
-    <CardContent>
-      <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, textAlign: "center" }}>
+    <CardContent sx={{display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", alignItems: "center"}}>
+      <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, textAlign: "center", fontWeight: "bold" }}>
         Patient Snippet
       </Typography>
       <br/>
       {/* <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{patient.name}</Typography> */}
-      <Box sx={{bgcolor: "black", color: "white", maxWidth: "80px", borderRadius: "5px", textAlign: "center"}}>{patient.name}</Box>
+      <Box sx={{bgcolor: "primary.main", color: "white", width: "100px", borderRadius: "5px", textAlign: "center"}}>{patient.name}</Box>
       <br/>
-      <Typography variant="body2">
-      <Box sx={{bgcolor: "primary.main", color: "white", maxWidth: "40px", borderRadius: "5px", textAlign: "center"}}>
-        {patient.age}
+      <Typography variant="body2" sx={{display: "inline-block"}}>
+      <b>Age</b>: <Box sx={{bgcolor: "black", color: "white", width: "30px", borderRadius: "5px", textAlign: "center", display: "inline-block"}}>
+        { patient.age}
         </Box>
         <br />
-        Last Visit: {patient.lastVisit}
+        <b>Last Visit</b>: <Box sx={{bgcolor: "black", color: "white", width: "80px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px"}}>
+        { patient.lastVisit}
+        </Box>
         <br/>
-        Next Scheduled Visit: {patient.nextVisit}
+        <b>Next Visit</b>: <Box sx={{bgcolor: "black", color: "white", width: "80px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px"}}>
+        { patient.nextVisit}
+        </Box>
       </Typography>
     </CardContent>
 

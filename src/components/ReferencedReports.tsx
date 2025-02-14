@@ -121,30 +121,59 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
   };
 
   return (
-    <Box sx={{bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3}}>
-      <Typography variant="h6"><Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: 250,
-          height: 50,
-          borderRadius: 1,
-          bgcolor: 'black',
-          color: 'white',
-          alignContent: 'center',
-          textAlign: 'center'
-        }}
-      >Reports Referenced</Box></Typography>
-      <br/>
+    <Box sx={{ bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, padding: 2 }}>
+      {/* <Typography variant="h6">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: 250,
+            height: 50,
+            borderRadius: 1,
+            bgcolor: 'black',
+            color: 'white',
+            textAlign: 'center'
+          }}
+        >
+          Reports Referenced
+        </Box>
+      </Typography> */}
+      <Typography sx={{textAlign: "center", fontWeight: "bold", color: "text.secondary"}}> Reports Referenced </Typography>
+      <br />
       {reports.length > 0 ? (
-        <ul>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
           {reports.map((report, index) => (
-            <li key={index}>{report}</li>
+            <Box
+              key={index}
+              sx={{
+                backgroundColor: "primary.main",
+                color: "white",
+                padding: 1,
+                borderRadius: 1,
+                boxShadow: 2,
+                minWidth: "120px",
+                textAlign: "center"
+              }}
+            >
+              <Typography variant="body2">{report}</Typography>
+            </Box>
           ))}
-        </ul>
+        </Box>
       ) : (
+        <Box
+        sx={{
+          backgroundColor: "primary.main",
+          color: "white",
+          padding: 1,
+          borderRadius: 1,
+          boxShadow: 2,
+          minWidth: "120px",
+          textAlign: "center"
+        }}
+      >
         <Typography variant="body2">No reports referenced.</Typography>
+      </Box>
       )}
 
       {loading ? (
@@ -165,7 +194,7 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
             <Typography
               variant="body1"
               component="pre"
-              sx={{ whiteSpace: "pre-wrap", overflow: "auto", maxHeight: 200 }}
+              sx={{ whiteSpace: "pre-wrap", overflow: "auto", maxHeight: 400 }}
             >
               {renderHighlightedText(highlightedText)}
             </Typography>
