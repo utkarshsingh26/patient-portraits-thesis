@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../firebase/firebaseConfig';
 import { Box, Typography, CircularProgress } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 interface Patient {
   id: string;
@@ -42,11 +45,26 @@ export default function IndividualPatientInfo() {
   }
 
   return (
-    <Box mt={3} p={2}>
-      <Typography><strong>Name:</strong> {patient.name}</Typography>
-      <Typography><strong>Age:</strong> {patient.age}</Typography>
-      <Typography><strong>Last Visit:</strong> {patient.lastVisit}</Typography>
-      <Typography><strong>Next Visit:</strong> {patient.nextVisit}</Typography>
-    </Box>
+    <Card sx={{ width: 250, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3  }}>
+    <CardContent>
+      <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, textAlign: "center" }}>
+        Patient Snippet
+      </Typography>
+      <br/>
+      {/* <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{patient.name}</Typography> */}
+      <Box sx={{bgcolor: "black", color: "white", maxWidth: "80px", borderRadius: "5px", textAlign: "center"}}>{patient.name}</Box>
+      <br/>
+      <Typography variant="body2">
+      <Box sx={{bgcolor: "primary.main", color: "white", maxWidth: "40px", borderRadius: "5px", textAlign: "center"}}>
+        {patient.age}
+        </Box>
+        <br />
+        Last Visit: {patient.lastVisit}
+        <br/>
+        Next Scheduled Visit: {patient.nextVisit}
+      </Typography>
+    </CardContent>
+
+  </Card>
   );
 }

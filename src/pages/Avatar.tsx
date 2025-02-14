@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import DrawerAppBar from "../components/DrawerAppBar";
-import RowAndColumnSpacing from "../components/RowAndColumnSpacing";
+import IndividiualPatientReports from "../components/IndividiualPatientReports";
 import ChatbotComponent from "../components/ChatbotComponent";
 import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
@@ -24,15 +24,15 @@ function Avatar() {
   const [text, setText] = useState("Predefined text goes here...");
   const [taggedLocations, setTaggedLocations] = useState<string[]>([]);
   const [botMessageContent, setBotMessageContent] = useState<string>("");
-  const [reportsReferenced, setReportsReferenced] = useState<string[]>([]);  // New state to hold reports
+  const [reportsReferenced, setReportsReferenced] = useState<string[]>([]); 
 
   return (
-    <Container maxWidth="lg" disableGutters>
+    <Container maxWidth="false" disableGutters sx={{ padding: 0, margin: 0, bgcolor: "#ffffff" }}>
       <DrawerAppBar />
       <Box
         sx={{
           display: "flex",
-          height: "calc(100vh - 90px)", // Full height minus app bar
+          height: "calc(100vh - 90px)",
           mt: 2,
         }}
       >
@@ -51,7 +51,7 @@ function Avatar() {
                     p: 2,
                   }}
                 >
-                  <RowAndColumnSpacing onExtractedText={setDocxTexts} />
+                  <IndividiualPatientReports onExtractedText={setDocxTexts} />
                 </Box>
               </Panel>
               <PanelResizeHandle>
@@ -86,7 +86,7 @@ function Avatar() {
             extractedText={docxTexts.join("\n\n")}
             onTaggedLocationsChange={setTaggedLocations}
             onBotMessageContentChange={setBotMessageContent}
-            onReportsReferencedChange={setReportsReferenced} // Pass the function to update reports
+            onReportsReferencedChange={setReportsReferenced}
           />
             </Box>
           </Panel>

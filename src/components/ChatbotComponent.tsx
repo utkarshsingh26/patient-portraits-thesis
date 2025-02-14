@@ -148,20 +148,21 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
   };
 
   return (
-    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2}}>
+    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3}}>
       <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
         {/* Talk to Wellbee */}
       </Typography>
       <Box sx={{ height: "400px", overflowY: "auto", mb: 2 }}>
         {chatHistory.map((chat, index) => (
-          <Accordion key={index} sx = {{mb: 5, backgroundColor: "primary.main", color: "white", borderRadius: 3}}>
+          <Accordion key={index} sx = {{mb: 5, backgroundColor: "black", color: "white", borderRadius: 5}}>
             <AccordionSummary>
-              <Typography variant="body1" sx={{ fontWeight: "bold", color: "white", justifyContent: "center" }}>
+              {/* <Typography variant="body1" sx={{ fontWeight: "bold", color: "white", justifyContent: "center" }}>
                 Response
-              </Typography>
+              </Typography> */}
+              <Typography variant="body2"><b>{chat.botResponse}</b></Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography variant="body2">{chat.botResponse}</Typography>
+              {/* <Typography variant="body2">{chat.botResponse}</Typography> */}
 
               {chat.taggedLocations && (
                 <Box sx={{ mt: 2 }}>
@@ -193,13 +194,14 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
         ))}
         {loading && <CircularProgress size={24} />}
       </Box>
-      <Box sx={{ display: "flex", gap: 1 }}>
+      <Box sx={{ display: "flex", gap: 1}}>
         <TextField
           fullWidth
           placeholder="Type your message..."
           variant="outlined"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          // sx = {{color: "primary.main"}}
         />
         <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "primary.main", borderRadius: "8px" }}>
           <SendIcon />
@@ -211,9 +213,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
             key={index}
             variant="outlined"
             onClick={() => setInput(prompt)}
-            sx={{ textTransform: "none", backgroundColor: "primary.main", color: "white", borderRadius: 3}}
+            sx={{ textTransform: "none", backgroundColor: "black", color: "white", borderRadius: 3}}
           >
-            {prompt}
+            <b>{prompt}</b>
           </Button>
         ))}
       </Box>

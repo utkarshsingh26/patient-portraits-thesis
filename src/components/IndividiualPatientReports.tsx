@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 import * as mammoth from 'mammoth';
+import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import { Typography } from '@mui/material';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -20,10 +22,12 @@ const Item = styled(Paper)(({ theme }) => ({
   boxSizing: 'border-box', 
 }));
 
-export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedText: (text: string[]) => void }) {
+export default function IndividiualPatientReports({ onExtractedText }: { onExtractedText: (text: string[]) => void }) {
   const { id } = useParams();
   const [fileURLs, setFileURLs] = React.useState<string[]>([]);
   const [docxText, setDocxText] = React.useState<string[]>([]);
+  const [numberOfReports, setNumberOfReports] = React.useState(0);
+
 
   const downloadAndExtractText = async () => {
     if (!id) {
@@ -35,6 +39,7 @@ export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedTe
     const listRef = ref(storage, 'reports/');
     const allReports = await listAll(listRef);
     const concernedReports = allReports.items.filter(report => report.name.includes(id));
+    setNumberOfReports(concernedReports.length);
 
     const downloadURLs = await Promise.all(concernedReports.map(report => getDownloadURL(report)));
     setFileURLs(downloadURLs);
@@ -65,26 +70,37 @@ export default function RowAndColumnSpacing({ onExtractedText }: { onExtractedTe
   }, [id]);
 
   return (
-<Box sx={{ width: "100%", padding: 2 }}>
-  <Grid container spacing={2}>
-    {fileURLs.map((url, index) => (
-      <Grid item xs={12} sm={6} md={4} key={index}>
-        <Item sx={{ width: "100%" }}>  
-          <Button
-            variant="contained"
-            color="primary"
-            href={url}
-            download={`Document-${index}.docx`}
-            target="_blank"
-            sx={{ mt: 2, width: "120%", fontSize: "12px", padding: "15px" }} 
-          >
-            Document {index + 1}
-          </Button>
-        </Item>
+    <>
+          {/* <Box
+        sx={{
+          width: 250,
+          height: 50,
+          borderRadius: 1,
+          bgcolor: 'primary.main',
+          color: 'white'
+        }}
+      >There are X reports here</Box> */}
+    <Box sx={{ width: "100%", padding: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
+    <Typography sx={{textAlign: "center", fontWeight: "bold", color: "text.secondary"}}> There are{" "} <Box component="span" sx={{ display: "inline-block", width: "24px", height: "24px", lineHeight: "24px", borderRadius: "4px", bgcolor: "primary.main", color: "white", textAlign: "center", fontWeight: "bold", }} > {numberOfReports} </Box>{" "} reports in the patient's history. </Typography>
+    <br/>
+      <Grid container spacing={2} justifyContent="center">
+        {fileURLs.map((url, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index} sx={{ textAlign: "center" }}>
+            <a href={url} download={`Document-${index}.docx`} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "inherit" }}>
+              <Paper sx={{ padding: 2, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <ArticleOutlinedIcon sx={{ fontSize: 60, color: "black" }} />
+              </Paper>
+              <Box component="span" sx={{ display: "block", mt: 1, fontSize: 14, fontWeight: "bold" }}>
+                Report {index + 1}
+              </Box>
+            </a>
+          </Grid>
+        ))}
       </Grid>
-    ))}
-  </Grid>
-</Box>
-
+    </Box>
+    </>
   );
+  
+  
+  
 }

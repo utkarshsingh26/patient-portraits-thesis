@@ -1,5 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Button, ButtonGroup, Tooltip } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface HumanBodyProps {
   taggedLocations: string[];
@@ -58,22 +65,29 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
 
   return (
     <div style={{ display: "flex", alignItems: "center", height: "450px" }}>
-            <svg
+
+      <ButtonGroup orientation="vertical" variant="contained" color="primary" sx={{ ml: 2 }}>
+        <Button style={{height: 20, width: 30}} onClick={handleZoomIn}>{<AddIcon/>}</Button>
+        <Button style={{height: 20, width: 30}} onClick={handleZoomOut}>{<RemoveIcon/>}</Button>
+        <Button style={{height: 20, width: 30}} onClick={handleReset} color="secondary">{<RefreshIcon/>}</Button>
+      </ButtonGroup>
+
+      <svg
         ref={svgRef}
         width="100%"
         height="100%"
         viewBox="0 0 500 400"
         style={{ transform: `scale(${transform.scale}) translate(${transform.translateX}px, ${transform.translateY}px)`, transition: "transform 0.3s ease" }}
       >
-        <image href="/Silhouette_of_a_woman.svg" width="100%" height="100%" />
+        <image href="/goku.svg" width="100%" height="100%" />
         {activeTags.includes('chest') && (
           <Tooltip
             title={botMessageContent}
             componentsProps={{
               tooltip: {
                 sx: {
-                  backgroundColor: "#2196F3", // Blue background
-                  color: "#FFFFFF", // White text
+                  backgroundColor: "#2196F3", 
+                  color: "#FFFFFF",
                   fontSize: "14px",
                   borderRadius: "4px",
                   padding: "8px",
@@ -247,15 +261,24 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
           </>
         )}
       </svg>
-      <ButtonGroup orientation="vertical" variant="contained" color="primary" sx={{ ml: 2 }}>
-        <Button onClick={handleZoomIn}>Zoom In</Button>
-        <Button onClick={handleZoomOut}>Zoom Out</Button>
-        <Button onClick={() => handlePan("left")}>Left</Button>
-        <Button onClick={() => handlePan("right")}>Right</Button>
-        <Button onClick={() => handlePan("up")}>Up</Button>
-        <Button onClick={() => handlePan("down")}>Down</Button>
-        <Button onClick={handleReset} color="secondary">Reset</Button>
+
+      <ButtonGroup orientation="vertical" variant="contained" color="primary" sx={{ ml: 2 }} disableElevation>
+  <Button style={{ height: 20, width: 30 }} sx={{ml: 2.5}} onClick={() => handlePan("up")}>
+    <ArrowUpwardIcon />
+  </Button>
+  <ButtonGroup orientation="horizontal" variant="contained" color="primary">
+    <Button style={{ height: 20, width: 30 }} onClick={() => handlePan("left")}>
+      <ArrowBackIcon />
+    </Button>
+    <Button style={{ height: 20, width: 30 }} onClick={() => handlePan("right")}>
+      <ArrowForwardIcon />
+    </Button>
+  </ButtonGroup>
+  <Button style={{ height: 20, width: 30 }} sx={{ml: 2.5}} onClick={() => handlePan("down")}>
+    <ArrowDownwardIcon />
+  </Button>
       </ButtonGroup>
+
     </div>
   );
 };

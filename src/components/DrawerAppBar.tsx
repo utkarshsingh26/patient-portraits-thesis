@@ -15,15 +15,11 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window?: () => Window;
 }
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Latest Avatar', 'Patient Timeline'];
+const navItems = [''];
 
 export default function DrawerAppBar(props: Props) {
   const { window } = props;
@@ -56,7 +52,7 @@ export default function DrawerAppBar(props: Props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{ bgcolor: "black" }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -70,10 +66,14 @@ export default function DrawerAppBar(props: Props) {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, color: "white" }}
           >
             Patient Portraits
           </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <img src="/asu.png" alt="Image 1" style={{ width: '60px', height: '30px', marginRight: '10px' }} />
+            <img src="/mayo-clinic.png" alt="Image 2" style={{ width: '40px', height: '30px' }} />
+          </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
@@ -90,7 +90,7 @@ export default function DrawerAppBar(props: Props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -100,7 +100,7 @@ export default function DrawerAppBar(props: Props) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{}}>
+      <Box component="main">
         <Toolbar />
       </Box>
     </Box>

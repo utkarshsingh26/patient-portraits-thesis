@@ -47,7 +47,7 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
   useEffect(() => {
     const extractTextFromReports = async () => {
       if (reports.length > 0) {
-        setLoading(true); // Start loading
+        setLoading(true);
         try {
           const storage = getStorage();
           const listRef = ref(storage, "reports/");
@@ -103,7 +103,7 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
     if (extractedText && botMessageContent) {
       fetchHighlightedText(extractedText, botMessageContent).then(highlighted => {
         setHighlightedText(highlighted);
-        setLoading(false); // Stop loading only after highlighting is done
+        setLoading(false);
       });
     }
   }, [extractedText, botMessageContent]);
@@ -111,7 +111,7 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
   const renderHighlightedText = (text: string) => {
     return text.split(/(\[\[HIGHLIGHT\]\](.*?)\[\[\/HIGHLIGHT\]\])/g).map((part, index) =>
       part.startsWith("[[HIGHLIGHT]]") ? (
-        <span key={index} style={{ backgroundColor: "purple", fontWeight: "bold" }}>
+        <span key={index} style={{ backgroundColor: "black", color: "white", fontWeight: "bold" }}>
           {part.replace("[[HIGHLIGHT]]", "").replace("[[/HIGHLIGHT]]", "")}
         </span>
       ) : (
@@ -121,8 +121,22 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
   };
 
   return (
-    <Box>
-      <Typography variant="h6">Reports Referenced:</Typography>
+    <Box sx={{bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3}}>
+      <Typography variant="h6"><Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: 250,
+          height: 50,
+          borderRadius: 1,
+          bgcolor: 'black',
+          color: 'white',
+          alignContent: 'center',
+          textAlign: 'center'
+        }}
+      >Reports Referenced</Box></Typography>
+      <br/>
       {reports.length > 0 ? (
         <ul>
           {reports.map((report, index) => (
@@ -141,8 +155,8 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
         highlightedText && (
           <Paper
             sx={{
-              backgroundColor: "primary.main",
-              color: "white",
+              backgroundColor: "white",
+              color: "black",
               padding: 2,
               marginTop: 2,
               overflow: "auto",
