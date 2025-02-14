@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Button, ButtonGroup, Tooltip } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import { Button, Tooltip, Box, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import RefreshIcon from "@mui/icons-material/Refresh";
+
 
 interface HumanBodyProps {
   taggedLocations: string[];
@@ -24,262 +25,90 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
 
   const highlightPositions = {
     chest: { x: 250, y: 120 },
-    hands: [
-      { x: 150, y: 200 },
-      { x: 350, y: 200 }
-    ],
+    hands: [{ x: 150, y: 200 }, { x: 350, y: 200 }],
     face: { x: 250, y: 50 },
     crotch: { x: 250, y: 230 },
     butt: { x: 250, y: 250 },
-    leg: [
-      { x: 200, y: 300 },
-      { x: 300, y: 300 }
-    ],
-    foot: [
-      { x: 200, y: 380 },
-      { x: 300, y: 380 }
-    ]
+    leg: [{ x: 200, y: 300 }, { x: 300, y: 300 }],
+    foot: [{ x: 200, y: 380 }, { x: 300, y: 380 }]
   };
 
-  const handleZoomIn = () => {
-    setTransform(prev => ({ ...prev, scale: prev.scale * 1.2 }));
-  };
-
-  const handleZoomOut = () => {
-    setTransform(prev => ({ ...prev, scale: prev.scale / 1.2 }));
-  };
-
-  const handlePan = (direction: "left" | "right" | "up" | "down") => {
-    const shift = 20;
+  const handleZoom = (factor: number) => {
     setTransform(prev => ({
       ...prev,
-      translateX: direction === "left" ? prev.translateX - shift : direction === "right" ? prev.translateX + shift : prev.translateX,
-      translateY: direction === "up" ? prev.translateY - shift : direction === "down" ? prev.translateY + shift : prev.translateY
+      scale: Math.max(0.5, Math.min(prev.scale * factor, 3))
+    }));
+  };
+
+  const handlePan = (dx: number, dy: number) => {
+    setTransform(prev => ({
+      ...prev,
+      translateX: prev.translateX + dx / prev.scale,
+      translateY: prev.translateY + dy / prev.scale
     }));
   };
 
   const handleReset = () => {
     setTransform({ scale: 1, translateX: 0, translateY: 0 });
-    setActiveTags([]);
+    setActiveTags(taggedLocations);
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center", height: "450px" }}>
+    <Box sx={{ position: "relative", width: "500px", height: "450px", bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, overflow: "hidden" }}>
 
-      <ButtonGroup orientation="vertical" variant="contained" color="primary" sx={{ ml: 2 }}>
-        <Button style={{height: 20, width: 30}} onClick={handleZoomIn}>{<AddIcon/>}</Button>
-        <Button style={{height: 20, width: 30}} onClick={handleZoomOut}>{<RemoveIcon/>}</Button>
-        <Button style={{height: 20, width: 30}} onClick={handleReset} color="secondary">{<RefreshIcon/>}</Button>
-      </ButtonGroup>
+      <Box sx={{  maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
+        <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon /></IconButton>
+        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon /></IconButton>
+        <IconButton size="small" onClick={handleReset}><RefreshIcon /></IconButton>
+      </Box>
 
-      <svg
-        ref={svgRef}
-        width="100%"
-        height="100%"
-        viewBox="0 0 500 400"
-        style={{ transform: `scale(${transform.scale}) translate(${transform.translateX}px, ${transform.translateY}px)`, transition: "transform 0.3s ease" }}
-      >
-        <image href="/goku.svg" width="100%" height="100%" />
-        {activeTags.includes('chest') && (
-          <Tooltip
-            title={botMessageContent}
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  backgroundColor: "#2196F3", 
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-                  borderRadius: "4px",
-                  padding: "8px",
-                },
-              },
-            }}
-          >
-            <circle cx={highlightPositions.chest.x} cy={highlightPositions.chest.y} r="30" fill="rgba(255,0,0,0.3)" />
-          </Tooltip>
-        )}
-        {activeTags.includes('hands') && (
-          <>
-            <Tooltip
-              title={botMessageContent}
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    backgroundColor: "#2196F3",
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    borderRadius: "4px",
-                    padding: "8px",
-                  },
-                },
-              }}
-            >
-              <circle cx={highlightPositions.hands[0].x} cy={highlightPositions.hands[0].y} r="20" fill="rgba(255,0,0,0.3)" />
-            </Tooltip>
-            <Tooltip
-              title={botMessageContent}
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    backgroundColor: "#2196F3",
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    borderRadius: "4px",
-                    padding: "8px",
-                  },
-                },
-              }}
-            >
-              <circle cx={highlightPositions.hands[1].x} cy={highlightPositions.hands[1].y} r="20" fill="rgba(255,0,0,0.3)" />
-            </Tooltip>
-          </>
-        )}
-        {activeTags.includes('face') && (
-          <Tooltip
-            title={botMessageContent}
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  backgroundColor: "#2196F3",
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-                  borderRadius: "4px",
-                  padding: "8px",
-                },
-              },
-            }}
-          >
-            <circle cx={highlightPositions.face.x} cy={highlightPositions.face.y} r="25" fill="rgba(255,0,0,0.3)" />
-          </Tooltip>
-        )}
-        {activeTags.includes('crotch') && (
-          <Tooltip
-            title={botMessageContent}
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  backgroundColor: "#2196F3",
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-                  borderRadius: "4px",
-                  padding: "8px",
-                },
-              },
-            }}
-          >
-            <circle cx={highlightPositions.crotch.x} cy={highlightPositions.crotch.y} r="20" fill="rgba(255,0,0,0.3)" />
-          </Tooltip>
-        )}
-        {activeTags.includes('butt') && (
-          <Tooltip
-            title={botMessageContent}
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  backgroundColor: "#2196F3",
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-                  borderRadius: "4px",
-                  padding: "8px",
-                },
-              },
-            }}
-          >
-            <circle cx={highlightPositions.butt.x} cy={highlightPositions.butt.y} r="25" fill="rgba(255,0,0,0.3)" />
-          </Tooltip>
-        )}
-        {activeTags.includes('leg') && (
-          <>
-            <Tooltip
-              title={botMessageContent}
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    backgroundColor: "#2196F3",
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    borderRadius: "4px",
-                    padding: "8px",
-                  },
-                },
-              }}
-            >
-              <circle cx={highlightPositions.leg[0].x} cy={highlightPositions.leg[0].y} r="25" fill="rgba(255,0,0,0.3)" />
-            </Tooltip>
-            <Tooltip
-              title={botMessageContent}
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    backgroundColor: "#2196F3",
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    borderRadius: "4px",
-                    padding: "8px",
-                  },
-                },
-              }}
-            >
-              <circle cx={highlightPositions.leg[1].x} cy={highlightPositions.leg[1].y} r="25" fill="rgba(255,0,0,0.3)" />
-            </Tooltip>
-          </>
-        )}
-        {activeTags.includes('foot') && (
-          <>
-            <Tooltip
-              title={botMessageContent}
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    backgroundColor: "#2196F3",
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    borderRadius: "4px",
-                    padding: "8px",
-                  },
-                },
-              }}
-            >
-              <circle cx={highlightPositions.foot[0].x} cy={highlightPositions.foot[0].y} r="15" fill="rgba(255,0,0,0.3)" />
-            </Tooltip>
-            <Tooltip
-              title={botMessageContent}
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    backgroundColor: "#2196F3",
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    borderRadius: "4px",
-                    padding: "8px",
-                  },
-                },
-              }}
-            >
-              <circle cx={highlightPositions.foot[1].x} cy={highlightPositions.foot[1].y} r="15" fill="rgba(255,0,0,0.3)" />
-            </Tooltip>
-          </>
-        )}
-      </svg>
 
-      <ButtonGroup orientation="vertical" variant="contained" color="primary" sx={{ ml: 2 }} disableElevation>
-  <Button style={{ height: 20, width: 30 }} sx={{ml: 2.5}} onClick={() => handlePan("up")}>
-    <ArrowUpwardIcon />
-  </Button>
-  <ButtonGroup orientation="horizontal" variant="contained" color="primary">
-    <Button style={{ height: 20, width: 30 }} onClick={() => handlePan("left")}>
-      <ArrowBackIcon />
-    </Button>
-    <Button style={{ height: 20, width: 30 }} onClick={() => handlePan("right")}>
-      <ArrowForwardIcon />
-    </Button>
-  </ButtonGroup>
-  <Button style={{ height: 20, width: 30 }} sx={{ml: 2.5}} onClick={() => handlePan("down")}>
-    <ArrowDownwardIcon />
-  </Button>
-      </ButtonGroup>
+      <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
+        <span></span>
+        <IconButton size="small" onClick={() => handlePan(0, -20)}><ArrowUpwardIcon /></IconButton>
+        <span></span>
+        <IconButton size="small" onClick={() => handlePan(-20, 0)}><ArrowBackIcon /></IconButton>
+        <span></span>
+        <IconButton size="small" onClick={() => handlePan(20, 0)}><ArrowForwardIcon /></IconButton>
+        <span></span>
+        <IconButton size="small" onClick={() => handlePan(0, 20)}><ArrowDownwardIcon /></IconButton>
+        <span></span>
+      </Box>
 
-    </div>
+
+      <Box sx={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden", ml: "5px" }}>
+        <svg
+          ref={svgRef}
+          width="100%"
+          height="100%"
+          viewBox="0 0 500 400"
+        >
+
+          <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
+
+
+            <image href="/goku.svg" width="100%" height="100%" />
+
+            {Object.entries(highlightPositions).map(([key, value]) =>
+              activeTags.includes(key) ? (
+                Array.isArray(value) ? (
+                  value.map((pos, index) => (
+                    <Tooltip key={`${key}-${index}`} title={botMessageContent}>
+                      <circle cx={pos.x} cy={pos.y} r="20" fill="rgba(255,0,0,0.3)" />
+                    </Tooltip>
+                  ))
+                ) : (
+                  <Tooltip key={key} title={botMessageContent}>
+                    <circle cx={value.x} cy={value.y} r="20" fill="rgba(255,0,0,0.3)" />
+                  </Tooltip>
+                )
+              ) : null
+            )}
+          </g>
+        </svg>
+      </Box>
+
+    </Box>
   );
 };
 
