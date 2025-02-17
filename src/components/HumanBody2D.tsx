@@ -7,6 +7,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import Typography from "@mui/material";
+
 
 
 interface HumanBodyProps {
@@ -55,7 +57,6 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
 
   return (
     <Box sx={{ position: "relative", width: "500px", height: "450px", bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, overflow: "hidden" }}>
-
       <Box sx={{  maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
         <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon /></IconButton>
         <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon /></IconButton>

@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 import * as mammoth from 'mammoth';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
-import { Typography } from '@mui/material';
+import { Typography, Chip } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -81,7 +81,8 @@ export default function IndividiualPatientReports({ onExtractedText }: { onExtra
         }}
       >There are X reports here</Box> */}
     <Box sx={{ width: "100%", padding: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
-    <Typography sx={{textAlign: "center", fontWeight: "bold", color: "text.secondary"}}> There are{" "} <Box component="span" sx={{ display: "inline-block", width: "24px", height: "24px", lineHeight: "24px", borderRadius: "4px", bgcolor: "primary.main", color: "white", textAlign: "center", fontWeight: "bold", }} > {numberOfReports} </Box>{" "} reports in the patient's history. </Typography>
+    {/* <Typography sx={{textAlign: "center", fontWeight: "bold", color: "text.secondary"}}> There are{" "} <Box component="span" sx={{ display: "inline-block", width: "24px", height: "24px", lineHeight: "24px", borderRadius: "4px", bgcolor: "primary.main", color: "white", textAlign: "center", fontWeight: "bold", }} > {numberOfReports} </Box>{" "} reports in the patient's history. </Typography> */}
+    <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "text.secondary" }}> There are{" "} <Chip label={numberOfReports} color="primary" sx={{ fontWeight: "bold" }} />{" "} reports in the patient's history. </Typography>
     <br/>
       <Grid container spacing={2} justifyContent="center">
         {fileURLs.map((url, index) => (

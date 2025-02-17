@@ -148,11 +148,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
   };
 
   return (
+    <>
     <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3}}>
-      <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
-        {/* Talk to Wellbee */}
-      </Typography>
-      <Box sx={{ height: "400px", overflowY: "auto", mb: 2 }}>
+ <Typography sx={{textAlign: "center", fontWeight: "bold", color: "text.secondary"}}> Past Summaries </Typography>
+      <Box sx={{ height: "200px", overflowY: "auto", mb: 2 }}>
         {chatHistory.map((chat, index) => (
           <Accordion key={index} sx = {{mb: 5, backgroundColor: "black", color: "white", borderRadius: 5}}>
             <AccordionSummary>
@@ -194,7 +193,42 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
         ))}
         {loading && <CircularProgress size={24} />}
       </Box>
-      <Box sx={{ display: "flex", gap: 1}}>
+      {/* <Box sx={{ display: "flex", gap: 1}}>
+        <TextField
+          fullWidth
+          placeholder="Ask away..."
+          variant="outlined"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          sx = {{color: "white"}}
+        />
+        <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "primary.main", borderRadius: "8px" }}>
+          <SendIcon />
+        </IconButton>
+      </Box> */}
+      <br/>
+      {/* <Accordion sx={{bgcolor: "white", color: "text.secondary", borderRadius: "5px", paddingBottom: "5px"}}>
+        <AccordionSummary><Typography sx={{textAlign: "center", fontWeight: "bold", justifyContent: "center", width: '100%'}}>Saved prompts</Typography></AccordionSummary>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "white" }}>
+        {["What's wrong with the patient?", "Give me the date of the report 1.", "Tell me about the patient's liver."].map((prompt, index) => (
+          <Button
+            key={index}
+            variant="outlined"
+            onClick={() => setInput(prompt)}
+            sx={{ textTransform: "none", backgroundColor: "black", color: "white", borderRadius: 3}}
+          >
+            <b>{prompt}</b>
+          </Button>
+        ))}
+      </Box>
+      </Accordion> */}
+    </Box>
+
+    {/* Second box */}
+    <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3}}>
+    <Typography sx={{textAlign: "center", fontWeight: "bold", color: "text.secondary"}}> Get our AI to make inferences </Typography>
+    <br/>
+    <Box sx={{ display: "flex", gap: 1}}>
         <TextField
           fullWidth
           placeholder="Ask away..."
@@ -207,8 +241,12 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
           <SendIcon />
         </IconButton>
       </Box>
-      <br/>
-      <Accordion sx={{bgcolor: "white", color: "text.secondary", borderRadius: "5px", paddingBottom: "5px"}}>
+    </Box>
+
+        {/*Last box */}
+
+  <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3}}>
+<Accordion sx={{bgcolor: "white", color: "text.secondary", borderRadius: "5px", paddingBottom: "5px"}}>
         <AccordionSummary><Typography sx={{textAlign: "center", fontWeight: "bold", justifyContent: "center", width: '100%'}}>Saved prompts</Typography></AccordionSummary>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "white" }}>
         {["What's wrong with the patient?", "Give me the date of the report 1.", "Tell me about the patient's liver."].map((prompt, index) => (
@@ -223,7 +261,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ extractedText, onTaggedLocationsChang
         ))}
       </Box>
       </Accordion>
-    </Box>
+  </Box>
+
+  </>
+
   );
 };
 
