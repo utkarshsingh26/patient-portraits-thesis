@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { useParams } from "react-router-dom";
 import { Box, CircularProgress, Typography, Tooltip } from "@mui/material";
+import Mammoth from "mammoth";
 
 export default function CompareAvatar() {
   const { id } = useParams();
-  const [documents, setDocuments] = useState<{ name: string; url: string; date: string; counter: number }[]>([]);
+  const [documents, setDocuments] = useState<{ name: string; url: string; date: string; counter: number; text: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,15 +20,16 @@ export default function CompareAvatar() {
 
         const matchingFiles = await Promise.all(
           fileList.items
-            .filter((item) => item.name.includes(id as string))
+            .filter((item) => item.name.includes(id as string) && item.name.endsWith(".docx"))
             .map(async (item) => {
               const url = await getDownloadURL(item);
               const { date, counter } = extractDateAndCounter(item.name);
-              return { name: item.name, url, date, counter };
+              const text = await extractTextFromDocx(url);
+              return { name: item.name, url, date, counter, text };
             })
         );
 
-
+        // Sort documents by date first, then by counter
         matchingFiles.sort((a, b) => {
           if (a.date === b.date) return a.counter - b.counter;
           return a.date.localeCompare(b.date);
@@ -44,16 +46,29 @@ export default function CompareAvatar() {
     fetchDocuments();
   }, [id]);
 
-
+  // Function to extract date and counter from filename
   const extractDateAndCounter = (filename: string) => {
     const match = filename.match(/_(\d{4}-\d{2}-\d{2})(?:_(\d+))?/);
     if (match) {
       return {
-        date: match[1], 
-        counter: match[2] ? parseInt(match[2], 10) : 0, 
+        date: match[1],
+        counter: match[2] ? parseInt(match[2], 10) : 0,
       };
     }
     return { date: "0000-00-00", counter: 0 };
+  };
+
+  // Function to extract text from a .docx file
+  const extractTextFromDocx = async (fileUrl: string) => {
+    try {
+      const response = await fetch(fileUrl);
+      const arrayBuffer = await response.arrayBuffer();
+      const result = await Mammoth.extractRawText({ arrayBuffer });
+      return result.value.trim() || "No text extracted.";
+    } catch (error) {
+      console.error("Error extracting text from DOCX:", error);
+      return "Error reading file.";
+    }
   };
 
   return (
@@ -77,7 +92,7 @@ export default function CompareAvatar() {
           }}
         >
           {documents.map((doc) => (
-            <Box key={doc.name} sx={{ textAlign: "center" }}>
+            <Box key={doc.name} sx={{ textAlign: "center", maxWidth: "450px" }}>
               <Tooltip title={doc.name} arrow>
                 <Box
                   sx={{
@@ -95,16 +110,32 @@ export default function CompareAvatar() {
                   }}
                   onClick={() => window.open(doc.url, "_blank")}
                 >
-
                   <svg width="100%" height="100%" viewBox="0 0 250 250">
                     <image href="/goku.svg" width="100%" height="100%" />
                   </svg>
                 </Box>
               </Tooltip>
 
+              {/* Show extracted date below each box */}
               <Typography variant="body2" sx={{ marginTop: "5px", fontWeight: "bold" }}>
+                {doc.date} {doc.counter > 0 ? `(${doc.counter})` : ""}
+              </Typography>
 
-                {doc.date}
+              {/* Show extracted text below each box */}
+              <Typography
+                variant="body2"
+                sx={{
+                  marginTop: "5px",
+                  padding: "5px",
+                  border: "1px solid #ddd",
+                  borderRadius: "5px",
+                  backgroundColor: "#f9f9f9",
+                  maxHeight: "100px",
+                  overflowY: "auto",
+                  textAlign: "left",
+                }}
+              >
+                {doc.text}
               </Typography>
             </Box>
           ))}
