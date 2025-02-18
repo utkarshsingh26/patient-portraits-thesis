@@ -1,67 +1,224 @@
+// import React, { useState } from "react";
+// import Container from "@mui/material/Container";
+// import Box from "@mui/material/Box";
+// import DrawerAppBar from "../components/DrawerAppBar";
+// import IndividiualPatientReports from "../components/IndividiualPatientReports";
+// import ChatbotComponent from "../components/ChatbotComponent";
+// import Fab from "@mui/material/Fab";
+// import EditIcon from "@mui/icons-material/Edit";
+// import TextField from "@mui/material/TextField";
+// import Paper from "@mui/material/Paper";
+// import IconButton from "@mui/material/IconButton";
+// import CloseIcon from "@mui/icons-material/Close";
+// import HumanBody from "../components/HumanBody2D";
+// import IndividualPatientInfo from "../components/IndiviualPatientInfo";
+// import ReportsReferenced from "../components/ReferencedReports";
+// import Button from '@mui/material/Button';
+
+// // Import react-resizable-panels components
+// import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+
+// function Avatar() {
+//   const [docxTexts, setDocxTexts] = useState<string[]>([]);
+//   const [openTextBox, setOpenTextBox] = useState(false);
+//   const [text, setText] = useState("Predefined text goes here...");
+//   const [taggedLocations, setTaggedLocations] = useState<string[]>([]);
+//   const [botMessageContent, setBotMessageContent] = useState<string>("");
+//   const [reportsReferenced, setReportsReferenced] = useState<string[]>([]); 
+
+//   return (
+//     <Container maxWidth="false" disableGutters sx={{ padding: 0, margin: 0, bgcolor: "#ffffff" }}>
+//       <DrawerAppBar />
+//       <Box
+//         sx={{
+//           display: "flex",
+//           height: "calc(100vh - 90px)",
+//           mt: 2,
+//         }}
+//       >
+//         {/* Resizable Panels */}
+//         <PanelGroup direction="horizontal">
+//           {/* Left Panel (RowAndColumnSpacing + ReportsReferenced) */}
+//           <Panel defaultSize={30} minSize={20}>
+//             <PanelGroup direction="vertical">
+//               <Panel defaultSize={50} minSize={30}>
+//                 <Box
+//                   sx={{
+//                     height: "100%",
+//                     display: "flex",
+//                     justifyContent: "center",
+//                     alignItems: "center",
+//                     p: 2,
+//                   }}
+//                 >
+//                   <IndividiualPatientReports onExtractedText={setDocxTexts} />
+//                 </Box>
+//               </Panel>
+//               <PanelResizeHandle>
+//                 <Box
+//                   sx={{
+//                     height: "4px",
+//                     backgroundColor: "gray",
+//                     cursor: "row-resize",
+//                   }}
+//                 />
+//               </PanelResizeHandle>
+//               <Panel defaultSize={50} minSize={30}>
+//                 <Box sx={{ p: 2 }}>
+//                   <ReportsReferenced reports={reportsReferenced} botMessageContent={botMessageContent} />
+//                 </Box>
+//               </Panel>
+//             </PanelGroup>
+//           </Panel>
+
+//           {/* Middle Panel (Chatbot) */}
+//           <Panel defaultSize={40} minSize={20}>
+//             <Box
+//               sx={{
+//                 height: "100%",
+//                 display: "flex",
+//                 flexDirection: "column",
+//                 justifyContent: "center",
+//                 p: 2,
+//               }}
+//             >
+//           <ChatbotComponent
+//             extractedText={docxTexts.join("\n\n")}
+//             onTaggedLocationsChange={setTaggedLocations}
+//             onBotMessageContentChange={setBotMessageContent}
+//             onReportsReferencedChange={setReportsReferenced}
+//           />
+//             </Box>
+//           </Panel>
+
+//           {/* Right Panel (Patient Info + Human Body) */}
+//           <Panel defaultSize={30} minSize={20}>
+//             <PanelGroup direction="vertical">
+//               <Panel defaultSize={50} minSize={30}>
+//                 <Box sx={{ ml: 22, mb: 8, p: 2 }}>
+//                   <IndividualPatientInfo />
+//                 </Box>
+//               </Panel>
+//               <PanelResizeHandle>
+//                 <Box
+//                   sx={{
+//                     height: "4px",
+//                     backgroundColor: "gray",
+//                     cursor: "row-resize",
+//                     width: "12500px",
+//                   }}
+//                 />
+//               </PanelResizeHandle>
+//               <Panel defaultSize={50} minSize={30}>
+//                 <Box sx={{ p: 2 }}>
+//                   <HumanBody
+//                     taggedLocations={taggedLocations}
+//                     botMessageContent={botMessageContent}
+//                   />
+//                 </Box>
+//               </Panel>
+//             </PanelGroup>
+//           </Panel>
+//         </PanelGroup>
+//       </Box>
+
+//       {/* Floating Save Button */}
+//         <Button variant="contained" color="success" sx={{position: "fixed", bottom: 14, right: 14}}>
+//         Save to Timeline
+//       </Button>
+//     </Container>
+//   );
+// }
+
+// export default Avatar;
+
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import DrawerAppBar from "../components/DrawerAppBar";
 import IndividiualPatientReports from "../components/IndividiualPatientReports";
 import ChatbotComponent from "../components/ChatbotComponent";
-import Fab from "@mui/material/Fab";
-import EditIcon from "@mui/icons-material/Edit";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import ReportsReferenced from "../components/ReferencedReports";
 import HumanBody from "../components/HumanBody2D";
 import IndividualPatientInfo from "../components/IndiviualPatientInfo";
-import ReportsReferenced from "../components/ReferencedReports";
-import Button from '@mui/material/Button';
-
-// Import react-resizable-panels components
+import Button from "@mui/material/Button";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Document, Packer, Paragraph } from "docx";
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { format } from "date-fns";
 
 function Avatar() {
+  const patientId = useParams();
   const [docxTexts, setDocxTexts] = useState<string[]>([]);
-  const [openTextBox, setOpenTextBox] = useState(false);
-  const [text, setText] = useState("Predefined text goes here...");
   const [taggedLocations, setTaggedLocations] = useState<string[]>([]);
   const [botMessageContent, setBotMessageContent] = useState<string>("");
-  const [reportsReferenced, setReportsReferenced] = useState<string[]>([]); 
+  const [reportsReferenced, setReportsReferenced] = useState<string[]>([]);
+
+  const handleSaveToTimeline = async () => {
+    if (!patientId) {
+      alert("Patient ID not found!");
+      return;
+    }
+
+    const storage = getStorage();
+    const todayDate = format(new Date(), "yyyy-MM-dd");
+    let fileName = `${patientId['id']}_${todayDate}.docx`;
+    const folderRef = ref(storage, "avatars/");
+
+    try {
+      // List existing files in 'avatars/' folder
+      const existingFiles = await listAll(folderRef);
+      const existingFileNames = existingFiles.items.map((item) => item.name);
+
+      // Find duplicates and determine the next filename
+      let counter = 1;
+      while (existingFileNames.includes(fileName)) {
+        fileName = `${patientId['id']}_${todayDate}_${counter}.docx`;
+        counter++;
+      }
+
+      // Create docx content
+      const doc = new Document({
+        sections: [
+          {
+            children: [
+              new Paragraph({ text: "Tagged Locations", heading: "Heading1" }),
+              ...taggedLocations.map((location) => new Paragraph(`• ${location}`)),
+              new Paragraph({ text: "\nBot Message Content", heading: "Heading1" }),
+              new Paragraph(botMessageContent),
+            ],
+          },
+        ],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const fileRef = ref(storage, `avatars/${fileName}`);
+      await uploadBytes(fileRef, blob);
+      const fileURL = await getDownloadURL(fileRef);
+
+      console.log("File uploaded successfully:", fileURL);
+      alert("Saved to Timeline Successfully!");
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Failed to save. Please try again.");
+    }
+  };
 
   return (
     <Container maxWidth="false" disableGutters sx={{ padding: 0, margin: 0, bgcolor: "#ffffff" }}>
       <DrawerAppBar />
-      <Box
-        sx={{
-          display: "flex",
-          height: "calc(100vh - 90px)",
-          mt: 2,
-        }}
-      >
-        {/* Resizable Panels */}
+      <Box sx={{ display: "flex", height: "calc(100vh - 90px)", mt: 2 }}>
         <PanelGroup direction="horizontal">
-          {/* Left Panel (RowAndColumnSpacing + ReportsReferenced) */}
           <Panel defaultSize={30} minSize={20}>
             <PanelGroup direction="vertical">
               <Panel defaultSize={50} minSize={30}>
-                <Box
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    p: 2,
-                  }}
-                >
+                <Box sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center", p: 2 }}>
                   <IndividiualPatientReports onExtractedText={setDocxTexts} />
                 </Box>
               </Panel>
               <PanelResizeHandle>
-                <Box
-                  sx={{
-                    height: "4px",
-                    backgroundColor: "gray",
-                    cursor: "row-resize",
-                  }}
-                />
+                <Box sx={{ height: "4px", backgroundColor: "gray", cursor: "row-resize" }} />
               </PanelResizeHandle>
               <Panel defaultSize={50} minSize={30}>
                 <Box sx={{ p: 2 }}>
@@ -71,27 +228,17 @@ function Avatar() {
             </PanelGroup>
           </Panel>
 
-          {/* Middle Panel (Chatbot) */}
           <Panel defaultSize={40} minSize={20}>
-            <Box
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                p: 2,
-              }}
-            >
-          <ChatbotComponent
-            extractedText={docxTexts.join("\n\n")}
-            onTaggedLocationsChange={setTaggedLocations}
-            onBotMessageContentChange={setBotMessageContent}
-            onReportsReferencedChange={setReportsReferenced}
-          />
+            <Box sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", p: 2 }}>
+              <ChatbotComponent
+                extractedText={docxTexts.join("\n\n")}
+                onTaggedLocationsChange={setTaggedLocations}
+                onBotMessageContentChange={setBotMessageContent}
+                onReportsReferencedChange={setReportsReferenced}
+              />
             </Box>
           </Panel>
 
-          {/* Right Panel (Patient Info + Human Body) */}
           <Panel defaultSize={30} minSize={20}>
             <PanelGroup direction="vertical">
               <Panel defaultSize={50} minSize={30}>
@@ -100,21 +247,11 @@ function Avatar() {
                 </Box>
               </Panel>
               <PanelResizeHandle>
-                <Box
-                  sx={{
-                    height: "4px",
-                    backgroundColor: "gray",
-                    cursor: "row-resize",
-                    width: "12500px",
-                  }}
-                />
+                <Box sx={{ height: "4px", backgroundColor: "gray", cursor: "row-resize", width: "12500px" }} />
               </PanelResizeHandle>
               <Panel defaultSize={50} minSize={30}>
                 <Box sx={{ p: 2 }}>
-                  <HumanBody
-                    taggedLocations={taggedLocations}
-                    botMessageContent={botMessageContent}
-                  />
+                  <HumanBody taggedLocations={taggedLocations} botMessageContent={botMessageContent} />
                 </Box>
               </Panel>
             </PanelGroup>
@@ -123,7 +260,7 @@ function Avatar() {
       </Box>
 
       {/* Floating Save Button */}
-        <Button variant="contained" color="success" sx={{position: "fixed", bottom: 14, right: 14}}>
+      <Button variant="contained" color="success" sx={{ position: "fixed", bottom: 14, right: 14 }} onClick={handleSaveToTimeline}>
         Save to Timeline
       </Button>
     </Container>
@@ -131,3 +268,4 @@ function Avatar() {
 }
 
 export default Avatar;
+

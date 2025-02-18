@@ -1,9 +1,11 @@
 import DrawerAppBar from "../components/DrawerAppBar";
+import CompareAvatar from "../components/CompareAvatars";
 
 function Timeline(){
-    return(<div>
+    return(<>
         <DrawerAppBar></DrawerAppBar>
-    </div>)
+        <CompareAvatar></CompareAvatar>
+    </>)
 }
 
 export default Timeline;

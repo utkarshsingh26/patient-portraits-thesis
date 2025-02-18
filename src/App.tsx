@@ -30,7 +30,7 @@ function App() {
       <Route index element={<Home/>} />
       <Route path="/home" element={<Home/>} />
       <Route path="/avatar/:id" element={<Avatar/>} />
-      <Route path="/timeline/" element={<Timeline/>} />
+      <Route path="/timeline/:id" element={<Timeline/>} />
     </Routes>
     </BrowserRouter>
   );
