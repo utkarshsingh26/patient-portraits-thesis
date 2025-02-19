@@ -15,7 +15,6 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-// Define the Patient type based on Firestore document structure
 interface Patient {
   id: string;
   name: string;
@@ -112,7 +111,7 @@ export default function CustomizedTables() {
   return (
     <div>
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <Table sx={{ minWidth: 700 }} aria-label="Patient Data Table">
         <TableHead>
           <TableRow sx={{bgcolor: "primary.main"}}>
             <StyledTableCell>Patient ID</StyledTableCell>
