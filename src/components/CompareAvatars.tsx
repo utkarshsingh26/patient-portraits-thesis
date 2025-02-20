@@ -25,6 +25,7 @@ export default function CompareAvatar() {
   const { id } = useParams();
   const [documents, setDocuments] = useState<{ name: string; url: string; date: string; taggedLocations: string[]; botMessageContent: string }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [checkedAvatars, setCheckedAvatars] = useState<string[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -73,8 +74,6 @@ export default function CompareAvatar() {
     const taggedLocations = [];
     let botMessageContent = "";
 
-
-
     if (text.includes("Tagged Locations")) {
       const locationsSection = text.split("Tagged Locations")[1].split("Bot Message Content")[0];
       taggedLocations.push(...locationsSection.split("\n").filter(line => line.trim() && line.includes("•")).map(line => line.replace("•", "").trim()));
@@ -87,13 +86,29 @@ export default function CompareAvatar() {
     return { taggedLocations, botMessageContent };
   };
 
+  const handleCheckboxChange = (name: string) => {
+    setCheckedAvatars(prev => {
+      if (prev.includes(name)) {
+        return prev.filter(item => item !== name);
+      } else {
+        return [...prev, name];
+      }
+    });
+  };
+
   return (
     <Box sx={{ padding: "20px" }}>
       <Box sx={{ bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, padding: 2, justifyContent: 'center', textAlign: 'center', maxWidth: '400px', display: "flex", flexDirection: 'row', alignItems: 'center' }}>
         <Typography sx={{ fontWeight: 'bold' }}>This timeline spans a total of{" "} <Chip color="primary" sx={{ fontWeight: "bold" }} />{" "} months.</Typography>
       </Box>
       <Tooltip title="Please select only 2 avatars" arrow>
-        <Button sx={{ position: "fixed", bottom: 14, right: 14, boxShadow: 3 }} variant="contained">Compare Two Avatars</Button>
+        <Button 
+          sx={{ position: "fixed", bottom: 14, right: 14, boxShadow: 3 }} 
+          variant="contained"
+          disabled={checkedAvatars.length !== 2}
+        >
+          Compare Two Avatars
+        </Button>
       </Tooltip>
       {loading ? (
         <CircularProgress />
@@ -102,7 +117,12 @@ export default function CompareAvatar() {
       ) : (
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center", mt: "125px" }}>
           {documents.map((doc) => (
-            <AvatarBox key={doc.name} doc={doc} />
+            <AvatarBox 
+              key={doc.name} 
+              doc={doc} 
+              checked={checkedAvatars.includes(doc.name)}
+              onCheckboxChange={() => handleCheckboxChange(doc.name)}
+            />
           ))}
         </Box>
       )}
@@ -110,10 +130,8 @@ export default function CompareAvatar() {
   );
 }
 
-
-const AvatarBox = ({ doc }) => {
+const AvatarBox = ({ doc, checked, onCheckboxChange }) => {
   const [transform, setTransform] = useState({ scale: 1, translateX: 0, translateY: 0 });
-
 
   const handleZoom = (factor: number) => {
     setTransform((prev) => ({
@@ -121,7 +139,6 @@ const AvatarBox = ({ doc }) => {
       scale: Math.max(0.5, Math.min(prev.scale * factor, 3))
     }));
   };
-
 
   const handlePan = (dx: number, dy: number) => {
     setTransform((prev) => ({
@@ -140,14 +157,19 @@ const AvatarBox = ({ doc }) => {
       <Box
         sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#f0f0f0", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}
       >
-        <Tooltip title="Please select only 2 avatars" arrow><Checkbox sx={{position: "absolute", top: 0, right: 0}} /></Tooltip>
+        <Tooltip title="Please select only 2 avatars" arrow>
+          <Checkbox 
+            sx={{ position: "absolute", top: 0, right: 0 }} 
+            checked={checked}
+            onChange={onCheckboxChange}
+          />
+        </Tooltip>
         <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
           <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon /></IconButton>
           <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon /></IconButton>
           <IconButton size="small" onClick={handleReset}><RefreshIcon /></IconButton>
         </Box>
 
-  
         <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
           <span></span>
           <IconButton size="small" onClick={() => handlePan(0, -20)}><ArrowUpwardIcon /></IconButton>
@@ -159,7 +181,6 @@ const AvatarBox = ({ doc }) => {
           <IconButton size="small" onClick={() => handlePan(0, 20)}><ArrowDownwardIcon /></IconButton>
           <span></span>
         </Box>
-
 
         <Box sx={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" }}>
           <svg
