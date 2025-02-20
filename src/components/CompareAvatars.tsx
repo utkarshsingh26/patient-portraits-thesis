@@ -170,7 +170,7 @@ export default function CompareAvatar() {
       ) : documents.length === 0 ? (
         <Typography>No avatars found for this ID.</Typography>
       ) : (
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center", mt: "125px" }}>
+        <Box sx={{ display: "flex", gap: "16px", overflowX: "auto", justifyContent: "center", mt: "125px" }}>
           {documents.map((doc) => (
             <AvatarBox 
               key={doc.name} 
