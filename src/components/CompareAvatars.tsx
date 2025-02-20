@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { useParams } from "react-router-dom";
-import { Box, CircularProgress, Typography, Tooltip, Chip, Button, Checkbox, IconButton } from "@mui/material";
+import { Box, CircularProgress, Typography, Tooltip, Chip, Button, Checkbox, IconButton, Modal } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -9,6 +9,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import CloseIcon from "@mui/icons-material/Close";
 import * as mammoth from 'mammoth';
 
 const highlightPositions = {
@@ -26,6 +27,7 @@ export default function CompareAvatar() {
   const [documents, setDocuments] = useState<{ name: string; url: string; date: string; taggedLocations: string[]; botMessageContent: string }[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkedAvatars, setCheckedAvatars] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   useEffect(() => {
     if (!id) return;
@@ -96,6 +98,14 @@ export default function CompareAvatar() {
     });
   };
 
+  const handleCompareClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Box sx={{ padding: "20px" }}>
       <Box sx={{ bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, padding: 2, justifyContent: 'center', textAlign: 'center', maxWidth: '400px', display: "flex", flexDirection: 'row', alignItems: 'center' }}>
@@ -106,10 +116,55 @@ export default function CompareAvatar() {
           sx={{ position: "fixed", bottom: 14, right: 14, boxShadow: 3 }} 
           variant="contained"
           disabled={checkedAvatars.length !== 2}
+          onClick={handleCompareClick} 
         >
           Compare Two Avatars
         </Button>
       </Tooltip>
+
+
+      <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="compare-avatars-modal"
+        aria-describedby="compare-selected-avatars"
+        sx = {{backgroundColor: "black"}}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "90%",
+            maxWidth: "1000px",
+            maxHeight: "90vh",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            borderRadius: "8px",
+            p: 4,
+            outline: "none",
+          }}
+        >
+          <IconButton
+            sx={{ position: "absolute", top: 8, right: 8 }}
+            onClick={handleCloseModal} 
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
+            Comparing Avatars
+          </Typography>
+          <Box sx={{ display: "flex", gap: "16px", justifyContent: "center" }}>
+            {documents
+              .filter(doc => checkedAvatars.includes(doc.name)) // Filter checked avatars
+              .map((doc) => (
+                <AvatarBox key={doc.name} doc={doc} checked={true} onCheckboxChange={() => {}} />
+              ))}
+          </Box>
+        </Box>
+      </Modal>
+
       {loading ? (
         <CircularProgress />
       ) : documents.length === 0 ? (
