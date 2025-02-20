@@ -9,6 +9,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import * as mammoth from 'mammoth';
 
 const highlightPositions = {
   chest: { x: 250, y: 120 },
@@ -39,8 +40,15 @@ export default function CompareAvatar() {
             .filter((item) => item.name.includes(id as string))
             .map(async (item) => {
               const url = await getDownloadURL(item);
+              const response = await fetch(url); 
+              const blob = await response.blob();
+              const arrayBuffer = await blob.arrayBuffer(); 
+              const result = await mammoth.extractRawText({ arrayBuffer });
+              const text = result.value;
+              console.log(text,",<======")
               const { date } = extractDate(item.name);
-              const { taggedLocations, botMessageContent } = extractTextData(item.name);
+              const { taggedLocations, botMessageContent } = extractTextData(text); 
+
               return { name: item.name, url, date, taggedLocations, botMessageContent };
             })
         );
@@ -61,15 +69,22 @@ export default function CompareAvatar() {
     return { date: match ? match[1] : "0000-00-00" };
   };
 
-  const extractTextData = (filename: string) => {
-    if (filename.includes("chest")) {
-      return { taggedLocations: ["chest"], botMessageContent: "Abnormality detected in chest scan." };
-    } else if (filename.includes("crotch")) {
-      return { taggedLocations: ["crotch"], botMessageContent: "Possible issue detected in the pelvic area." };
-    } else if (filename.includes("hands")) {
-      return { taggedLocations: ["hands"], botMessageContent: "Possible issue detected in the hand area." };
+  const extractTextData = (text: string) => {
+    const taggedLocations = [];
+    let botMessageContent = "";
+
+
+
+    if (text.includes("Tagged Locations")) {
+      const locationsSection = text.split("Tagged Locations")[1].split("Bot Message Content")[0];
+      taggedLocations.push(...locationsSection.split("\n").filter(line => line.trim() && line.includes("•")).map(line => line.replace("•", "").trim()));
     }
-    return { taggedLocations: [], botMessageContent: "" };
+
+    if (text.includes("Bot Message Content")) {
+      botMessageContent = text.split("Bot Message Content")[1].trim();
+    }
+
+    return { taggedLocations, botMessageContent };
   };
 
   return (
@@ -116,7 +131,6 @@ const AvatarBox = ({ doc }) => {
     }));
   };
 
-
   const handleReset = () => {
     setTransform({ scale: 1, translateX: 0, translateY: 0 });
   };
@@ -126,14 +140,14 @@ const AvatarBox = ({ doc }) => {
       <Box
         sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#f0f0f0", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}
       >
-
+        <Tooltip title="Please select only 2 avatars" arrow><Checkbox sx={{position: "absolute", top: 0, right: 0}} /></Tooltip>
         <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
           <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon /></IconButton>
           <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon /></IconButton>
           <IconButton size="small" onClick={handleReset}><RefreshIcon /></IconButton>
         </Box>
 
-
+  
         <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
           <span></span>
           <IconButton size="small" onClick={() => handlePan(0, -20)}><ArrowUpwardIcon /></IconButton>
@@ -155,13 +169,22 @@ const AvatarBox = ({ doc }) => {
           >
             <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
               <image href="/goku.svg" width="100%" height="100%" />
-              {doc.taggedLocations.map((location) =>
-                highlightPositions[location] ? (
+              {doc.taggedLocations.map((location) => {
+                const positions = highlightPositions[location];
+                if (!positions) return null; 
+
+                return Array.isArray(positions) ? (
+                  positions.map((pos, index) => (
+                    <Tooltip key={`${location}-${index}`} title={doc.botMessageContent} arrow>
+                      <circle cx={pos.x} cy={pos.y} r="20" fill="rgba(255,0,0,0.3)" />
+                    </Tooltip>
+                  ))
+                ) : (
                   <Tooltip key={location} title={doc.botMessageContent} arrow>
-                    <circle cx={highlightPositions[location].x} cy={highlightPositions[location].y} r="20" fill="rgba(255,0,0,0.3)" />
+                    <circle cx={positions.x} cy={positions.y} r="20" fill="rgba(255,0,0,0.3)" />
                   </Tooltip>
-                ) : null
-              )}
+                );
+              })}
             </g>
           </svg>
         </Box>

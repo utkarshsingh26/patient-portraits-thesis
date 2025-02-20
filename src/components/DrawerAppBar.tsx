@@ -71,8 +71,8 @@ export default function DrawerAppBar(props: Props) {
             Patient Portraits
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <img src="/asu.png" alt="Image 1" style={{ width: '60px', height: '30px', marginRight: '10px' }} />
-            <img src="/mayo-clinic.png" alt="Image 2" style={{ width: '40px', height: '30px' }} />
+            <a href="https://www.asu.edu/" target='_blank'><img src="/asu.png" alt="ASU image" style={{ width: '60px', height: '30px', marginRight: '10px' }} /></a>
+            <a href="https://www.mayoclinic.org/" target='_blank'><img src="/mayo-clinic.png" alt="Mayo Clinic image" style={{ width: '40px', height: '30px' }} /></a>
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
