@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../firebase/firebaseConfig';
-import { Box, Typography, CircularProgress } from '@mui/material';
+import { Box, Typography, CircularProgress, Chip } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -51,21 +51,28 @@ export default function IndividualPatientInfo() {
         Patient Snippet
       </Typography>
       <br/>
-      {/* <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{patient.name}</Typography> */}
-      <Box sx={{bgcolor: "primary.main", color: "white", width: "100px", borderRadius: "5px", textAlign: "center"}}>{patient.name}</Box>
+      {/* <Box sx={{bgcolor: "primary.main", color: "white", width: "100px", borderRadius: "5px", textAlign: "center"}}>{patient.name}</Box> */}
+      <Chip color="primary" sx={{ fontWeight: "bold" }} label={`${patient.name}`} />{" "}
       <br/>
       <Typography variant="body2" sx={{display: "inline-block"}}>
-      <b>Age</b>: <Box sx={{bgcolor: "black", color: "white", width: "30px", borderRadius: "5px", textAlign: "center", display: "inline-block"}}>
-        { patient.age}
-        </Box>
-        <br />
-        <b>Last Visit</b>: <Box sx={{bgcolor: "black", color: "white", width: "80px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px"}}>
+
+        <b>Last Visit</b>: 
+        {/* <Box sx={{bgcolor: "black", color: "white", width: "80px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px"}}>
         { patient.lastVisit}
-        </Box>
+        </Box> */}
+        <Chip color="primary" sx={{ fontWeight: "bold"}} label={`${patient.lastVisit}`} />{" "}
         <br/>
-        <b>Next Visit</b>: <Box sx={{bgcolor: "black", color: "white", width: "80px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px"}}>
+        <b>Age</b>: 
+      {/* <Box sx={{bgcolor: "black", color: "white", width: "30px", borderRadius: "5px", textAlign: "center", display: "inline-block"}}>
+        { patient.age}
+        </Box> */}
+        <Chip color="primary" sx={{ fontWeight: "bold" }} label={`${patient.age}`} />{" "}
+        <br />
+        <b>Next Visit</b>: 
+        {/* <Box sx={{bgcolor: "black", color: "white", width: "80px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px"}}>
         { patient.nextVisit}
-        </Box>
+        </Box> */}
+        <Chip color="primary" sx={{ fontWeight: "bold" }} label={`${patient.nextVisit}`} />{" "}
       </Typography>
     </CardContent>
 

@@ -88,6 +88,7 @@ function Avatar() {
       <DrawerAppBar />
       <Box sx={{ display: "flex", height: "calc(100vh - 90px)", mt: 2 }}>
         <PanelGroup direction="horizontal">
+
           <Panel defaultSize={30} minSize={20}>
             <PanelGroup direction="vertical">
               <Panel defaultSize={50} minSize={30}>
@@ -96,7 +97,7 @@ function Avatar() {
                 </Box>
               </Panel>
               <PanelResizeHandle>
-                <Box sx={{ height: "4px", backgroundColor: "gray", cursor: "row-resize" }} />
+                {/* <Box sx={{ height: "4px", backgroundColor: "gray", cursor: "row-resize" }} /> */}
               </PanelResizeHandle>
               <Panel defaultSize={50} minSize={30}>
                 <Box sx={{ p: 2 }}>
@@ -105,6 +106,12 @@ function Avatar() {
               </Panel>
             </PanelGroup>
           </Panel>
+
+
+          <PanelResizeHandle>
+                <Box sx={{ width: "4px", backgroundColor: "gray", cursor: "row-resize" }} />
+              </PanelResizeHandle>
+
 
           <Panel defaultSize={40} minSize={20}>
             <Box sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", p: 2 }}>
@@ -117,6 +124,10 @@ function Avatar() {
             </Box>
           </Panel>
 
+          <PanelResizeHandle>
+                <Box sx={{ width: "4px", color: "gray", cursor: "row-resize"}} />
+              </PanelResizeHandle>
+
           <Panel defaultSize={30} minSize={20}>
             <PanelGroup direction="vertical">
               <Panel defaultSize={50} minSize={30}>
@@ -125,15 +136,16 @@ function Avatar() {
                 </Box>
               </Panel>
               <PanelResizeHandle>
-                <Box sx={{ height: "4px", backgroundColor: "gray", cursor: "row-resize", width: "12500px" }} />
+                {/* <Box sx={{ height: "4px", backgroundColor: "gray", cursor: "row-resize", width: "12500px" }} /> */}
               </PanelResizeHandle>
               <Panel defaultSize={40} minSize={30}>
-                <Box sx={{ p: 2, pt:-2 }}>
+                <Box sx={{ p: 2}}>
                   <HumanBody taggedLocations={taggedLocations} botMessageContent={botMessageContent} />
                 </Box>
               </Panel>
             </PanelGroup>
           </Panel>
+
         </PanelGroup>
       </Box>
 

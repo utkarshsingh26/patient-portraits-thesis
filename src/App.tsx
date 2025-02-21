@@ -1,22 +1,3 @@
-// // import React from 'react';
-// import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-// import Landing from './pages/Landing';
-// import Home from './pages/Home';
-
-// const App = () => {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<Landing />} />
-//         <Route path="/home" element={<Home />} />
-//       </Routes>
-//     </Router>
-//   );
-// };
-
-// export default App;
-
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/Home';
 import Avatar from './pages/Avatar';

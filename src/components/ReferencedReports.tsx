@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Paper, CircularProgress } from "@mui/material";
+import { Box, Typography, Paper, CircularProgress, Chip } from "@mui/material";
 import { useParams } from "react-router-dom";
 import * as mammoth from "mammoth";
 import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
@@ -163,16 +163,17 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
       ) : (
         <Box
         sx={{
-          backgroundColor: "primary.main",
-          color: "white",
-          padding: 1,
-          borderRadius: 1,
-          boxShadow: 2,
+          // backgroundColor: "primary.main",
+          // color: "white",
+          // padding: 1,
+          // borderRadius: 1,
+          // boxShadow: 2,
           minWidth: "120px",
           textAlign: "center"
         }}
       >
-        <Typography variant="body2">No reports referenced.</Typography>
+        {/* <Typography variant="body2">No reports referenced.</Typography> */}
+        <Chip color="primary" sx={{ fontWeight: "bold"}} label={`No reports referenced.`} />{" "}
       </Box>
       )}
 

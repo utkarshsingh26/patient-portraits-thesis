@@ -22,12 +22,34 @@ const highlightPositions = {
   foot: [{ x: 200, y: 380 }, { x: 300, y: 380 }]
 };
 
+
+const calculateMonthsBetweenDates = (documents) => {
+  if (documents.length === 0) return 0;
+
+
+  const sortedDocuments = documents.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+
+  const firstDate = new Date(sortedDocuments[0].date);
+  const lastDate = new Date(sortedDocuments[sortedDocuments.length - 1].date);
+
+
+  const monthsDifference =
+    (lastDate.getFullYear() - firstDate.getFullYear()) * 12 +
+    (lastDate.getMonth() - firstDate.getMonth());
+
+  return monthsDifference;
+};
+
 export default function CompareAvatar() {
   const { id } = useParams();
   const [documents, setDocuments] = useState<{ name: string; url: string; date: string; taggedLocations: string[]; botMessageContent: string }[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkedAvatars, setCheckedAvatars] = useState<string[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const monthsDifference = calculateMonthsBetweenDates(documents);
 
   useEffect(() => {
     if (!id) return;
@@ -48,7 +70,7 @@ export default function CompareAvatar() {
               const arrayBuffer = await blob.arrayBuffer(); 
               const result = await mammoth.extractRawText({ arrayBuffer });
               const text = result.value;
-              console.log(text,",<======")
+              console.log(text,",<======");
               const { date } = extractDate(item.name);
               const { taggedLocations, botMessageContent } = extractTextData(text); 
 
@@ -109,7 +131,10 @@ export default function CompareAvatar() {
   return (
     <Box sx={{ padding: "20px" }}>
       <Box sx={{ bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, padding: 2, justifyContent: 'center', textAlign: 'center', maxWidth: '400px', display: "flex", flexDirection: 'row', alignItems: 'center' }}>
-        <Typography sx={{ fontWeight: 'bold' }}>This timeline spans a total of{" "} <Chip color="primary" sx={{ fontWeight: "bold" }} />{" "} months.</Typography>
+        <Typography sx={{ fontWeight: 'bold' }}>
+          This timeline spans a total of{" "}
+          <Chip color="primary" sx={{ fontWeight: "bold" }} label={`${monthsDifference} months`} />{" "}
+        </Typography>
       </Box>
       <Tooltip title="Please select only 2 avatars" arrow>
         <Button 
@@ -122,13 +147,12 @@ export default function CompareAvatar() {
         </Button>
       </Tooltip>
 
-
       <Modal
         open={isModalOpen}
         onClose={handleCloseModal}
         aria-labelledby="compare-avatars-modal"
         aria-describedby="compare-selected-avatars"
-        sx = {{backgroundColor: "black"}}
+        sx={{ backgroundColor: "black" }}
       >
         <Box
           sx={{
@@ -152,12 +176,9 @@ export default function CompareAvatar() {
           >
             <CloseIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
-            Comparing Avatars
-          </Typography>
           <Box sx={{ display: "flex", gap: "16px", justifyContent: "center" }}>
             {documents
-              .filter(doc => checkedAvatars.includes(doc.name)) // Filter checked avatars
+              .filter(doc => checkedAvatars.includes(doc.name)) 
               .map((doc) => (
                 <AvatarBox key={doc.name} doc={doc} checked={true} onCheckboxChange={() => {}} />
               ))}
@@ -265,7 +286,11 @@ const AvatarBox = ({ doc, checked, onCheckboxChange }) => {
           </svg>
         </Box>
       </Box>
-      <Typography variant="body2" sx={{ marginTop: "5px", fontWeight: "bold" }}>{doc.date}</Typography>
+      {/* <Typography variant="body2" sx={{ marginTop: "5px", fontWeight: "bold" }}>{doc.date}</Typography> */}
+      <br></br>
+      <Box sx={{bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px"}}>
+              {doc.date}
+      </Box>
     </Box>
   );
 };
