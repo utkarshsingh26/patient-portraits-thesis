@@ -15,7 +15,7 @@ import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/
 import { format } from "date-fns";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, doc, setDoc } from "firebase/firestore";
 
 function Avatar() {
   const patientId = useParams();
@@ -25,17 +25,19 @@ function Avatar() {
   const [taggedLocations, setTaggedLocations] = useState<string[]>([]);
   const [botMessageContent, setBotMessageContent] = useState<string>("");
   const [reportsReferenced, setReportsReferenced] = useState<string[]>([]);
-  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]); // Manage chat history here
+  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+  const [savedStateId, setSavedStateId] = useState<string | null>(null); // Track the saved state ID
 
   // Check for saved state in location state (passed from Timeline.tsx)
   useEffect(() => {
     if (location.state?.savedState) {
-      const { taggedLocations, botMessageContent, reportsReferenced, docxTexts, chatHistory } = location.state.savedState;
+      const { taggedLocations, botMessageContent, reportsReferenced, docxTexts, chatHistory, id } = location.state.savedState;
       setTaggedLocations(taggedLocations);
       setBotMessageContent(botMessageContent);
       setReportsReferenced(reportsReferenced);
       setDocxTexts(docxTexts);
-      setChatHistory(chatHistory); // Restore chat history
+      setChatHistory(chatHistory || []);
+      setSavedStateId(id); // Set the saved state ID
     }
   }, [location.state]);
 
@@ -53,14 +55,24 @@ function Avatar() {
       botMessageContent,
       reportsReferenced,
       docxTexts,
-      chatHistory, // Include chat history in saved state
+      chatHistory,
     };
 
     try {
-      // Save state to Firestore
       const db = getFirestore();
       const savedStatesCollection = collection(db, "savedStates");
-      await addDoc(savedStatesCollection, state);
+
+      if (savedStateId) {
+        // Update existing state
+        const stateRef = doc(savedStatesCollection, savedStateId);
+        await setDoc(stateRef, state);
+        console.log("State updated successfully!");
+      } else {
+        // Create new state
+        const docRef = await addDoc(savedStatesCollection, state);
+        setSavedStateId(docRef.id); // Save the new document ID
+        console.log("State saved successfully!");
+      }
 
       alert("State saved successfully!");
     } catch (error) {
@@ -106,8 +118,8 @@ function Avatar() {
                 onTaggedLocationsChange={setTaggedLocations}
                 onBotMessageContentChange={setBotMessageContent}
                 onReportsReferencedChange={setReportsReferenced}
-                onChatHistoryChange={setChatHistory} // Pass chat history callback
-                chatHistory={chatHistory} // Pass chat history
+                onChatHistoryChange={setChatHistory}
+                chatHistory={chatHistory}
               />
             </Box>
           </Panel>

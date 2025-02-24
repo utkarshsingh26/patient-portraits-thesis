@@ -10,7 +10,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CloseIcon from "@mui/icons-material/Close";
-import { format } from 'date-fns'
+import { format } from "date-fns";
 
 const highlightPositions = {
   chest: { x: 250, y: 120 },
@@ -57,7 +57,7 @@ export default function CompareAvatar() {
   }, [id]);
 
   const handleAvatarClick = (savedState) => {
-    navigate(`/avatar/${id}`, { state: { savedState } });
+    navigate(`/avatar/${id}`, { state: { savedState } }); 
   };
 
   return (
