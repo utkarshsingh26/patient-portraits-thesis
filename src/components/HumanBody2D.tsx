@@ -63,23 +63,83 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
 
   return (
     <Box sx={{ position: "relative", width: "500px", height: "450px", bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, overflow: "hidden" }}>
-      <Box sx={{  maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
-        <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon /></IconButton>
-        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon /></IconButton>
-        <IconButton size="small" onClick={handleReset}><RefreshIcon /></IconButton>
-      </Box>
+      {/* <Box sx={{ alignContent: "center", justifyContent:"center", maxWidth: "100px", maxHeight: "100px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "2px", boxShadow: 2 }}>
+        <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon fontSize="small" /></IconButton>
+        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon fontSize="small" /></IconButton>
+        <IconButton size="small" onClick={handleReset}><RefreshIcon fontSize="small" /></IconButton>
+      </Box> */}
 
 
-      <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2 }}>
+      {/* <Box sx={{ alignContent: "center", justifyContent:"center", maxWidth: "80px", maxHeight: "80px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "0px", boxShadow: 2 }}> */}
+      {/* <Box sx={{ display: "flex", flexDirection: "row", gap: 0.5, alignItems: "center", justifyContent: "center", maxWidth: "200px",maxHeight: "40px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", backgroundColor: "#fff", borderRadius: "8px", padding: "4px"}}>
         <span></span>
-        <IconButton size="small" onClick={() => handlePan(0, -20)}><ArrowUpwardIcon /></IconButton>
+        <IconButton size="small" onClick={handleReset}><RefreshIcon fontSize="small" /></IconButton>
         <span></span>
-        <IconButton size="small" onClick={() => handlePan(-20, 0)}><ArrowBackIcon /></IconButton>
+        <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon fontSize="small" /></IconButton>
         <span></span>
-        <IconButton size="small" onClick={() => handlePan(20, 0)}><ArrowForwardIcon /></IconButton>
+        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon fontSize="small" /></IconButton>
         <span></span>
-        <IconButton size="small" onClick={() => handlePan(0, 20)}><ArrowDownwardIcon /></IconButton>
+        <IconButton size="small" onClick={() => handlePan(0, -20)}><ArrowUpwardIcon fontSize="small" /></IconButton>
         <span></span>
+        <IconButton size="small" onClick={() => handlePan(0, 20)}><ArrowDownwardIcon fontSize="small" /></IconButton>
+        <span></span>
+        <IconButton size="small" onClick={() => handlePan(-20, 0)}><ArrowBackIcon fontSize="small" /></IconButton>
+        <span></span>
+        <IconButton size="small" onClick={() => handlePan(20, 0)}><ArrowForwardIcon fontSize="small" /></IconButton>
+        <span></span>
+      </Box> */}
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 0.5, 
+          alignItems: "center", 
+          justifyContent: "flex-end", 
+          maxWidth: "300px", 
+          maxHeight: "40px", 
+          position: "absolute",
+          bottom: 10,
+          right: 10, 
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          padding: "4px", 
+          boxShadow: 2,
+        }}
+      >
+
+        <IconButton size="small" onClick={handleReset}>
+          <RefreshIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handleZoom(1.2)}>
+          <AddIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}>
+          <RemoveIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(0, -20)}>
+          <ArrowUpwardIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(0, 20)}>
+          <ArrowDownwardIcon fontSize="small" />
+        </IconButton>
+
+        <IconButton size="small" onClick={() => handlePan(-20, 0)}>
+          <ArrowBackIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(20, 0)}>
+          <ArrowForwardIcon fontSize="small" />
+        </IconButton>
       </Box>
 
 

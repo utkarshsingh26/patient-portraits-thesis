@@ -482,14 +482,14 @@ export default function CompareAvatar() {
                     checked={checkedAvatars.includes(state.id)}
                     onChange={() => handleCheckboxChange(state.id)}
                   />
-                  {/* Zoom Controls */}
-                  <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
+     
+                  {/* <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
                     <IconButton size="small" onClick={() => handleZoom(state.id, 1.2)}><AddIcon /></IconButton>
                     <IconButton size="small" onClick={() => handleZoom(state.id, 1 / 1.2)}><RemoveIcon /></IconButton>
                     <IconButton size="small" onClick={() => handleReset(state.id)}><RefreshIcon /></IconButton>
                   </Box>
 
-                  {/* Pan Controls */}
+                
                   <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
                     <span></span>
                     <IconButton size="small" onClick={() => handlePan(state.id, 0, -20)}><ArrowUpwardIcon /></IconButton>
@@ -500,9 +500,62 @@ export default function CompareAvatar() {
                     <span></span>
                     <IconButton size="small" onClick={() => handlePan(state.id, 0, 20)}><ArrowDownwardIcon /></IconButton>
                     <span></span>
-                  </Box>
+                  </Box> */}
 
-                  {/* SVG */}
+<Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 0.5, 
+          alignItems: "center", 
+          justifyContent: "flex-end", 
+          maxWidth: "300px", 
+          maxHeight: "40px", 
+          position: "absolute",
+          bottom: 10,
+          right: 10, 
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          padding: "4px", 
+          boxShadow: 2,
+        }}
+      >
+
+        <IconButton size="small" onClick={handleReset}>
+          <RefreshIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handleZoom(1.2)}>
+          <AddIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}>
+          <RemoveIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(0, -20)}>
+          <ArrowUpwardIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(0, 20)}>
+          <ArrowDownwardIcon fontSize="small" />
+        </IconButton>
+
+        <IconButton size="small" onClick={() => handlePan(-20, 0)}>
+          <ArrowBackIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(20, 0)}>
+          <ArrowForwardIcon fontSize="small" />
+        </IconButton>
+      </Box>
+
+   
                   <Box onClick={() => handleAvatarClick(state)}>
                     <svg width="100%" height="100%" viewBox="0 0 500 400">
                       <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
