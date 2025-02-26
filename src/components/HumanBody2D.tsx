@@ -32,7 +32,13 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
     crotch: { x: 250, y: 230 },
     butt: { x: 250, y: 250 },
     leg: [{ x: 200, y: 300 }, { x: 300, y: 300 }],
-    foot: [{ x: 200, y: 380 }, { x: 300, y: 380 }]
+    foot: [{ x: 200, y: 380 }, { x: 300, y: 380 }],
+    liver: {x: 220, y: 150},
+    spleen : {x:270, y: 145},
+    bowel : {x: 230, y: 175},
+    bladder: {x: 250, y: 175},
+    kidney: {x: 260, y: 170},
+    pancreas: {x: 250, y: 150}
   };
 
   const handleZoom = (factor: number) => {
@@ -95,12 +101,12 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
                 Array.isArray(value) ? (
                   value.map((pos, index) => (
                     <Tooltip key={`${key}-${index}`} title={botMessageContent}>
-                      <circle cx={pos.x} cy={pos.y} r="20" fill="rgba(255,0,0,0.3)" />
+                      <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" />
                     </Tooltip>
                   ))
                 ) : (
                   <Tooltip key={key} title={botMessageContent}>
-                    <circle cx={value.x} cy={value.y} r="20" fill="rgba(255,0,0,0.3)" />
+                    <circle cx={value.x} cy={value.y} r="10" fill="rgba(255,0,0,0.3)" />
                   </Tooltip>
                 )
               ) : null

@@ -121,7 +121,7 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
   };
 
   return (
-    <Box sx={{ bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, padding: 2 }}>
+    <Box sx={{ bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, padding: 2}}>
       {/* <Typography variant="h6">
         <Box
           sx={{

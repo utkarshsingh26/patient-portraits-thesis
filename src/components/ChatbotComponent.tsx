@@ -73,6 +73,12 @@ const Chatbot: React.FC<ChatbotProps> = ({
     butt: ["butt", "gluteal", "sacral"],
     leg: ["leg", "thigh", "knee", "femoral"],
     foot: ["foot", "ankle", "calcaneal", "plantar"],
+    liver: ["liver", "livers"],
+    spleen: ["spleen", "spleens"],
+    bowel: ["bowel", "bowels"],
+    bladder: ["bladder", "bladders"],
+    kidney: ["kidney", "kidneys"],
+    pancreas: ["pancreas"]
   };
 
   const detectBodyParts = (text: string) => {
@@ -150,7 +156,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
 
   return (
     <>
-      <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
+      <Box sx={{ width: "100%", height:"400px", maxWidth: "600px", margin: "auto", mt: -2, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
         <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "text.secondary" }}> Past Summaries </Typography>
         <Box sx={{ height: "200px", overflowY: "auto", mb: 2 }}>
           {chatHistory?.map((chat, index) => ( // Use optional chaining
@@ -188,7 +194,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
         </Box>
       </Box>
 
-      <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
+      <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", height: "200px", mt: -2, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
         <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "text.secondary" }}> Get our AI to make inferences </Typography>
         <br />
         <Box sx={{ display: "flex", gap: 1 }}>
@@ -198,15 +204,15 @@ const Chatbot: React.FC<ChatbotProps> = ({
             variant="outlined"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            sx={{ color: "white" }}
+            sx={{ color: "white", mt: 8 }}
           />
-          <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "primary.main", borderRadius: "8px" }}>
+          <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "primary.main", borderRadius: "8px", mt: 8 }}>
             <SendIcon />
           </IconButton>
         </Box>
       </Box>
 
-      <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: 4, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
+      <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: -2, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
         <Accordion sx={{ bgcolor: "white", color: "text.secondary", borderRadius: "5px", paddingBottom: "5px" }}>
           <AccordionSummary><Typography sx={{ textAlign: "center", fontWeight: "bold", justifyContent: "center", width: '100%' }}>Saved prompts</Typography></AccordionSummary>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "white" }}>

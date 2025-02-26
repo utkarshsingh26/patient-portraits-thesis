@@ -110,8 +110,8 @@ function Avatar() {
               </Panel>
             </PanelGroup>
           </Panel>
-          <PanelResizeHandle />
-          <Panel defaultSize={40} minSize={20}>
+          <PanelResizeHandle style={{width: "4px"}} />
+          <Panel defaultSize={30} minSize={20}>
             <Box sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", p: 2 }}>
               <ChatbotComponent
                 extractedText={docxTexts.join("\n\n")}
@@ -123,17 +123,17 @@ function Avatar() {
               />
             </Box>
           </Panel>
-          <PanelResizeHandle />
+          <PanelResizeHandle style={{width: "4px"}} />
           <Panel defaultSize={30} minSize={20}>
             <PanelGroup direction="vertical">
               <Panel defaultSize={50} minSize={30}>
-                <Box sx={{ ml: 22, mb: 8, p: 2 }}>
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
                   <IndividualPatientInfo />
                 </Box>
               </Panel>
               <PanelResizeHandle />
-              <Panel defaultSize={40} minSize={30}>
-                <Box sx={{ p: 2 }}>
+              <Panel defaultSize={75} minSize={65}>
+                <Box sx={{ p: 2, display: "flex", justifyContent: "center", alignItems: "center" }}>
                   <HumanBody taggedLocations={taggedLocations} botMessageContent={botMessageContent} />
                 </Box>
               </Panel>
@@ -143,10 +143,10 @@ function Avatar() {
       </Box>
 
       {/* Floating Save Button */}
-      <Button variant="contained" color="success" sx={{ position: "fixed", bottom: 14, right: 84 }} onClick={handleSaveToTimeline}>
+      <Button variant="contained" color="success" sx={{ position: "fixed", bottom: 14, right: 14 }} onClick={handleSaveToTimeline}>
         <SaveOutlinedIcon />
       </Button>
-      <Button variant="contained" color="primary" sx={{ position: "fixed", bottom: 14, right: 14 }} onClick={handleTimelineClick}>
+      <Button variant="contained" color="primary" sx={{ position: "fixed", bottom: 14, left: 14 }} onClick={handleTimelineClick}>
         <TimelineOutlinedIcon />
       </Button>
     </Container>

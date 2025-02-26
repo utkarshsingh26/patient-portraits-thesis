@@ -1,7 +1,310 @@
+// import React, { useEffect, useState } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
+// import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+// import { Box, CircularProgress, Typography, Tooltip, Button, Checkbox, Modal, IconButton, Chip } from "@mui/material";
+// import CloseIcon from "@mui/icons-material/Close";
+// import { format } from "date-fns";
+
+// const highlightPositions = {
+//   chest: { x: 250, y: 120 },
+//   hands: [{ x: 150, y: 200 }, { x: 350, y: 200 }],
+//   face: { x: 250, y: 50 },
+//   crotch: { x: 250, y: 230 },
+//   butt: { x: 250, y: 250 },
+//   leg: [{ x: 200, y: 300 }, { x: 300, y: 300 }],
+//   foot: [{ x: 200, y: 380 }, { x: 300, y: 380 }]
+// };
+
+// export default function CompareAvatar() {
+//   const { id } = useParams();
+//   const navigate = useNavigate();
+//   const [savedStates, setSavedStates] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [checkedAvatars, setCheckedAvatars] = useState<string[]>([]);
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+
+//   useEffect(() => {
+//     if (!id) return;
+
+//     const fetchSavedStates = async () => {
+//       try {
+//         const db = getFirestore();
+//         const savedStatesCollection = collection(db, "savedStates");
+//         const q = query(savedStatesCollection, where("patientId", "==", id));
+//         const querySnapshot = await getDocs(q);
+
+//         const states = [];
+//         querySnapshot.forEach((doc) => {
+//           states.push({ id: doc.id, ...doc.data() });
+//         });
+
+//         setSavedStates(states);
+//       } catch (error) {
+//         console.error("Error fetching saved states:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchSavedStates();
+//   }, [id]);
+
+//   // Calculate start and end dates
+//   const calculateDateRange = () => {
+//     if (savedStates.length === 0) return { startDate: null, endDate: null };
+
+//     const sortedStates = savedStates.sort(
+//       (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+//     );
+
+//     const startDate = sortedStates[0].timestamp;
+//     const endDate = sortedStates[sortedStates.length - 1].timestamp;
+
+//     return { startDate, endDate };
+//   };
+
+//   const { startDate, endDate } = calculateDateRange();
+
+//   const handleAvatarClick = (savedState) => {
+//     navigate(`/avatar/${id}`, { state: { savedState } });
+//   };
+
+//   const handleCheckboxChange = (id: string) => {
+//     setCheckedAvatars((prev) =>
+//       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+//     );
+//   };
+
+//   const handleCompareClick = () => {
+//     setIsModalOpen(true);
+//   };
+
+//   const handleCloseModal = () => {
+//     setIsModalOpen(false);
+//   };
+
+//   return (
+//     <Box sx={{ paddingTop: "20px", paddingLeft: "20px" }}>
+//       {startDate && endDate && (
+//         <Box
+//           sx={{
+//             bgcolor: "#f6f6f6",
+//             borderRadius: "5px",
+//             boxShadow: 3,
+//             padding: 2,
+//             maxWidth: "400px",
+//             mb: 2,
+//           }}
+//         >
+//           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center" }}>
+//             Key dates in this timeline
+//           </Typography>
+//           <Box sx={{ display: "flex", gap: 1 }}>
+//             <Chip
+//               label={`Start: ${format(new Date(startDate), "yyyy-MM-dd")}`}
+//               color="primary"
+//               sx={{ fontWeight: "bold" }}
+//             />
+//             <Chip
+//               label={`End: ${format(new Date(endDate), "yyyy-MM-dd")}`}
+//               color="error"
+//               sx={{ fontWeight: "bold", ml: 12 }}
+//             />
+//           </Box>
+//         </Box>
+//       )}
+
+//       {loading ? (
+//         <CircularProgress />
+//       ) : savedStates.length === 0 ? (
+//         <Typography>No saved states found for this patient.</Typography>
+//       ) : (
+//         <Box
+//           sx={{
+//             display: "flex",
+//             gap: "16px",
+//             overflowX: "auto",
+//             justifyContent: "flex-start",
+//             mt: "125px",
+//             paddingLeft: "12px",
+//             marginTop: "100px",
+//             "&::-webkit-scrollbar": {
+//               height: "6px",
+//             },
+//             "&::-webkit-scrollbar-thumb": {
+//               backgroundColor: "#888",
+//               borderRadius: "4px",
+//             },
+//           }}
+//         >
+//           {savedStates.map((state) => (
+//             <Box key={state.id} sx={{ textAlign: "center", flexShrink: 0 }}>
+//               <Box
+//                 sx={{
+//                   width: "450px",
+//                   height: "450px",
+//                   position: "relative",
+//                   cursor: "pointer",
+//                   backgroundColor: "#f0f0f0",
+//                   boxShadow: 3,
+//                   borderRadius: "5px",
+//                   overflow: "hidden",
+//                   display: "flex",
+//                   alignItems: "center",
+//                   justifyContent: "center"
+//                 }}
+//               >
+//                 <Checkbox
+//                   sx={{ position: "absolute", top: 0, right: 0, zIndex: 1 }}
+//                   checked={checkedAvatars.includes(state.id)}
+//                   onChange={() => handleCheckboxChange(state.id)}
+//                 />
+//                 <Box onClick={() => handleAvatarClick(state)}>
+//                   <svg width="100%" height="100%" viewBox="0 0 500 400">
+//                     <image href="/goku.svg" width="100%" height="100%" />
+//                     {state.taggedLocations.map((location) => {
+//                       const positions = highlightPositions[location];
+//                       if (!positions) return null;
+
+//                       return Array.isArray(positions) ? (
+//                         positions.map((pos, index) => (
+//                           <Tooltip key={`${location}-${index}`} title={state.botMessageContent} arrow>
+//                             <circle cx={pos.x} cy={pos.y} r="20" fill="rgba(255,0,0,0.3)" />
+//                           </Tooltip>
+//                         ))
+//                       ) : (
+//                         <Tooltip key={location} title={state.botMessageContent} arrow>
+//                           <circle cx={positions.x} cy={positions.y} r="20" fill="rgba(255,0,0,0.3)" />
+//                         </Tooltip>
+//                       );
+//                     })}
+//                   </svg>
+//                 </Box>
+//               </Box>
+//               <Box
+//                 sx={{
+//                   bgcolor: "black",
+//                   color: "white",
+//                   width: "120px",
+//                   borderRadius: "5px",
+//                   textAlign: "center",
+//                   display: "inline-block",
+//                   marginTop: "3px",
+//                 }}
+//               >
+//                 {format(new Date(state.timestamp), "yyyy-MM-dd")}
+//               </Box>
+//             </Box>
+//           ))}
+//         </Box>
+//       )}
+
+//       {/* Compare Two Avatars Button */}
+//       <Tooltip title="Please select only 2 avatars" arrow>
+//         <Button
+//           sx={{ position: "fixed", bottom: 14, right: 14, boxShadow: 3 }}
+//           variant="contained"
+//           disabled={checkedAvatars.length !== 2}
+//           onClick={handleCompareClick}
+//         >
+//           Compare Two Avatars
+//         </Button>
+//       </Tooltip>
+
+//       {/* Modal for Comparing Avatars */}
+//       <Modal
+//         open={isModalOpen}
+//         onClose={handleCloseModal}
+//         aria-labelledby="compare-avatars-modal"
+//         aria-describedby="compare-selected-avatars"
+//       >
+//         <Box
+//           sx={{
+//             position: "absolute",
+//             top: "50%",
+//             left: "50%",
+//             transform: "translate(-50%, -50%)",
+//             width: "90%",
+//             maxWidth: "1000px",
+//             maxHeight: "90vh",
+//             bgcolor: "background.paper",
+//             boxShadow: 24,
+//             borderRadius: "8px",
+//             p: 4,
+//             outline: "none"
+//           }}
+//         >
+//           <IconButton
+//             sx={{ position: "absolute", top: 8, right: 8 }}
+//             onClick={handleCloseModal}
+//           >
+//             <CloseIcon />
+//           </IconButton>
+//           <Box sx={{ display: "flex", gap: "16px", justifyContent: "center" }}>
+//             {savedStates
+//               .filter((doc) => checkedAvatars.includes(doc.id))
+//               .map((doc) => (
+//                 <Box key={doc.id} sx={{ textAlign: "center", flexShrink: 0 }}>
+//                   <Box
+//                     sx={{
+//                       width: "450px",
+//                       height: "450px",
+//                       position: "relative",
+//                       cursor: "pointer",
+//                       backgroundColor: "#f0f0f0",
+//                       boxShadow: 3,
+//                       borderRadius: "5px",
+//                       overflow: "hidden",
+//                     }}
+//                   >
+//                     <svg width="100%" height="100%" viewBox="0 0 500 400">
+//                       <image href="/goku.svg" width="100%" height="100%" />
+//                       {doc.taggedLocations.map((location) => {
+//                         const positions = highlightPositions[location];
+//                         if (!positions) return null;
+
+//                         return Array.isArray(positions) ? (
+//                           positions.map((pos, index) => (
+//                             <Tooltip key={`${location}-${index}`} title={doc.botMessageContent} arrow>
+//                               <circle cx={pos.x} cy={pos.y} r="20" fill="rgba(255,0,0,0.3)" />
+//                             </Tooltip>
+//                           ))
+//                         ) : (
+//                           <Tooltip key={location} title={doc.botMessageContent} arrow>
+//                             <circle cx={positions.x} cy={positions.y} r="20" fill="rgba(255,0,0,0.3)" />
+//                           </Tooltip>
+//                         );
+//                       })}
+//                     </svg>
+//                   </Box>
+//                   <Box
+//                     sx={{
+//                       bgcolor: "black",
+//                       color: "white",
+//                       width: "120px",
+//                       borderRadius: "5px",
+//                       textAlign: "center",
+//                       display: "inline-block",
+//                       marginTop: "3px",
+//                     }}
+//                   >
+//                     {format(new Date(doc.timestamp), "yyyy-MM-dd")}
+//                   </Box>
+//                 </Box>
+//               ))}
+//           </Box>
+//         </Box>
+//       </Modal>
+//     </Box>
+//   );
+// }
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { Box, CircularProgress, Typography, Tooltip, Chip, Button, Checkbox, IconButton, Modal } from "@mui/material";
+import { Box, CircularProgress, Typography, Tooltip, Button, Checkbox, Modal, IconButton, Chip } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { format } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -9,8 +312,6 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import CloseIcon from "@mui/icons-material/Close";
-import { format } from "date-fns";
 
 const highlightPositions = {
   chest: { x: 250, y: 120 },
@@ -19,7 +320,13 @@ const highlightPositions = {
   crotch: { x: 250, y: 230 },
   butt: { x: 250, y: 250 },
   leg: [{ x: 200, y: 300 }, { x: 300, y: 300 }],
-  foot: [{ x: 200, y: 380 }, { x: 300, y: 380 }]
+  foot: [{ x: 200, y: 380 }, { x: 300, y: 380 }],
+  liver: {x: 220, y: 150},
+  spleen : {x:270, y: 145},
+  bowel : {x: 230, y: 175},
+  bladder: {x: 250, y: 175},
+  kidney: {x: 260, y: 170},
+  pancreas: {x: 250, y: 150}
 };
 
 export default function CompareAvatar() {
@@ -27,8 +334,9 @@ export default function CompareAvatar() {
   const navigate = useNavigate();
   const [savedStates, setSavedStates] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [checkedAvatars, setCheckedAvatars] = useState([]);
+  const [checkedAvatars, setCheckedAvatars] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transforms, setTransforms] = useState<Record<string, { scale: number; translateX: number; translateY: number }>>({});
 
   useEffect(() => {
     if (!id) return;
@@ -46,6 +354,13 @@ export default function CompareAvatar() {
         });
 
         setSavedStates(states);
+
+        // Initialize transforms for each saved state
+        const initialTransforms = states.reduce((acc, state) => {
+          acc[state.id] = { scale: 1, translateX: 0, translateY: 0 };
+          return acc;
+        }, {});
+        setTransforms(initialTransforms);
       } catch (error) {
         console.error("Error fetching saved states:", error);
       } finally {
@@ -56,51 +371,250 @@ export default function CompareAvatar() {
     fetchSavedStates();
   }, [id]);
 
+  // Calculate start and end dates
+  const calculateDateRange = () => {
+    if (savedStates.length === 0) return { startDate: null, endDate: null };
+
+    const sortedStates = savedStates.sort(
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+
+    const startDate = sortedStates[0].timestamp;
+    const endDate = sortedStates[sortedStates.length - 1].timestamp;
+
+    return { startDate, endDate };
+  };
+
+  const { startDate, endDate } = calculateDateRange();
+
   const handleAvatarClick = (savedState) => {
-    navigate(`/avatar/${id}`, { state: { savedState } }); 
+    navigate(`/avatar/${id}`, { state: { savedState } });
+  };
+
+  const handleCheckboxChange = (id: string) => {
+    setCheckedAvatars((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleCompareClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleZoom = (id: string, factor: number) => {
+    setTransforms((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        scale: Math.max(0.5, Math.min(prev[id].scale * factor, 3)),
+      },
+    }));
+  };
+
+  const handlePan = (id: string, dx: number, dy: number) => {
+    setTransforms((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        translateX: prev[id].translateX + dx / prev[id].scale,
+        translateY: prev[id].translateY + dy / prev[id].scale,
+      },
+    }));
+  };
+
+  const handleReset = (id: string) => {
+    setTransforms((prev) => ({
+      ...prev,
+      [id]: { scale: 1, translateX: 0, translateY: 0 },
+    }));
   };
 
   return (
-    <Box sx={{ padding: "20px" }}>
+    <Box sx={{ paddingTop: "20px", paddingLeft: "20px" }}>
+      {/* Top Box with Start and End Dates */}
+      {startDate && endDate && (
+        <Box
+          sx={{
+            bgcolor: "#f6f6f6",
+            borderRadius: "5px",
+            boxShadow: 3,
+            padding: 2,
+            maxWidth: "400px",
+            mb: 2,
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center" }}>
+            Key dates in this timeline
+          </Typography>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Chip
+              label={`Start: ${format(new Date(startDate), "yyyy-MM-dd")}`}
+              color="primary"
+              sx={{ fontWeight: "bold" }}
+            />
+            <Chip
+              label={`End: ${format(new Date(endDate), "yyyy-MM-dd")}`}
+              color="error"
+              sx={{ fontWeight: "bold", ml: 12 }}
+            />
+          </Box>
+        </Box>
+      )}
+
       {loading ? (
         <CircularProgress />
       ) : savedStates.length === 0 ? (
         <Typography>No saved states found for this patient.</Typography>
       ) : (
-        <Box sx={{ display: "flex", gap: "16px", overflowX: "auto", justifyContent: "center", mt: "125px" }}>
-          {savedStates.map((state) => (
-            <Box key={state.id} sx={{ textAlign: "center" }}>
-              <Box
-                sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#f0f0f0", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}
-                onClick={() => handleAvatarClick(state)}
-              >
-                <svg width="100%" height="100%" viewBox="0 0 500 400">
-                  <image href="/goku.svg" width="100%" height="100%" />
-                  {state.taggedLocations.map((location) => {
-                    const positions = highlightPositions[location];
-                    if (!positions) return null;
+        <Box sx={{ display: "flex", gap: "16px", overflowX: "auto", justifyContent: "flex-start", mt: "125px", paddingLeft: "12px", marginTop: "100px" }}>
+          {savedStates.map((state) => {
+            const transform = transforms[state.id] || { scale: 1, translateX: 0, translateY: 0 };
 
-                    return Array.isArray(positions) ? (
-                      positions.map((pos, index) => (
-                        <Tooltip key={`${location}-${index}`} title={state.botMessageContent} arrow>
-                          <circle cx={pos.x} cy={pos.y} r="20" fill="rgba(255,0,0,0.3)" />
-                        </Tooltip>
-                      ))
-                    ) : (
-                      <Tooltip key={location} title={state.botMessageContent} arrow>
-                        <circle cx={positions.x} cy={positions.y} r="20" fill="rgba(255,0,0,0.3)" />
-                      </Tooltip>
-                    );
-                  })}
-                </svg>
+            return (
+              <Box key={state.id} sx={{ textAlign: "center", flexShrink: 0 }}>
+                <Box sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#f0f0f0", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
+                  <Checkbox
+                    sx={{ position: "absolute", top: 0, right: 0, zIndex: 1 }}
+                    checked={checkedAvatars.includes(state.id)}
+                    onChange={() => handleCheckboxChange(state.id)}
+                  />
+                  {/* Zoom Controls */}
+                  <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
+                    <IconButton size="small" onClick={() => handleZoom(state.id, 1.2)}><AddIcon /></IconButton>
+                    <IconButton size="small" onClick={() => handleZoom(state.id, 1 / 1.2)}><RemoveIcon /></IconButton>
+                    <IconButton size="small" onClick={() => handleReset(state.id)}><RefreshIcon /></IconButton>
+                  </Box>
+
+                  {/* Pan Controls */}
+                  <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
+                    <span></span>
+                    <IconButton size="small" onClick={() => handlePan(state.id, 0, -20)}><ArrowUpwardIcon /></IconButton>
+                    <span></span>
+                    <IconButton size="small" onClick={() => handlePan(state.id, -20, 0)}><ArrowBackIcon /></IconButton>
+                    <span></span>
+                    <IconButton size="small" onClick={() => handlePan(state.id, 20, 0)}><ArrowForwardIcon /></IconButton>
+                    <span></span>
+                    <IconButton size="small" onClick={() => handlePan(state.id, 0, 20)}><ArrowDownwardIcon /></IconButton>
+                    <span></span>
+                  </Box>
+
+                  {/* SVG */}
+                  <Box onClick={() => handleAvatarClick(state)}>
+                    <svg width="100%" height="100%" viewBox="0 0 500 400">
+                      <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
+                        <image href="/goku.svg" width="100%" height="100%" />
+                        {state.taggedLocations.map((location) => {
+                          const positions = highlightPositions[location];
+                          if (!positions) return null;
+
+                          return Array.isArray(positions) ? (
+                            positions.map((pos, index) => (
+                              <Tooltip key={`${location}-${index}`} title={state.botMessageContent} arrow>
+                                <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" />
+                              </Tooltip>
+                            ))
+                          ) : (
+                            <Tooltip key={location} title={state.botMessageContent} arrow>
+                              <circle cx={positions.x} cy={positions.y} r="10" fill="rgba(255,0,0,0.3)" />
+                            </Tooltip>
+                          );
+                        })}
+                      </g>
+                    </svg>
+                  </Box>
+                </Box>
+                <Box sx={{ bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px" }}>
+                  {format(new Date(state.timestamp), "yyyy-MM-dd")}
+                </Box>
               </Box>
-              <Box sx={{ bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px" }}>
-                {format(new Date(state.timestamp), "yyyy-MM-dd")}
-              </Box>
-            </Box>
-          ))}
+            );
+          })}
         </Box>
       )}
+
+      {/* Compare Two Avatars Button */}
+      <Tooltip title="Please select only 2 avatars" arrow>
+        <Button
+          sx={{ position: "fixed", bottom: 14, right: 14, boxShadow: 3 }}
+          variant="contained"
+          disabled={checkedAvatars.length !== 2}
+          onClick={handleCompareClick}
+        >
+          Compare Two Avatars
+        </Button>
+      </Tooltip>
+
+      {/* Modal for Comparing Avatars */}
+      <Modal open={isModalOpen} onClose={handleCloseModal}>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "90%", maxWidth: "1000px", maxHeight: "90vh", bgcolor: "background.paper", boxShadow: 24, borderRadius: "8px", p: 4, outline: "none" }}>
+          <IconButton sx={{ position: "absolute", top: 8, right: 8 }} onClick={handleCloseModal}>
+            <CloseIcon />
+          </IconButton>
+          <Box sx={{ display: "flex", gap: "16px", justifyContent: "center" }}>
+            {savedStates
+              .filter((doc) => checkedAvatars.includes(doc.id))
+              .map((doc) => {
+                const transform = transforms[doc.id] || { scale: 1, translateX: 0, translateY: 0 };
+
+                return (
+                  <Box key={doc.id} sx={{ textAlign: "center", flexShrink: 0 }}>
+                    <Box sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#f0f0f0", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
+                      {/* Zoom Controls */}
+                      <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
+                        <IconButton size="small" onClick={() => handleZoom(doc.id, 1.2)}><AddIcon /></IconButton>
+                        <IconButton size="small" onClick={() => handleZoom(doc.id, 1 / 1.2)}><RemoveIcon /></IconButton>
+                        <IconButton size="small" onClick={() => handleReset(doc.id)}><RefreshIcon /></IconButton>
+                      </Box>
+
+                      {/* Pan Controls */}
+                      <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
+                        <span></span>
+                        <IconButton size="small" onClick={() => handlePan(doc.id, 0, -20)}><ArrowUpwardIcon /></IconButton>
+                        <span></span>
+                        <IconButton size="small" onClick={() => handlePan(doc.id, -20, 0)}><ArrowBackIcon /></IconButton>
+                        <span></span>
+                        <IconButton size="small" onClick={() => handlePan(doc.id, 20, 0)}><ArrowForwardIcon /></IconButton>
+                        <span></span>
+                        <IconButton size="small" onClick={() => handlePan(doc.id, 0, 20)}><ArrowDownwardIcon /></IconButton>
+                        <span></span>
+                      </Box>
+
+                      {/* SVG */}
+                      <svg width="100%" height="100%" viewBox="0 0 500 400">
+                        <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
+                          <image href="/goku.svg" width="100%" height="100%" />
+                          {doc.taggedLocations.map((location) => {
+                            const positions = highlightPositions[location];
+                            if (!positions) return null;
+
+                            return Array.isArray(positions) ? (
+                              positions.map((pos, index) => (
+                                <Tooltip key={`${location}-${index}`} title={doc.botMessageContent} arrow>
+                                  <circle cx={pos.x} cy={pos.y} r="20" fill="rgba(255,0,0,0.3)" />
+                                </Tooltip>
+                              ))
+                            ) : (
+                              <Tooltip key={location} title={doc.botMessageContent} arrow>
+                                <circle cx={positions.x} cy={positions.y} r="20" fill="rgba(255,0,0,0.3)" />
+                              </Tooltip>
+                            );
+                          })}
+                        </g>
+                      </svg>
+                    </Box>
+                    <Box sx={{ bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px" }}>
+                      {format(new Date(doc.timestamp), "yyyy-MM-dd")}
+                    </Box>
+                  </Box>
+                );
+              })}
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }
