@@ -162,6 +162,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
     <PanelGroup direction="vertical" style={{ gap: 0 }}>
 
       <Panel defaultSize={50} minSize={30}>
+      <Box sx={{boxShadow: 3}}>
       <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", mt: 0, p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
       <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Current Prompts</Typography>
         {/* <Paper sx={{ color: "white", display: "inline-block", backgroundColor: "primary.main", color:"white", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #696969", marginLeft: -50}}> Current Prompts </Paper> */}
@@ -200,12 +201,14 @@ const Chatbot: React.FC<ChatbotProps> = ({
           {loading && <CircularProgress size={24} />}
         </Box>
       </Box>
+      </Box>
       </Panel>
 
-      <PanelResizeHandle style={{ height: "2px", backgroundColor: "#e0e0e0", margin: "5px 0" }} />
+      <PanelResizeHandle style={{ height: "2px", marginTop: "2px", marginBottom: "2px" }} />
       
       <Panel defaultSize={30} minSize={5}>
-      <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3}}>
+      <Box sx={{boxShadow: 3, mt: 1}}>
+      <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px",  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", border: "none"}}>
       <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" }}>Ask Questions</Typography>
         <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
           <TextField
@@ -221,11 +224,13 @@ const Chatbot: React.FC<ChatbotProps> = ({
           </IconButton>
         </Box>
       </Box>
+      </Box>
       </Panel>
 
-      <PanelResizeHandle style={{ height: "2px", backgroundColor: "#e0e0e0", margin: "5px 0" }} />
+      <PanelResizeHandle style={{ height: "2px", marginTop: "2px", marginBottom: "2px"  }} />
       
-      <Panel defaultSize={50} minSize={30} style={{boxShadow: '3'}}>
+      <Panel defaultSize={40} minSize={30} style={{boxShadow: '3'}}>
+        <Box sx={{boxShadow: 3, mt: 1}}>
       <Box sx={{width: "100%", height: "100%", overflow: "auto", alignContent: "center", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
           <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, mt: 0, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Saved Prompts</Typography>
           <br/>
@@ -242,6 +247,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
             ))}
           </Box>
         {/* </Accordion> */}
+      </Box>
       </Box>
       </Panel>
       </PanelGroup>

@@ -449,18 +449,17 @@ export default function CompareAvatar() {
           {/* Start Date Box */}
           <Box
             sx={{
-              bgcolor: "#f6f6f6",
               borderRadius: "5px",
               boxShadow: 3,
               padding: 2,
               maxWidth: "400px",
-              backgroundColor: "primary.main"
+              backgroundColor: "#FFFAFA"
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center", color: "white" }}>
+            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center", color: "black" }}>
               The start of the patient timeline
             </Typography>
-            <Paper sx={{ ml: '33%', borderRadius: 400, display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #696969" }}>
+            <Paper sx={{ ml: '33%', borderRadius: 400, display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #FFFAFA" }}>
               {format(new Date(startDate), "yyyy-MM-dd")}
             </Paper>
           </Box>
@@ -497,13 +496,13 @@ export default function CompareAvatar() {
               padding: 2,
               maxWidth: "400px",
               mr: 2,
-              backgroundColor: "primary.main"
+              backgroundColor: "#FFFAFA"
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center", color: "white" }}>
+            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center", color: "black" }}>
               The end of the patient timeline
             </Typography>
-            <Paper sx={{ ml: '33%', borderRadius: 400, display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #696969" }}>
+            <Paper sx={{ ml: '33%', borderRadius: 400, display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #FFFAFA" }}>
               {format(new Date(endDate), "yyyy-MM-dd")}
             </Paper>
           </Box>
@@ -520,9 +519,9 @@ export default function CompareAvatar() {
 
             return (
               <Box key={state.id} sx={{ textAlign: "center", flexShrink: 0 }}>
-                <Box sx={{ width: "500px", height: "500px", position: "relative", cursor: "pointer", backgroundColor: "primary.main", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
+                <Box sx={{ width: "500px", height: "500px", position: "relative", cursor: "pointer", backgroundColor: "#FFFAFA", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
                   <Checkbox
-                    sx={{ position: "absolute", top: 0, right: 0, zIndex: 1, color: "white", '&.Mui-checked': {color: "white"} }}
+                    sx={{ position: "absolute", top: 0, right: 0, zIndex: 1, color: "primary.main" }}
                     checked={checkedAvatars.includes(state.id)}
                     onChange={() => handleCheckboxChange(state.id)}
                   />
@@ -627,7 +626,7 @@ export default function CompareAvatar() {
                 {/* <Box sx={{ bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "15px" }}>
                   {format(new Date(state.timestamp), "yyyy-MM-dd")}
                 </Box> */}
-                <Paper sx={{ mt: 2, display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #696969", borderRadius: 400}}> {format(new Date(state.timestamp), "yyyy-MM-dd")} </Paper>
+                <Paper sx={{ mt: 2, display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #FFFAFA", borderRadius: 400}}> {format(new Date(state.timestamp), "yyyy-MM-dd")} </Paper>
               </Box>
             );
           })}
@@ -666,7 +665,7 @@ export default function CompareAvatar() {
                   key={doc.id}
                   >
                                       <Box key={doc.id} sx={{ textAlign: "center", flexShrink: 0 }}>
-                    <Box sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "primary.main", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
+                    <Box sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#FFFAFA", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
 
                       {/* Pan Controls */}
                       <Box
