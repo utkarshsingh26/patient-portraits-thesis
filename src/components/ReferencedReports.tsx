@@ -121,8 +121,8 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
   };
 
   return (
-    <Box sx={{ bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, padding: 2}}>
-      <Typography sx={{textAlign: "center", fontWeight: "bold", color: "text.secondary"}}> Reports Referenced </Typography>
+    <Box sx={{ height: "100%", width: "100%", bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, padding: 2}}>
+      <Typography sx={{textAlign: "center", fontWeight: "bold", marginLeft: -42, color: "black", fontSize: 20, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" }}> Reports Referenced </Typography>
       <br />
       {reports.length > 0 ? (
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
@@ -130,16 +130,19 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
             <Box
               key={index}
               sx={{
-                backgroundColor: "primary.main",
-                color: "white",
-                padding: 1,
-                borderRadius: 1,
-                boxShadow: 2,
-                minWidth: "120px",
+                // backgroundColor: "primary.main",
+                // color: "white",
+                // padding: 1,
+                // borderRadius: 1,
+                // boxShadow: 2,
+                // minWidth: "120px",
                 textAlign: "center"
               }}
             >
-              <Typography variant="body2" sx={{fontWeight: "bold"}}>{report}</Typography>
+              {/* <Typography variant="body2" sx={{fontWeight: "bold"}}>{report}</Typography> */}
+              <Paper sx={{ borderRadius: 400, mt: '20%', display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #FFFAFA" }}>
+                      {report}
+                    </Paper>
             </Box>
           ))}
         </Box>
@@ -156,7 +159,10 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
         }}
       >
         {/* <Typography variant="body2">No reports referenced.</Typography> */}
-        <Chip color="primary" sx={{ fontWeight: "bold"}} label={`No reports referenced.`} />{" "}
+        {/* <Chip color="primary" sx={{ fontWeight: "bold"}} label={`No reports referenced.`} />{" "} */}
+                    <Paper sx={{ borderRadius: 400, mt: '20%', display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #FFFAFA" }}>
+                      No reports referenced
+                    </Paper>
       </Box>
       )}
 

@@ -204,10 +204,10 @@ const Chatbot: React.FC<ChatbotProps> = ({
       </Box>
       </Panel>
 
-      <PanelResizeHandle style={{ height: "2px", marginTop: "2px", marginBottom: "2px" }} />
+      <PanelResizeHandle style={{ height: "1px", padding: 0}} />
       
-      <Panel defaultSize={30} minSize={5}>
-      <Box sx={{boxShadow: 3, mt: 1}}>
+      <Panel defaultSize={40} minSize={5}>
+      <Box sx={{boxShadow: 3, mt: -2}}>
       <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px",  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", border: "none"}}>
       <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" }}>Ask Questions</Typography>
         <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
@@ -227,10 +227,10 @@ const Chatbot: React.FC<ChatbotProps> = ({
       </Box>
       </Panel>
 
-      <PanelResizeHandle style={{ height: "2px", marginTop: "2px", marginBottom: "2px"  }} />
+      <PanelResizeHandle style={{ height: "1px", padding: 0  }} />
       
-      <Panel defaultSize={40} minSize={30} style={{boxShadow: '3'}}>
-        <Box sx={{boxShadow: 3, mt: 1}}>
+      <Panel defaultSize={50} minSize={30} style={{boxShadow: '3'}}>
+        <Box sx={{boxShadow: 3, mt: -2}}>
       <Box sx={{width: "100%", height: "100%", overflow: "auto", alignContent: "center", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
           <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, mt: 0, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Saved Prompts</Typography>
           <br/>
