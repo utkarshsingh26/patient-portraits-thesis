@@ -93,60 +93,64 @@ function Avatar() {
     <Container maxWidth="false" disableGutters sx={{ padding: 0, margin: 0, bgcolor: "#ffffff" }}>
       <DrawerAppBar />
       <Box sx={{ display: "flex", height: "calc(100vh - 90px)", mt: 2 }}>
-        <PanelGroup direction="horizontal">
-          {/* Existing panel layout */}
-          <Panel defaultSize={30} minSize={20}>
-            <PanelGroup direction="vertical">
-              <Panel defaultSize={50} minSize={30}>
-                <Box sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center", p: 2 }}>
-                  <IndividiualPatientReports onExtractedText={setDocxTexts} />
-                </Box>
-              </Panel>
-              <PanelResizeHandle />
-              <Panel defaultSize={50} minSize={30}>
-                <Box sx={{ p: 2 }}>
-                  <ReportsReferenced reports={reportsReferenced} botMessageContent={botMessageContent} />
-                </Box>
-              </Panel>
-            </PanelGroup>
-          </Panel>
-          <PanelResizeHandle style={{width: "4px"}} />
-          <Panel defaultSize={30} minSize={20}>
-            <Box sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", p: 2 }}>
-              <ChatbotComponent
-                extractedText={docxTexts.join("\n\n")}
-                onTaggedLocationsChange={setTaggedLocations}
-                onBotMessageContentChange={setBotMessageContent}
-                onReportsReferencedChange={setReportsReferenced}
-                onChatHistoryChange={setChatHistory}
-                chatHistory={chatHistory}
-              />
-            </Box>
-          </Panel>
-          <PanelResizeHandle style={{width: "4px"}} />
-          <Panel defaultSize={30} minSize={20}>
-            <PanelGroup direction="vertical">
-              <Panel defaultSize={50} minSize={30}>
-                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
-                  <IndividualPatientInfo />
-                </Box>
-              </Panel>
-              <PanelResizeHandle />
-              <Panel defaultSize={75} minSize={65}>
-                <Box sx={{ p: 2, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                  <HumanBody taggedLocations={taggedLocations} botMessageContent={botMessageContent} />
-                </Box>
-              </Panel>
-            </PanelGroup>
-          </Panel>
-        </PanelGroup>
+      <PanelGroup direction="horizontal" style={{ gap: 0 }}>
+  {/* Left Panel */}
+  <Panel defaultSize={30} minSize={20}>
+    <PanelGroup direction="vertical" style={{ gap: 0 }}>
+      <Panel defaultSize={50} minSize={30}>
+        <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start", alignItems: "flex-start", p: 1 }}>
+          <IndividiualPatientReports onExtractedText={setDocxTexts} />
+        </Box>
+      </Panel>
+      <PanelResizeHandle style={{ height: "2px", backgroundColor: "#e0e0e0" }} />
+      <Panel defaultSize={50} minSize={30}>
+        <Box sx={{ backgroundColor: '#F8F8F8',height: "100%", width: "100%", display: "flex", justifyContent: "flex-start", alignItems: "flex-start", p: 1 }}>
+          <ReportsReferenced reports={reportsReferenced} botMessageContent={botMessageContent} />
+        </Box>
+      </Panel>
+    </PanelGroup>
+  </Panel>
+  <PanelResizeHandle style={{ width: "2px", backgroundColor: "#e0e0e0" }} />
+
+  {/* Middle Panel */}
+  <Panel defaultSize={30} minSize={20}>
+    <Box sx={{ height: "100%", width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", p: 1 }}>
+      <ChatbotComponent
+        extractedText={docxTexts.join("\n\n")}
+        onTaggedLocationsChange={setTaggedLocations}
+        onBotMessageContentChange={setBotMessageContent}
+        onReportsReferencedChange={setReportsReferenced}
+        onChatHistoryChange={setChatHistory}
+        chatHistory={chatHistory}
+      />
+    </Box>
+  </Panel>
+  <PanelResizeHandle style={{ width: "2px", backgroundColor: "#e0e0e0" }} />
+
+  {/* Right Panel */}
+  <Panel defaultSize={30} minSize={20}>
+    <PanelGroup direction="vertical" style={{ gap: 0 }}>
+      <Panel defaultSize={50} minSize={30}>
+        <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start", alignItems: "flex-start", p: 1 }}>
+          <IndividualPatientInfo />
+        </Box>
+      </Panel>
+      <PanelResizeHandle style={{ height: "2px", backgroundColor: "#e0e0e0" }} />
+      <Panel defaultSize={75} minSize={65}>
+        <Box sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center", p: 1 }}>
+          <HumanBody taggedLocations={taggedLocations} botMessageContent={botMessageContent} />
+        </Box>
+      </Panel>
+    </PanelGroup>
+  </Panel>
+</PanelGroup>
       </Box>
 
       {/* Floating Save Button */}
-      <Button variant="contained" color="success" sx={{ position: "fixed", bottom: 14, right: 14 }} onClick={handleSaveToTimeline}>
+      <Button variant="contained" color="success" sx={{ position: "fixed", bottom: 17, right: 8 }} onClick={handleSaveToTimeline}>
         <SaveOutlinedIcon />
       </Button>
-      <Button variant="contained" color="primary" sx={{ position: "fixed", bottom: 14, left: 14 }} onClick={handleTimelineClick}>
+      <Button variant="contained" color="primary" sx={{ position: "fixed", bottom: 17, left: 8 }} onClick={handleTimelineClick}>
         <TimelineOutlinedIcon />
       </Button>
     </Container>

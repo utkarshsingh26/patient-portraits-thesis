@@ -22,6 +22,7 @@ const Item = styled(Paper)(({ theme }) => ({
   boxSizing: 'border-box', 
 }));
 
+
 export default function IndividiualPatientReports({ onExtractedText }: { onExtractedText: (text: string[]) => void }) {
   const { id } = useParams();
   const [fileURLs, setFileURLs] = React.useState<string[]>([]);
@@ -71,29 +72,20 @@ export default function IndividiualPatientReports({ onExtractedText }: { onExtra
 
   return (
     <>
-          {/* <Box
-        sx={{
-          width: 250,
-          height: 50,
-          borderRadius: 1,
-          bgcolor: 'primary.main',
-          color: 'white'
-        }}
-      >There are X reports here</Box> */}
-    <Box sx={{ width: "100%", padding: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
-    {/* <Typography sx={{textAlign: "center", fontWeight: "bold", color: "text.secondary"}}> There are{" "} <Box component="span" sx={{ display: "inline-block", width: "24px", height: "24px", lineHeight: "24px", borderRadius: "4px", bgcolor: "primary.main", color: "white", textAlign: "center", fontWeight: "bold", }} > {numberOfReports} </Box>{" "} reports in the patient's history. </Typography> */}
-    <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "text.secondary" }}> There are{" "} <Chip label={numberOfReports} color="primary" sx={{ fontWeight: "bold" }} />{" "} reports in the patient's history. </Typography>
-    <br/>
+
+    <Box sx={{ height: "100%", width:"100%", justifyContent: "center", alignContent: "center", padding: 0, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3, overflow: "auto" }}>
+    <Typography sx={{ margin: 0, textAlign: "center", fontWeight: "bold", color: "black", textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)", fontSize: 20 }}> There are{" "} <Paper sx={{ display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #F8F8F8"}}> {numberOfReports} </Paper> reports in the patient's history. </Typography>
+      <br/>
       <Grid container spacing={2} justifyContent="center">
         {fileURLs.map((url, index) => (
           <Grid item xs={12} sm={6} md={4} key={index} sx={{ textAlign: "center" }}>
             <a href={url} download={`Document-${index}.docx`} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "inherit" }}>
-              <Paper sx={{ padding: 2, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Paper sx={{ padding: 2, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                 <ArticleOutlinedIcon sx={{ fontSize: 60, color: "black" }} />
-              </Paper>
-              <Box component="span" sx={{ display: "block", mt: 1, fontSize: 14, fontWeight: "bold" }}>
+                <Box component="span" sx={{ display: "block", mt: 1, fontSize: 14, backgroundColor: "primary.main", color: "white", borderRadius: 1, height: "20px", width: "80px" }}>
                 Report {index + 1}
               </Box>
+              </Paper>
             </a>
           </Grid>
         ))}

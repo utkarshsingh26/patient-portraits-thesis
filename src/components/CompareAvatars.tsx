@@ -302,7 +302,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { Box, CircularProgress, Typography, Tooltip, Button, Checkbox, Modal, IconButton, Chip } from "@mui/material";
+import { Box, CircularProgress, Typography, Tooltip, Button, Checkbox, Modal, IconButton, Chip, Paper} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { format } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
@@ -312,6 +312,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { motion } from "framer-motion";
 
 const highlightPositions = {
   chest: { x: 250, y: 120 },
@@ -439,32 +440,75 @@ export default function CompareAvatar() {
       {startDate && endDate && (
         <Box
           sx={{
-            bgcolor: "#f6f6f6",
-            borderRadius: "5px",
-            boxShadow: 3,
-            padding: 2,
-            maxWidth: "400px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center", 
             mb: 2,
           }}
         >
-          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center" }}>
-            Key dates in this timeline
-          </Typography>
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Chip
-              label={`Start: ${format(new Date(startDate), "yyyy-MM-dd")}`}
-              color="primary"
-              sx={{ fontWeight: "bold" }}
-            />
-            <Chip
-              label={`End: ${format(new Date(endDate), "yyyy-MM-dd")}`}
-              color="error"
-              sx={{ fontWeight: "bold", ml: 12 }}
-            />
+          {/* Start Date Box */}
+          <Box
+            sx={{
+              bgcolor: "#f6f6f6",
+              borderRadius: "5px",
+              boxShadow: 3,
+              padding: 2,
+              maxWidth: "400px",
+              backgroundColor: "primary.main"
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center", color: "white" }}>
+              The start of the patient timeline
+            </Typography>
+            <Paper sx={{ ml: '33%', borderRadius: 400, display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #696969" }}>
+              {format(new Date(startDate), "yyyy-MM-dd")}
+            </Paper>
+          </Box>
+
+          {/* Images with Links */}
+          <Box
+            sx={{
+              display: "flex",
+              gap: 4, 
+            }}
+          >
+            <a href="https://www.asu.edu/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/asu-1.jpg"
+                alt="Image 1"
+                style={{ width: "140px", height: "100px", borderRadius: "8px" }}
+              />
+            </a>
+            <a href="https://www.mayoclinic.org/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/mayo-logo.png" 
+                alt="Image 2"
+                style={{ width: "160px", height: "100px", borderRadius: "8px" }} 
+              />
+            </a>
+          </Box>
+
+          {/* End Date Box */}
+          <Box
+            sx={{
+              bgcolor: "#f6f6f6",
+              borderRadius: "5px",
+              boxShadow: 3,
+              padding: 2,
+              maxWidth: "400px",
+              mr: 2,
+              backgroundColor: "primary.main"
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, textAlign: "center", color: "white" }}>
+              The end of the patient timeline
+            </Typography>
+            <Paper sx={{ ml: '33%', borderRadius: 400, display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #696969" }}>
+              {format(new Date(endDate), "yyyy-MM-dd")}
+            </Paper>
           </Box>
         </Box>
       )}
-
       {loading ? (
         <CircularProgress />
       ) : savedStates.length === 0 ? (
@@ -476,9 +520,9 @@ export default function CompareAvatar() {
 
             return (
               <Box key={state.id} sx={{ textAlign: "center", flexShrink: 0 }}>
-                <Box sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#f0f0f0", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
+                <Box sx={{ width: "500px", height: "500px", position: "relative", cursor: "pointer", backgroundColor: "primary.main", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
                   <Checkbox
-                    sx={{ position: "absolute", top: 0, right: 0, zIndex: 1 }}
+                    sx={{ position: "absolute", top: 0, right: 0, zIndex: 1, color: "white", '&.Mui-checked': {color: "white"} }}
                     checked={checkedAvatars.includes(state.id)}
                     onChange={() => handleCheckboxChange(state.id)}
                   />
@@ -513,7 +557,7 @@ export default function CompareAvatar() {
           maxHeight: "40px", 
           position: "absolute",
           bottom: 10,
-          right: 10, 
+          left: 10, 
           backgroundColor: "#fff",
           borderRadius: "8px",
           padding: "4px", 
@@ -557,9 +601,9 @@ export default function CompareAvatar() {
 
    
                   <Box onClick={() => handleAvatarClick(state)}>
-                    <svg width="100%" height="100%" viewBox="0 0 500 400">
+                    <svg width="100%" height="100%" viewBox="0 -15 500 400">
                       <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
-                        <image href="/goku.svg" width="100%" height="100%" />
+                        <image href="/Silhouette_of_a_woman.svg" width="100%" height="100%" />
                         {state.taggedLocations.map((location) => {
                           const positions = highlightPositions[location];
                           if (!positions) return null;
@@ -580,9 +624,10 @@ export default function CompareAvatar() {
                     </svg>
                   </Box>
                 </Box>
-                <Box sx={{ bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px" }}>
+                {/* <Box sx={{ bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "15px" }}>
                   {format(new Date(state.timestamp), "yyyy-MM-dd")}
-                </Box>
+                </Box> */}
+                <Paper sx={{ mt: 2, display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #696969", borderRadius: 400}}> {format(new Date(state.timestamp), "yyyy-MM-dd")} </Paper>
               </Box>
             );
           })}
@@ -614,32 +659,73 @@ export default function CompareAvatar() {
                 const transform = transforms[doc.id] || { scale: 1, translateX: 0, translateY: 0 };
 
                 return (
-                  <Box key={doc.id} sx={{ textAlign: "center", flexShrink: 0 }}>
-                    <Box sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#f0f0f0", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
-                      {/* Zoom Controls */}
-                      <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
-                        <IconButton size="small" onClick={() => handleZoom(doc.id, 1.2)}><AddIcon /></IconButton>
-                        <IconButton size="small" onClick={() => handleZoom(doc.id, 1 / 1.2)}><RemoveIcon /></IconButton>
-                        <IconButton size="small" onClick={() => handleReset(doc.id)}><RefreshIcon /></IconButton>
-                      </Box>
+                  <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: doc.id * 0.2 }}
+                  key={doc.id}
+                  >
+                                      <Box key={doc.id} sx={{ textAlign: "center", flexShrink: 0 }}>
+                    <Box sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "primary.main", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
 
                       {/* Pan Controls */}
-                      <Box sx={{ maxWidth: "150px", maxHeight: "150px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "5px", boxShadow: 2, zIndex: 1 }}>
-                        <span></span>
-                        <IconButton size="small" onClick={() => handlePan(doc.id, 0, -20)}><ArrowUpwardIcon /></IconButton>
-                        <span></span>
-                        <IconButton size="small" onClick={() => handlePan(doc.id, -20, 0)}><ArrowBackIcon /></IconButton>
-                        <span></span>
-                        <IconButton size="small" onClick={() => handlePan(doc.id, 20, 0)}><ArrowForwardIcon /></IconButton>
-                        <span></span>
-                        <IconButton size="small" onClick={() => handlePan(doc.id, 0, 20)}><ArrowDownwardIcon /></IconButton>
-                        <span></span>
-                      </Box>
+                      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 0.5, 
+          alignItems: "center", 
+          justifyContent: "flex-end", 
+          maxWidth: "300px", 
+          maxHeight: "40px", 
+          position: "absolute",
+          bottom: 10,
+          left: 10, 
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          padding: "4px", 
+          boxShadow: 2,
+        }}
+      >
+
+        <IconButton size="small" onClick={handleReset}>
+          <RefreshIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handleZoom(1.2)}>
+          <AddIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}>
+          <RemoveIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(0, -20)}>
+          <ArrowUpwardIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(0, 20)}>
+          <ArrowDownwardIcon fontSize="small" />
+        </IconButton>
+
+        <IconButton size="small" onClick={() => handlePan(-20, 0)}>
+          <ArrowBackIcon fontSize="small" />
+        </IconButton>
+
+
+        <IconButton size="small" onClick={() => handlePan(20, 0)}>
+          <ArrowForwardIcon fontSize="small" />
+        </IconButton>
+      </Box>
 
                       {/* SVG */}
                       <svg width="100%" height="100%" viewBox="0 0 500 400">
                         <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
-                          <image href="/goku.svg" width="100%" height="100%" />
+                          <image href="/Silhouette_of_a_woman.svg" width="100%" height="100%" />
                           {doc.taggedLocations.map((location) => {
                             const positions = highlightPositions[location];
                             if (!positions) return null;
@@ -659,10 +745,10 @@ export default function CompareAvatar() {
                         </g>
                       </svg>
                     </Box>
-                    <Box sx={{ bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "3px" }}>
-                      {format(new Date(doc.timestamp), "yyyy-MM-dd")}
-                    </Box>
+                    <br/>
+                    <Paper sx={{ color: "white", display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #696969"}}> {format(new Date(doc.timestamp), "yyyy-MM-dd")} </Paper>
                   </Box>
+                  </motion.div>
                 );
               })}
           </Box>

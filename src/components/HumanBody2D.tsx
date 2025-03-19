@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Button, Tooltip, Box, IconButton } from "@mui/material";
+import { Button, Tooltip, Box, IconButton, Typography, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -7,7 +7,6 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import Typography from "@mui/material";
 
 
 
@@ -62,33 +61,8 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
   };
 
   return (
-    <Box sx={{ position: "relative", width: "500px", height: "450px", bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3, overflow: "hidden" }}>
-      {/* <Box sx={{ alignContent: "center", justifyContent:"center", maxWidth: "100px", maxHeight: "100px", position: "absolute", top: 10, left: 10, display: "flex", flexDirection: "column", gap: 1, backgroundColor: "#fff", borderRadius: "8px", padding: "2px", boxShadow: 2 }}>
-        <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon fontSize="small" /></IconButton>
-        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon fontSize="small" /></IconButton>
-        <IconButton size="small" onClick={handleReset}><RefreshIcon fontSize="small" /></IconButton>
-      </Box> */}
-
-
-      {/* <Box sx={{ alignContent: "center", justifyContent:"center", maxWidth: "80px", maxHeight: "80px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", display: "grid", gap: 1, gridTemplateColumns: "repeat(3, 30px)", backgroundColor: "#fff", borderRadius: "8px", padding: "0px", boxShadow: 2 }}> */}
-      {/* <Box sx={{ display: "flex", flexDirection: "row", gap: 0.5, alignItems: "center", justifyContent: "center", maxWidth: "200px",maxHeight: "40px", position: "absolute", bottom: 10, left: "85%", transform: "translateX(-50%)", backgroundColor: "#fff", borderRadius: "8px", padding: "4px"}}>
-        <span></span>
-        <IconButton size="small" onClick={handleReset}><RefreshIcon fontSize="small" /></IconButton>
-        <span></span>
-        <IconButton size="small" onClick={() => handleZoom(1.2)}><AddIcon fontSize="small" /></IconButton>
-        <span></span>
-        <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}><RemoveIcon fontSize="small" /></IconButton>
-        <span></span>
-        <IconButton size="small" onClick={() => handlePan(0, -20)}><ArrowUpwardIcon fontSize="small" /></IconButton>
-        <span></span>
-        <IconButton size="small" onClick={() => handlePan(0, 20)}><ArrowDownwardIcon fontSize="small" /></IconButton>
-        <span></span>
-        <IconButton size="small" onClick={() => handlePan(-20, 0)}><ArrowBackIcon fontSize="small" /></IconButton>
-        <span></span>
-        <IconButton size="small" onClick={() => handlePan(20, 0)}><ArrowForwardIcon fontSize="small" /></IconButton>
-        <span></span>
-      </Box> */}
-
+    <Box sx={{ position: "relative", width: "100%", height: "100%", bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3, overflow: "hidden" }}>
+      {/* <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "text.secondary", mt: 2 }}> What body parts need attention </Typography> */}
       <Box
         sx={{
           display: "flex",
@@ -100,7 +74,7 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
           maxHeight: "40px", 
           position: "absolute",
           bottom: 10,
-          right: 10, 
+          left: 10, 
           backgroundColor: "#fff",
           borderRadius: "8px",
           padding: "4px", 
@@ -148,13 +122,14 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
           ref={svgRef}
           width="100%"
           height="100%"
-          viewBox="0 0 500 400"
+          viewBox="0 25 500 400"
+          style={{ fill: "white" }}
         >
-
+          
           <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
 
 
-            <image href="/goku.svg" width="100%" height="100%" />
+            <image href="/Silhouette_of_a_woman.svg" width="100%" height="100%" />
 
             {Object.entries(highlightPositions).map(([key, value]) =>
               activeTags.includes(key) ? (

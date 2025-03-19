@@ -9,8 +9,10 @@ import {
   AccordionDetails,
   CircularProgress,
   IconButton,
+  Paper
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 interface ChatMessage {
   sender: "user" | "bot";
@@ -156,18 +158,23 @@ const Chatbot: React.FC<ChatbotProps> = ({
 
   return (
     <>
-      <Box sx={{ width: "100%", height:"400px", maxWidth: "600px", margin: "auto", mt: -2, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
-        <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "text.secondary" }}> Past Summaries </Typography>
-        <Box sx={{ height: "200px", overflowY: "auto", mb: 2 }}>
-          {chatHistory?.map((chat, index) => ( // Use optional chaining
-            <Accordion key={index} sx={{ mb: 5, backgroundColor: "black", color: "white", borderRadius: 5 }}>
+
+    <PanelGroup direction="vertical" style={{ gap: 0 }}>
+
+      <Panel defaultSize={50} minSize={30}>
+      <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", mt: 0, p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
+      <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Current Prompts</Typography>
+        {/* <Paper sx={{ color: "white", display: "inline-block", backgroundColor: "primary.main", color:"white", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #696969", marginLeft: -50}}> Current Prompts </Paper> */}
+        <Box sx={{ height: "174px", overflowY: "auto", mb: 2 }}>
+          {chatHistory?.map((chat, index) => ( 
+            <Accordion key={index} sx={{ mb : 2, backgroundColor: "white", color: "black", borderRadius: 5 }}>
               <AccordionSummary>
                 <Typography variant="body2"><b>{chat.botResponse}</b></Typography>
               </AccordionSummary>
               <AccordionDetails>
                 {chat.taggedLocations && (
                   <Box sx={{ mt: 2 }}>
-                    <Typography variant="body2" sx={{ fontWeight: "bold", color: "white" }}>
+                    <Typography variant="body2" sx={{ fontWeight: "bold", color: "black" }}>
                       Tagged Locations:
                     </Typography>
                     <Typography variant="body2">{chat.taggedLocations}</Typography>
@@ -175,7 +182,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
                 )}
                 {chat.reportsReferenced.length > 0 && (
                   <Box sx={{ mt: 2 }}>
-                    <Typography variant="body2" sx={{ fontWeight: "bold", color: "white" }}>
+                    <Typography variant="body2" sx={{ fontWeight: "bold", color: "black" }}>
                       Report(s) Referenced:
                     </Typography>
                     <Typography variant="body2">
@@ -183,7 +190,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
                     </Typography>
                   </Box>
                 )}
-                <Typography variant="body2" sx={{ fontWeight: "bold", mt: 2, color: "white" }}>
+                <Typography variant="body2" sx={{ fontWeight: "bold", color: "black" }}>
                   Prompt:
                 </Typography>
                 <Typography variant="body2">{chat.userQuestion}</Typography>
@@ -193,42 +200,53 @@ const Chatbot: React.FC<ChatbotProps> = ({
           {loading && <CircularProgress size={24} />}
         </Box>
       </Box>
+      </Panel>
 
-      <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", height: "200px", mt: -2, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
-        <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "text.secondary" }}> Get our AI to make inferences </Typography>
+      <PanelResizeHandle style={{ height: "2px", backgroundColor: "#e0e0e0", margin: "5px 0" }} />
+      
+      <Panel defaultSize={50} minSize={30}>
+      <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3}}>
+      <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" }}>Ask Questions</Typography>
         <br />
-        <Box sx={{ display: "flex", gap: 1 }}>
+        <Box sx={{ display: "flex", gap: 1, mt: 10 }}>
           <TextField
             fullWidth
             placeholder="Ask away..."
             variant="outlined"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            sx={{ color: "white", mt: 8 }}
+            sx={{ bgcolor: "white", mt: 8, borderRadius: 3 }}
           />
-          <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "primary.main", borderRadius: "8px", mt: 8 }}>
+          <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "white", backgroundColor:"white", borderRadius: "8px", mt: 8 }}>
             <SendIcon />
           </IconButton>
         </Box>
       </Box>
+      </Panel>
 
-      <Box sx={{ width: "100%", maxWidth: "600px", margin: "auto", mt: -2, p: 2, bgcolor: "#f6f6f6", borderRadius: "5px", boxShadow: 3 }}>
-        <Accordion sx={{ bgcolor: "white", color: "text.secondary", borderRadius: "5px", paddingBottom: "5px" }}>
-          <AccordionSummary><Typography sx={{ textAlign: "center", fontWeight: "bold", justifyContent: "center", width: '100%' }}>Saved prompts</Typography></AccordionSummary>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "white" }}>
+      <PanelResizeHandle style={{ height: "2px", backgroundColor: "#e0e0e0", margin: "5px 0" }} />
+      
+      <Panel defaultSize={50} minSize={30} style={{boxShadow: '3'}}>
+      <Box sx={{width: "100%", height: "100%", overflow: "auto", alignContent: "center", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
+        {/* <Accordion sx={{ bgcolor: "primary.main", color: "white", borderRadius: "5px", paddingBottom: "5px", height: "auto", overflow: "auto"}}>
+          <AccordionSummary><Typography sx={{ textAlign: "center", fontWeight: "bold", justifyContent: "center", width: '100%' }}>Saved prompts</Typography></AccordionSummary> */}
+          <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Saved Prompts</Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "primay.main" }}>
             {["What's wrong with the patient?", "Give me the date of the report 1.", "Tell me about the patient's liver."].map((prompt, index) => (
               <Button
                 key={index}
                 variant="outlined"
                 onClick={() => setInput(prompt)}
-                sx={{ textTransform: "none", backgroundColor: "black", color: "white", borderRadius: 3 }}
+                sx={{ ml: "25%",alignContent: "center", justifyContent: "center", display: "flex", textTransform: "none", backgroundColor: "primary.main", color: "white", borderRadius: 1, maxWidth: "275px", boxShadow: 3 }}
               >
                 <b>{prompt}</b>
               </Button>
             ))}
           </Box>
-        </Accordion>
+        {/* </Accordion> */}
       </Box>
+      </Panel>
+      </PanelGroup>
     </>
   );
 };
