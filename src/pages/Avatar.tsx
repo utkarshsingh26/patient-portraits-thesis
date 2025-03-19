@@ -94,6 +94,7 @@ function Avatar() {
       <DrawerAppBar />
       <Box sx={{ display: "flex", height: "calc(100vh - 90px)", mt: 2 }}>
       <PanelGroup direction="horizontal" style={{ gap: 0 }}>
+        
   {/* Left Panel */}
   <Panel defaultSize={30} minSize={20}>
     <PanelGroup direction="vertical" style={{ gap: 0 }}>

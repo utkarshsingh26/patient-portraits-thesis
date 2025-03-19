@@ -204,20 +204,19 @@ const Chatbot: React.FC<ChatbotProps> = ({
 
       <PanelResizeHandle style={{ height: "2px", backgroundColor: "#e0e0e0", margin: "5px 0" }} />
       
-      <Panel defaultSize={50} minSize={30}>
+      <Panel defaultSize={30} minSize={5}>
       <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3}}>
       <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" }}>Ask Questions</Typography>
-        <br />
-        <Box sx={{ display: "flex", gap: 1, mt: 10 }}>
+        <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
           <TextField
             fullWidth
-            placeholder="Ask away..."
+            placeholder="What's on your mind?"
             variant="outlined"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            sx={{ bgcolor: "white", mt: 8, borderRadius: 3 }}
+            sx={{ bgcolor: "white", mt: 7, borderRadius: 3 }}
           />
-          <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "white", backgroundColor:"white", borderRadius: "8px", mt: 8 }}>
+          <IconButton color="primary" onClick={sendMessage} disabled={loading} sx={{ border: "1px solid", borderColor: "primary.main", backgroundColor:"white", borderRadius: "8px", mt: 7 }}>
             <SendIcon />
           </IconButton>
         </Box>
@@ -228,11 +227,10 @@ const Chatbot: React.FC<ChatbotProps> = ({
       
       <Panel defaultSize={50} minSize={30} style={{boxShadow: '3'}}>
       <Box sx={{width: "100%", height: "100%", overflow: "auto", alignContent: "center", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
-        {/* <Accordion sx={{ bgcolor: "primary.main", color: "white", borderRadius: "5px", paddingBottom: "5px", height: "auto", overflow: "auto"}}>
-          <AccordionSummary><Typography sx={{ textAlign: "center", fontWeight: "bold", justifyContent: "center", width: '100%' }}>Saved prompts</Typography></AccordionSummary> */}
-          <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Saved Prompts</Typography>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "primay.main" }}>
-            {["What's wrong with the patient?", "Give me the date of the report 1.", "Tell me about the patient's liver."].map((prompt, index) => (
+          <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, mt: 0, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Saved Prompts</Typography>
+          <br/>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "primay.main", overflow: "auto" }}>
+            {["What's wrong with the patient?", "Give me the date of report 1.", "Tell me about the patient's liver.", "What's up with patient's chest?"].map((prompt, index) => (
               <Button
                 key={index}
                 variant="outlined"

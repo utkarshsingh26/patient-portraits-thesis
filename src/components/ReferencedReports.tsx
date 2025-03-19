@@ -338,28 +338,21 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
 
       {/* Reports List */}
       {reports.length > 0 ? (
-        <Box sx={{display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center", mb: 2 }}>
+        <Box sx={{display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center", mb: 2, overflow: "auto" }}>
           {reports.map((report, index) => (
             <Box
               key={index}
               sx={{
-                // backgroundColor: "primary.main",
-                // color: "white",
-                // padding: 1,
-                // borderRadius: 1,
-                // boxShadow: 2,
                 minWidth: "120px",
                 textAlign: "center",
               }}
             >
-              {/* <Typography variant="body2" sx={{ fontWeight: "bold" }}>{report}</Typography> */}
               <Paper sx={{ display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", boxShadow: 0, border: "1px solid #696969", borderRadius: 400}}> {report} </Paper>
             </Box>
           ))}
         </Box>
       ) : (
         <Box sx={{ textAlign: "center", mb: 2 }}>
-          {/* <Chip color="primary" sx={{ fontWeight: "bold" }} label="No reports referenced." /> */}
           <Paper sx={{ display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #696969"}}> No reports referenced. </Paper>
         </Box>
       )}
