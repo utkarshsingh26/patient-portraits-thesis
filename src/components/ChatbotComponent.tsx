@@ -163,7 +163,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
 
       <Panel defaultSize={50} minSize={30}>
       <Box sx={{boxShadow: 3}}>
-      <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", mt: 0, p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
+      <Box sx={{ width: "100%", height: "100%", margin: "auto", mt: 0, p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
       <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Current Prompts</Typography>
         {/* <Paper sx={{ color: "white", display: "inline-block", backgroundColor: "primary.main", color:"white", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #696969", marginLeft: -50}}> Current Prompts </Paper> */}
         <Box sx={{ height: "174px", overflowY: "auto", mb: 2 }}>
@@ -208,7 +208,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
       
       <Panel defaultSize={40} minSize={5}>
       <Box sx={{boxShadow: 3, mt: -2}}>
-      <Box sx={{ width: "100%", height: "100%", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px",  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", border: "none"}}>
+      <Box sx={{ width: "100%", height: "100%", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px",  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", border: "none"}}>
       <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" }}>Ask Questions</Typography>
         <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
           <TextField
@@ -231,7 +231,7 @@ const Chatbot: React.FC<ChatbotProps> = ({
       
       <Panel defaultSize={50} minSize={30} style={{boxShadow: '3'}}>
         <Box sx={{boxShadow: 3, mt: -2}}>
-      <Box sx={{width: "100%", height: "100%", overflow: "auto", alignContent: "center", maxWidth: "600px", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
+      <Box sx={{width: "100%", height: "100%", overflow: "auto", alignContent: "center", margin: "auto", p: 2, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3 }}>
           <Typography sx={{ textAlign: "center", fontWeight: "bold", color: "black", fontSize: 20, marginLeft: -48, mt: 0, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)"  }}>Saved Prompts</Typography>
           <br/>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 5, justifyContent: "center", color: "primay.main", overflow: "auto" }}>

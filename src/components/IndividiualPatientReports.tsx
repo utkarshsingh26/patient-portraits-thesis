@@ -74,7 +74,7 @@ export default function IndividiualPatientReports({ onExtractedText }: { onExtra
     <>
 
     <Box sx={{ height: "100%", width:"100%", justifyContent: "center", alignContent: "center", padding: 0, bgcolor: "#FFFAFA", borderRadius: "5px", boxShadow: 3, overflow: "auto" }}>
-    <Typography sx={{ margin: 0, textAlign: "center", fontWeight: "bold", color: "black", textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)", fontSize: 20, ml: -10 }}> There are{" "} <Paper sx={{ display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #F8F8F8"}}> {numberOfReports} </Paper> reports in the patient's history. </Typography>
+    <Typography sx={{ margin: 0, textAlign: "center", fontWeight: "bold", color: "black", textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)", fontSize: 20, ml: -13 }}> There are{" "} <Paper sx={{ display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #F8F8F8"}}> {numberOfReports} </Paper> reports in the patient's history. </Typography>
       <br/>
       <Grid container spacing={2} justifyContent="center">
         {fileURLs.map((url, index) => (
