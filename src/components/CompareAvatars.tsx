@@ -732,12 +732,12 @@ export default function CompareAvatar() {
                             return Array.isArray(positions) ? (
                               positions.map((pos, index) => (
                                 <Tooltip key={`${location}-${index}`} title={doc.botMessageContent} arrow>
-                                  <circle cx={pos.x} cy={pos.y} r="20" fill="rgba(255,0,0,0.3)" />
+                                  <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" />
                                 </Tooltip>
                               ))
                             ) : (
                               <Tooltip key={location} title={doc.botMessageContent} arrow>
-                                <circle cx={positions.x} cy={positions.y} r="20" fill="rgba(255,0,0,0.3)" />
+                                <circle cx={positions.x} cy={positions.y} r="10" fill="rgba(255,0,0,0.3)" />
                               </Tooltip>
                             );
                           })}
