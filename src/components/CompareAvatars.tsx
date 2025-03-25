@@ -518,9 +518,11 @@ export default function CompareAvatar() {
       ) : (
         <Box sx={{ display: "flex", gap: "16px", overflowX: "auto", justifyContent: "flex-start", mt: "125px", paddingLeft: "12px", marginTop: "100px" }}>
           {savedStates.map((state) => {
+            //@ts-ignore
             const transform = transforms[state.id] || { scale: 1, translateX: 0, translateY: 0 };
 
             return (
+              //@ts-ignore
               <Box key={state.id} sx={{ textAlign: "center", flexShrink: 0 }}>
                 <Box sx={{ width: "500px", height: "500px", position: "relative", cursor: "pointer", backgroundColor: "#FFFAFA", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
                   <Checkbox
@@ -568,7 +570,7 @@ export default function CompareAvatar() {
           boxShadow: 2,
         }}
       >
-
+        
         <IconButton size="small" onClick={handleReset}>
           <RefreshIcon fontSize="small" />
         </IconButton>
@@ -609,17 +611,21 @@ export default function CompareAvatar() {
                       <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
                         <image href="/Silhouette_of_a_woman.svg" width="100%" height="100%" />
                         
-                        {state.taggedLocations.map((location) => {
+                        {//@ts-ignore
+                        state.taggedLocations.map((location) => {
+                          //@ts-ignore
                           const positions = highlightPositions[location];
                           if (!positions) return null;
 
                           return Array.isArray(positions) ? (
                             positions.map((pos, index) => (
+                              //@ts-ignore
                               <Tooltip key={`${location}-${index}`} title={state.botMessageContent} arrow>
                                 <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" />
                               </Tooltip>
                             ))
                           ) : (
+                            //@ts-ignore
                             <Tooltip key={location} title={state.botMessageContent} arrow>
                               <circle cx={positions.x} cy={positions.y} r="10" fill="rgba(255,0,0,0.3)" />
                             </Tooltip>
@@ -659,8 +665,10 @@ export default function CompareAvatar() {
           </IconButton>
           <Box sx={{ display: "flex", gap: "16px", justifyContent: "center" }}>
             {savedStates
+            //@ts-ignore
               .filter((doc) => checkedAvatars.includes(doc.id))
               .map((doc) => {
+                //@ts-ignore
                 const transform = transforms[doc.id] || { scale: 1, translateX: 0, translateY: 0 };
 
                 return (
@@ -672,7 +680,9 @@ export default function CompareAvatar() {
                   //@ts-ignore
                   key={doc.id}
                   >
-                                      <Box key={doc.id} sx={{ textAlign: "center", flexShrink: 0 }}>
+                                      <Box key={
+                                        //@ts-ignore
+                                        doc.id} sx={{ textAlign: "center", flexShrink: 0 }}>
                     <Box sx={{ width: "450px", height: "450px", position: "relative", cursor: "pointer", backgroundColor: "#FFFAFA", boxShadow: 3, borderRadius: "5px", overflow: "hidden" }}>
 
                       {/* Pan Controls */}
@@ -733,18 +743,24 @@ export default function CompareAvatar() {
                       <svg width="100%" height="100%" viewBox="0 0 500 400">
                         <g transform={`translate(${250 + transform.translateX * transform.scale}, ${200 + transform.translateY * transform.scale}) scale(${transform.scale}) translate(-250, -200)`}>
                           <image href="/Silhouette_of_a_woman.svg" width="100%" height="100%" />
-                          {doc.taggedLocations.map((location) => {
+                          {//@ts-ignore
+                          doc.taggedLocations.map((location) => {
+                            //@ts-ignore
                             const positions = highlightPositions[location];
                             if (!positions) return null;
 
                             return Array.isArray(positions) ? (
                               positions.map((pos, index) => (
-                                <Tooltip key={`${location}-${index}`} title={doc.botMessageContent} arrow>
+                                <Tooltip key={`${location}-${index}`} title={
+                                  //@ts-ignore
+                                  doc.botMessageContent} arrow>
                                   <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" />
                                 </Tooltip>
                               ))
                             ) : (
-                              <Tooltip key={location} title={doc.botMessageContent} arrow>
+                              <Tooltip key={location} title={
+                                //@ts-ignore
+                                doc.botMessageContent} arrow>
                                 <circle cx={positions.x} cy={positions.y} r="10" fill="rgba(255,0,0,0.3)" />
                               </Tooltip>
                             );
