@@ -40,7 +40,9 @@ const fetchHighlightedText = async (text: string, highlight: string) => {
 
 const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessageContent }) => {
   const { id } = useParams<{ id: string }>();
+  // @ts-ignore
   const [extractedText, setExtractedText] = useState<string | null>(null);
+  // @ts-ignore
   const [highlightedText, setHighlightedText] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
