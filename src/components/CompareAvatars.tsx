@@ -338,6 +338,8 @@ export default function CompareAvatar() {
   const [checkedAvatars, setCheckedAvatars] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [transforms, setTransforms] = useState<Record<string, { scale: number; translateX: number; translateY: number }>>({});
+  // @ts-ignore
+  const [transform, setTransform] = useState({ scale: 1, translateX: 0, translateY: 0 });
 
   useEffect(() => {
     if (!id) return;
@@ -409,32 +411,51 @@ export default function CompareAvatar() {
     setIsModalOpen(false);
   };
 
-  const handleZoom = (id: string, factor: number) => {
-    setTransforms((prev) => ({
+  // const handleZoom = (id: string, factor: number) => {
+  //   setTransforms((prev) => ({
+  //     ...prev,
+  //     [id]: {
+  //       ...prev[id],
+  //       scale: Math.max(0.5, Math.min(prev[id].scale * factor, 3)),
+  //     },
+  //   }));
+  // };
+
+  const handleZoom = (factor: number) => {
+    setTransform(prev => ({
       ...prev,
-      [id]: {
-        ...prev[id],
-        scale: Math.max(0.5, Math.min(prev[id].scale * factor, 3)),
-      },
+      scale: Math.max(0.5, Math.min(prev.scale * factor, 3))
     }));
   };
 
-  const handlePan = (id: string, dx: number, dy: number) => {
-    setTransforms((prev) => ({
+  // const handlePan = (id: string, dx: number, dy: number) => {
+  //   setTransforms((prev) => ({
+  //     ...prev,
+  //     [id]: {
+  //       ...prev[id],
+  //       translateX: prev[id].translateX + dx / prev[id].scale,
+  //       translateY: prev[id].translateY + dy / prev[id].scale,
+  //     },
+  //   }));
+  // };
+
+  const handlePan = (dx: number, dy: number) => {
+    setTransform(prev => ({
       ...prev,
-      [id]: {
-        ...prev[id],
-        translateX: prev[id].translateX + dx / prev[id].scale,
-        translateY: prev[id].translateY + dy / prev[id].scale,
-      },
+      translateX: prev.translateX + dx / prev.scale,
+      translateY: prev.translateY + dy / prev.scale
     }));
   };
 
-  const handleReset = (id: string) => {
-    setTransforms((prev) => ({
-      ...prev,
-      [id]: { scale: 1, translateX: 0, translateY: 0 },
-    }));
+  // const handleReset = (id: string) => {
+  //   setTransforms((prev) => ({
+  //     ...prev,
+  //     [id]: { scale: 1, translateX: 0, translateY: 0 },
+  //   }));
+  // };
+
+  const handleReset = () => {
+    setTransform({ scale: 1, translateX: 0, translateY: 0 });
   };
 
   return (
@@ -714,7 +735,7 @@ export default function CompareAvatar() {
           <AddIcon fontSize="small" />
         </IconButton>
 
-
+  
         <IconButton size="small" onClick={() => handleZoom(1 / 1.2)}>
           <RemoveIcon fontSize="small" />
         </IconButton>
