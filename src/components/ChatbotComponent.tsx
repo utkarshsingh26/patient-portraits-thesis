@@ -9,7 +9,6 @@ import {
   AccordionDetails,
   CircularProgress,
   IconButton,
-  Paper
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";

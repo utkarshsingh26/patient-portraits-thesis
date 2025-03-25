@@ -299,10 +299,10 @@
 //   );
 // }
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { Box, CircularProgress, Typography, Tooltip, Button, Checkbox, Modal, IconButton, Chip, Paper} from "@mui/material";
+import { Box, CircularProgress, Typography, Tooltip, Button, Checkbox, Modal, IconButton, Paper} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { format } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
