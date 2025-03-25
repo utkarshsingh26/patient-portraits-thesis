@@ -91,6 +91,7 @@ function Avatar() {
   };
 
   return (
+    //@ts-ignore
     <Container maxWidth="false" disableGutters sx={{ padding: 0, margin: 0, bgcolor: "#ffffff" }}>
       <DrawerAppBar />
       <Box sx={{ display: "flex", height: "calc(100vh - 90px)", mt: 2 }}>
