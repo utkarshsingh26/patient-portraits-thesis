@@ -114,7 +114,7 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
   const renderHighlightedText = (text: string) => {
     return text.split(/(\[\[HIGHLIGHT\]\](.*?)\[\[\/HIGHLIGHT\]\])/g).map((part, index) =>
       part.startsWith("[[HIGHLIGHT]]") ? (
-        <span key={index} style={{ backgroundColor: "yellow", color: "black", fontWeight: "bold" }}>
+        <span key={index} style={{ backgroundColor: "black", color: "white", fontWeight: "bold" }}>
           {part.replace("[[HIGHLIGHT]]", "").replace("[[/HIGHLIGHT]]", "")}
         </span>
       ) : (
