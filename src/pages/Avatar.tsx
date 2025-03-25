@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -10,8 +10,8 @@ import HumanBody from "../components/HumanBody2D";
 import IndividualPatientInfo from "../components/IndiviualPatientInfo";
 import Button from "@mui/material/Button";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { Document, Packer, Paragraph } from "docx";
-import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+// import { Document, Packer, Paragraph } from "docx";
+// import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { format } from "date-fns";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
@@ -25,6 +25,7 @@ function Avatar() {
   const [taggedLocations, setTaggedLocations] = useState<string[]>([]);
   const [botMessageContent, setBotMessageContent] = useState<string>("");
   const [reportsReferenced, setReportsReferenced] = useState<string[]>([]);
+  // @ts-ignore
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
   const [savedStateId, setSavedStateId] = useState<string | null>(null); // Track the saved state ID
 
@@ -46,7 +47,7 @@ function Avatar() {
       alert("Patient ID not found!");
       return;
     }
-
+    // @ts-ignore
     const todayDate = format(new Date(), "yyyy-MM-dd");
     const state = {
       patientId: patientId.id,

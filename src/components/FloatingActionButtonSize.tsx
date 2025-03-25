@@ -9,7 +9,7 @@ import app from '../firebase/firebaseConfig';
 
 export default function FloatingActionButtonSize() {
   const [open, setOpen] = React.useState(false);
-
+// @ts-ignore
   const refreshButton = () => {
     window.location.reload();
   }

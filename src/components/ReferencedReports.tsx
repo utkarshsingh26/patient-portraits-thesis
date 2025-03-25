@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Paper, CircularProgress, Chip } from "@mui/material";
+import { Box, Typography, Paper, CircularProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
 import * as mammoth from "mammoth";
 import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
