@@ -659,7 +659,9 @@ export default function CompareAvatar() {
                 {/* <Box sx={{ bgcolor: "black", color: "white", width: "120px", borderRadius: "5px", textAlign: "center", display: "inline-block", marginTop: "15px" }}>
                   {format(new Date(state.timestamp), "yyyy-MM-dd")}
                 </Box> */}
-                <Paper sx={{ mt: 2, display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #FFFAFA", borderRadius: 400}}> {format(new Date(state.timestamp), "yyyy-MM-dd")} </Paper>
+                <Paper sx={
+                  //@ts-ignore
+                  { mt: 2, display: "inline-block", backgroundColor: "#FFFAFA", color:"primary.main", padding: "4px 8px", fontWeight: "bold", boxShadow: 0, border: "1px solid #FFFAFA", borderRadius: 400}}> {format(new Date(state.timestamp), "yyyy-MM-dd")} </Paper>
               </Box>
             );
           })}
@@ -790,7 +792,9 @@ export default function CompareAvatar() {
                       </svg>
                     </Box>
                     <br/>
-                    <Paper sx={{ color: "white", display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #696969"}}> {format(new Date(doc.timestamp), "yyyy-MM-dd")} </Paper>
+                    <Paper sx={
+                      //@ts-ignore
+                      {display: "inline-block", backgroundColor: "#F8F8F8", color:"#696969", padding: "4px 8px", borderRadius: 400, fontWeight: "bold", boxShadow: 0, border: "1px solid #696969"}}> {format(new Date(doc.timestamp), "yyyy-MM-dd")} </Paper>
                   </Box>
                   </motion.div>
                 );
