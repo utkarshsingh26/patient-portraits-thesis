@@ -3,12 +3,12 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 import * as mammoth from 'mammoth';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
-import { Typography, Chip } from "@mui/material";
+import { Typography } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
