@@ -10,6 +10,7 @@ import * as mammoth from 'mammoth';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import { Typography } from "@mui/material";
 
+//@ts-ignore
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   padding: theme.spacing(2),
@@ -26,6 +27,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function IndividiualPatientReports({ onExtractedText }: { onExtractedText: (text: string[]) => void }) {
   const { id } = useParams();
   const [fileURLs, setFileURLs] = React.useState<string[]>([]);
+  //@ts-ignore
   const [docxText, setDocxText] = React.useState<string[]>([]);
   const [numberOfReports, setNumberOfReports] = React.useState(0);
 

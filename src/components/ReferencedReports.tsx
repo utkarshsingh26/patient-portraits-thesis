@@ -54,6 +54,7 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
           const storage = getStorage();
           const listRef = ref(storage, "reports/");
           const allReports = await listAll(listRef);
+          //@ts-ignore
           const concernedReports = allReports.items.filter(report => report.name.includes(id));
 
           let reportsToShow: any[] = [];

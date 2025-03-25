@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { getFirestore, collection, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import app from '../firebase/firebaseConfig';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, IconButton } from '@mui/material';
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Patient {

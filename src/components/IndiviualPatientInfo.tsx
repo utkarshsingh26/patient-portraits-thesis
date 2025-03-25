@@ -74,7 +74,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../firebase/firebaseConfig';
-import { Typography, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Card, CardContent } from '@mui/material';
+import { Typography, CircularProgress, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Card, CardContent } from '@mui/material';
 
 interface Patient {
   id: string;
