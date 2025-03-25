@@ -37,7 +37,6 @@
     "react-resizable": "^3.0.5",
     "react-resizable-panels": "^2.1.7",
     "react-router-dom": "^7.1.1",
-    "react-split-pane": "^0.1.92",
     "three": "^0.172.0",
     "uuid": "^11.0.5"
   },
