@@ -87,6 +87,8 @@ export default function CustomizedTables() {
     setOpen(false);
   }
 
+  const getRandomInt = (max) => Math.floor(Math.random() * max);
+
   const [name, setName] = React.useState('');
   const [age, setAge] = React.useState<number |''>('');
   const [lastVisit, setLastVisit] = React.useState('');
@@ -127,7 +129,8 @@ export default function CustomizedTables() {
           {documents.map((document) => (
             <StyledTableRow key={document.id}>
               <StyledTableCell component="th" scope="row">
-                <Link to={`/avatar/${document.id}`}>{document.id}</Link>
+                {/* <Link to={`/avatar/${document.id}`}>{document.id}</Link> */}
+                <Link to={`/avatar/${document.id}`}>{getRandomInt(10000000)}</Link>
               </StyledTableCell>
               <StyledTableCell align="right">{document.name}</StyledTableCell>
               <StyledTableCell align="right">{document.age}</StyledTableCell>

@@ -170,7 +170,7 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
       )}
 
       {loading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+        <Box display="flex" justifyContent="center" alignItems="center" mt={2} sx={{overflow: 'hidden'}}>
           <CircularProgress />
         </Box>
       ) : (
@@ -181,13 +181,14 @@ const ReportsReferenced: React.FC<ReportsReferencedProps> = ({ reports, botMessa
               color: "black",
               padding: 2,
               marginTop: 2,
-              overflow: "auto",
+              overflowY: "auto",
+              height: 400
             }}
           >
             <Typography
               variant="body1"
               component="pre"
-              sx={{ whiteSpace: "pre-wrap", overflow: "auto", maxHeight: 400 }}
+              sx={{ whiteSpace: "pre-wrap", overflow: "auto" }}
             >
               {renderHighlightedText(highlightedText)}
             </Typography>

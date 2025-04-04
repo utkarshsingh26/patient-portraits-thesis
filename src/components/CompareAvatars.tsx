@@ -642,13 +642,15 @@ export default function CompareAvatar() {
                             positions.map((pos, index) => (
                               //@ts-ignore
                               <Tooltip key={`${location}-${index}`} title={state.botMessageContent} arrow>
-                                <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" />
+                                {/* <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" /> */}
+                                <circle cx={pos.x} cy={pos.y} r="10" fill="#800020" stroke="#DC143C" strokeWidth="2" />
                               </Tooltip>
                             ))
                           ) : (
                             //@ts-ignore
                             <Tooltip key={location} title={state.botMessageContent} arrow>
-                              <circle cx={positions.x} cy={positions.y} r="10" fill="rgba(255,0,0,0.3)" />
+                              {/* <circle cx={positions.x} cy={positions.y} r="10" fill="rgba(255,0,0,0.3)" /> */}
+                              <circle cx={positions.x} cy={positions.y} r="10" fill="#800020" stroke="#DC143C" strokeWidth="2" />
                             </Tooltip>
                           );
                         })}
@@ -775,12 +777,14 @@ export default function CompareAvatar() {
                             return Array.isArray(positions) ? (
                               positions.map((pos, index) => (
                                 <Tooltip key={`${location}-${index}`} title={doc.botMessageContent} arrow>
-                                  <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" />
+                                  {/* <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" /> */}
+                                  <circle cx={pos.x} cy={pos.y} r="10" fill="#800020" stroke="#DC143C" strokeWidth="2" />
                                 </Tooltip>
                               ))
                             ) : (
                               <Tooltip key={location} title={doc.botMessageContent} arrow>
-                                <circle cx={positions.x} cy={positions.y} r="10" fill="rgba(255,0,0,0.3)" />
+                                {/* <circle cx={positions.x} cy={positions.y} r="10" fill="rgba(255,0,0,0.3)" /> */}
+                                <circle cx={positions.x} cy={positions.y} r="10" fill="#800020" stroke="#DC143C" strokeWidth="2" />
                               </Tooltip>
                             );
                           })}

@@ -136,12 +136,15 @@ const HumanBody: React.FC<HumanBodyProps> = ({ taggedLocations, botMessageConten
                 Array.isArray(value) ? (
                   value.map((pos, index) => (
                     <Tooltip key={`${key}-${index}`} title={botMessageContent}>
-                      <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" />
+                      {/* <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(255,0,0,0.3)" /> */}
+                      {/* <circle cx={pos.x} cy={pos.y} r="10" fill="#DC143C" stroke="#800020" strokeWidth="2" /> */}
+                      <circle cx={pos.x} cy={pos.y} r="10" fill="#800020" stroke="#DC143C" strokeWidth="2" />
                     </Tooltip>
                   ))
                 ) : (
                   <Tooltip key={key} title={botMessageContent}>
-                    <circle cx={value.x} cy={value.y} r="10" fill="rgba(255,0,0,0.3)" />
+                    {/* <circle cx={value.x} cy={value.y} r="10" fill="rgba(255,0,0,0.3)" /> */}
+                    <circle cx={value.x} cy={value.y} r="10" fill="#800020" stroke="#DC143C" strokeWidth="2" />
                   </Tooltip>
                 )
               ) : null
