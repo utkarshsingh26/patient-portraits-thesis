@@ -6,7 +6,7 @@ import DrawerAppBar from "../components/DrawerAppBar";
 import IndividiualPatientReports from "../components/IndividiualPatientReports";
 import ChatbotComponent from "../components/ChatbotComponent";
 import ReportsReferenced from "../components/ReferencedReports";
-import HumanBody from "../components/HumanBody2D";
+import HumanBody from "../components/HumanBody2D-1";
 import IndividualPatientInfo from "../components/IndiviualPatientInfo";
 import Button from "@mui/material/Button";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
